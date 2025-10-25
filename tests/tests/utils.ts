@@ -63,6 +63,7 @@ export function clickLocatorWithMouse(page: Page | Frame, locator: string) {
     const actualPage = 'page' in page ? page.page() : page;
     return page
         .locator(locator)
+        ?.first()
         ?.boundingBox()
         .then(async (box) => {
             console.log('locator', locator, box);
