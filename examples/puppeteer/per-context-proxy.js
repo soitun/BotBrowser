@@ -82,15 +82,6 @@ async function testContext(context, label, testUrl) {
   console.log(`\n🧪 Testing ${label}:`);
 
   const page = await context.newPage();
-
-  // Remove Puppeteer bindings to avoid detection
-  await page.evaluateOnNewDocument(() => {
-    delete window.navigator.webdriver;
-    delete window.__puppeteer__;
-    delete window.__nightmare;
-    delete window.__fxdriver_unwrapped;
-  });
-
   try {
     await page.goto(testUrl, { waitUntil: 'networkidle2' });
 
