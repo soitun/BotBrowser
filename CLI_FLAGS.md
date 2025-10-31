@@ -169,7 +169,8 @@ The following `--bot-config-*` flags map directly to profile `configs`:
 --bot-config-color-scheme=light               # Color scheme: light, dark
 --bot-config-disable-debugger=true            # Disable JavaScript debugger: true, false
 --bot-config-disable-device-scale-factor=true # Disable device scale factor: true, false
---bot-config-fonts=profile                    # Font settings: profile (use profile fonts), real (system fonts)
+--bot-config-disable-console-message=true     # Suppress console.* output from CDP logs: true, false (default true)
+--bot-config-fonts=profile                    # Font settings: profile (embedded), expand (profile + fallback), real (system fonts)
 --bot-config-inject-random-history=true       # Inject random history: true, false
 --bot-config-keyboard=profile                 # Keyboard settings: profile (emulated), real (system keyboard)
 --bot-config-languages=auto                   # Languages: "lang1,lang2" (comma-separated) or "auto" (IP-based)
@@ -185,7 +186,7 @@ The following `--bot-config-*` flags map directly to profile `configs`:
 --bot-config-screen=profile                   # Screen properties: profile (use profile), real (system screen)
 --bot-config-speech-voices=profile            # Speech voices: profile (synthetic), real (system voices)
 --bot-config-timezone=auto                    # Timezone: auto (IP-based), real (system), or timezone name
---bot-config-ua-full-version=140.0.7339.81    # User agent version: full version string matching Chromium major
+--bot-config-ua-full-version=142.0.7444.60    # User agent version: full version string matching Chromium major
 --bot-config-webgl=profile                    # WebGL: profile (use profile), real (system), disabled (off)
 --bot-config-webgpu=profile                   # WebGPU: profile (use profile), real (system), disabled (off)
 --bot-config-webrtc=profile                   # WebRTC: profile (use profile), real (native), disabled (off)
@@ -204,11 +205,11 @@ The following `--bot-config-*` flags map directly to profile `configs`:
 - **Dynamic Configuration:** Perfect for automation and CI/CD
 - **Session Isolation:** Different settings per instance
 
-### Spotlight: BotBrowser v141 20251012 Additions
+### Spotlight: BotBrowser v142 20251031 Additions
 
-- **`--bot-config-webrtc-ice`** — choose ICE presets or bring your own STUN/TURN list to keep TURN traffic from revealing the real network path.
-- **`--bot-config-always-active`** — keeps tabs/windows active (default `true`) so sites can’t key off backgrounded state; disable per window if you need native focus behavior.
-- **`--bot-config-media-types` default = `expand`** — BotBrowser now prefers locally available decoders for more realistic media capability checks; switch back to `profile` for the legacy behavior.
+- **Chromium 142.0.7444.60 base** — aligns rendering, networking, and security surfaces with the current Chrome stable channel.
+- **`--bot-config-disable-console-message`** — silences console output to keep CDP logging noise out of page scripts and production logs.
+- **`--bot-config-fonts=expand`** — loads supplemental system fonts when profiles lack coverage to improve authenticity while keeping profile baselines.
 
 ### Configuration Priority
 

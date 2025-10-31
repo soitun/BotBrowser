@@ -2,6 +2,46 @@
 
 > **Research scope:** Entries in this changelog describe features evaluated in authorized labs and defensive benchmarking programs. Follow the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md). We work with security vendors to investigate any misuse—report concerns to [botbrowser@bk.ru](mailto:botbrowser@bk.ru).
 
+
+## [2025-10-31] 
+
+### Major
+- **Chromium Core Upgrade → 142.0.7444.60**  
+  Synced with the latest Chrome 142 stable to keep rendering, networking, storage, and media behavior aligned with upstream, reduce version‑based heuristics, and inherit current security/perf updates.
+
+### New
+- **`--bot-config-disable-console-message` (default: true)**  
+  Disables console message output to avoid CDP log noise leaking into the page context or logs in production environments. Tracks: issue **#75**.
+- **`--bot-config-fonts=expand` mode**  
+  When a profile lacks specific fonts, `expand` will load additional system fonts to increase match rate and authenticity.
+
+### Improvements
+- **Scrollbar width fidelity across OSs**  
+  More accurate per‑OS scrollbar metrics so `window.innerWidth` and `document.documentElement.clientWidth` remain consistent and layout shifts are avoided.
+- **Cross‑platform font loading & caching**  
+  Extracted common font sets across platforms, optimized render/cache logic, and **bundled Noto Sans** for broader coverage; improves paint time and UX while keeping fingerprint parity.
+- **Auto‑language by IP**  
+  Smarter locale selection based on proxy IP and region signals to choose a more appropriate UI language by default.
+- **Android simulation without xdg‑open popups**  
+  Suppresses spurious `xdg-open` invocations during Android emulation to prevent erroneous system dialogs.
+- **CPU architecture realism (ARM vs x86)**  
+  Tightened architecture‑specific surfaces (timings/caps) for higher authenticity when switching between ARM and x86 profiles.
+
+### Fixes
+- **Locale leakage via `Intl.DateTimeFormat().resolvedOptions().locale`**  
+  Prevented host locale from surfacing unintentionally through `Intl` so locale now reflects the emulated/profiled environment.
+- **WebGL stability under performance jitter**  
+  Resolved a case where jitter modeling could destabilize WebGL metrics; GPU paths now remain stable with jitter enabled.
+- **CJK font visibility**  
+  Fixed scenarios where **Korean / Japanese / Chinese** glyphs could fail to render due to coverage/fallback mismatches.
+- **Crash with `--bot-config-color-scheme`**  
+  Corrected a crash that could occur when forcing color scheme overrides.
+- **Headless window sizing with iframes**  
+  Fixed an iframe handling bug that could mis‑apply window size in headless runs.
+
+---
+
+
 ## [2025-10-23] 
 
 ### Major

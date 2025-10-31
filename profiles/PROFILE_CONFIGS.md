@@ -86,6 +86,7 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 | `uaFullVersion`                 | Overrides the full browser version returned by `navigator.userAgentData.fullVersion`; must match the Chromium major version (e.g. for major version 138, the full version must start with “138.”). | `""`        |
 | `colorScheme`                   | Preferred color scheme: light or dark.                                            | `light`   |
 | `disableDeviceScaleFactorOnGUI` | If `true`, ignore device scale factor for GUI elements (disable DPI-based UI scaling).    | `false`     |
+| `disableConsoleMessage`         | Suppresses console message forwarding into page contexts and automation logs.            | `true`     |
 | `timezone`                      | `auto` = IP-based; `real` = system timezone; any other string = custom timezone name. | `auto`    |
 | `location`                      | `auto` = IP-based; `real` = system (GPS); object = custom coordinates (`lat`, `lon`). | `auto`    |
 | `browserBrand`                  | override for `navigator.userAgentData.brands` and related UA fields. Supports chromium, chrome, edge, brave. | `chrome`    |
@@ -128,7 +129,7 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 | Field          | Description                                                                              | Default     |
 | -------------- | ---------------------------------------------------------------------------------------- | ----------- |
 | `webrtc`       | `profile` = profile's WebRTC config;`real` = native WebRTC;`disabled` = no WebRTC. | `profile` |
-| `fonts`        | `profile` = profile's embedded font list;`real` = system-installed fonts.            | `profile` |
+| `fonts`        | `profile` = profile's embedded font list;`expand` = profile list plus supplemental system fonts;`real` = system-installed fonts. | `profile` |
 | `webgl`        | `profile` = profile's WebGL parameters;`real` = system WebGL;`disabled` = off.     | `profile` |
 | `webgpu`       | Same semantics as `webgl`.                                                               | `profile` |
 | `mediaDevices` | `profile` = fake camera/mic devices;`real` = actual system devices.                  | `profile` |
@@ -195,7 +196,7 @@ All configurations are embedded in the `configs` field inside your profile JSON 
     // Keep the window active even when unfocused (suppresses blur/visibilitychange)
     "alwaysActive": true,
 
-    // Fonts: 'profile' = profile’s embedded list; 'real' = system-installed fonts
+    // Fonts: 'profile' = profile’s embedded list; 'expand' = fill gaps with system fonts; 'real' = system-installed fonts
     "fonts": "profile",
 
     // WebGL: 'profile' = profile’s parameters; 'real' = system implementation; 'disabled' = off
@@ -236,6 +237,9 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 
     // disableDebugger: Prevents unintended interruptions from JavaScript debugger statements during automated academic workflows
     "disableDebugger": true,
+
+    // disableConsoleMessage: Suppress console.* output forwarded through CDP logging
+    "disableConsoleMessage": true,
 
     // keyboard: choose keyboard fingerprint source: "profile" (emulated from profile) or "real" (use system keyboard)
     "keyboard": "profile",
