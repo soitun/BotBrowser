@@ -56,6 +56,7 @@ Testing results with popular websites and their security systems. Shows how well
 | **[Accertify](tests/tests/antibots/accertify.spec.ts)** | [▶️ Grubhub](//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-perimeterx-grubhub) |
 | **[Forter](tests/tests/antibots/forter.spec.ts)** | [▶️ Grubhub](//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-perimeterx-grubhub) |
 | **[Adscore](tests/tests/antibots/adscore.spec.ts)** | [▶️ Test Video](//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-adscore-adscore) |
+| **[Castle](tests/tests/antibots/castle.spec.ts)** | [▶️ X Sign-Up](//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-castle-x) |
 | **[MTCaptcha](tests/tests/antibots/mtcaptcha.spec.ts)** | [▶️ Invisible Captcha](//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-mtcaptcha-invisiblecaptcha) |
 | **[FriendlyCaptcha](tests/tests/antibots/friendlycaptcha.spec.ts)** | [▶️ Captcha Demo](//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-friendlycaptcha-captchademo) |
 | **[YandexCaptcha](tests/tests/antibots/yandexcaptcha.spec.ts)** | [▶️ SmartCaptcha](//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-yandexcaptcha-smartcaptcha) |

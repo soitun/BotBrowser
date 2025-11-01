@@ -3,7 +3,7 @@
 <h4 align="center">Professional Cross-Platform Browser with Unified Fingerprint Technology 🚀</h4>
 
 <p align="center">
-  Identical fingerprints on any OS • Cross-platform compatibility • Validated against 30+ detection systems for research benchmarking
+  Identical fingerprints on any OS • Cross-platform compatibility • Validated against 31+ detection systems for research benchmarking
 </p>
 
 <p align="center">
@@ -226,7 +226,7 @@ Our compatibility research examines browser fingerprinting techniques across dif
 - **Android Emulation on Desktop:** Complete mobile API simulation
 - **Headless vs GUI Mode:** Identical fingerprint stability
 
-📖 **[Complete Validation Results & Research Data →](VALIDATION.md)** - 30+ anti-bot systems, 15+ fingerprinting tools, statistical analysis
+📖 **[Complete Validation Results & Research Data →](VALIDATION.md)** - 31+ anti-bot systems, 15+ fingerprinting tools, statistical analysis
 
 ---
 
@@ -238,7 +238,7 @@ Our compatibility research examines browser fingerprinting techniques across dif
 |----------|-------------|-----------------|
 | **[Installation Guide](INSTALLATION.md)** | Platform-specific setup | Windows/macOS/Ubuntu guides, Docker deployment, troubleshooting |
 | **[Advanced Features](ADVANCED_FEATURES.md)** | Technical capabilities | 30+ CLI flags, noise injection, GPU micro-benchmarks |
-| **[Validation Results](VALIDATION.md)** | Research data | 30+ anti-bot systems, 50,000+ test sessions, statistical analysis |
+| **[Validation Results](VALIDATION.md)** | Research data | 31+ anti-bot systems, 50,000+ test sessions, statistical analysis |
 | **[CLI Flags Reference](CLI_FLAGS.md)** | Command-line options | `--bot-config-*` flags, proxy auth, session management |
 | **[Profile Configuration](profiles/PROFILE_CONFIGS.md)** | Profile customization | Fingerprint control, cross-platform compatibility |
 | **[BotCanvasLab](tools/botcanvas/)** | Canvas forensics tool | Canvas 2D recording, JSONL event viewer, replay roadmap |
