@@ -3,6 +3,24 @@
 > **Research scope:** Entries in this changelog describe features evaluated in authorized labs and defensive benchmarking programs. Follow the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md). We work with security vendors to investigate any misuse—report concerns to [botbrowser@bk.ru](mailto:botbrowser@bk.ru).
 
 
+
+## [2025-11-24] 
+
+
+### Major
+**Chromium Core → 143.0.7499.40 (Early Stable)**  
+The core moves to Chrome 143 early stable. You gain the latest security work, platform refinements and DevTools/CDP updates from the 143 line. Version‑based heuristics on target sites have less drift to key on, and UA‑CH now reports the expected major for 143‑gated features.
+
+### Notes
+**API and feature parity**  
+Small shifts are expected around UA‑CH negotiation, CSS/JS behavior tightened by spec clarifications, and CDP domain schemas that reflect 143. Nothing in BotBrowser’s flag surface changes for this bump.
+
+**Rollout guidance**  
+If you pin site‑specific workarounds to a Chrome major, run quick validation on your critical flows with 143 before rolling to full traffic. A short canary helps catch sites that already gate on 143.
+
+
+---
+
 ## [2025-11-17] 
 
 ### Major
