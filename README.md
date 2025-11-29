@@ -55,7 +55,7 @@ Designed for automation testing, cross-platform compatibility validation, and ma
     <td width="50%"><strong>Advanced Programmatic Control</strong> – <a href="examples/">Playwright/Puppeteer integration</a> with CDP leak blocking</td>
   </tr>
   <tr>
-    <td width="50%"><strong>Network Stack Parity</strong> – Browser-level proxies keep geo signals consistent (ENT Tier3 feature)</td>
+    <td width="50%"><strong>Network Stack Parity</strong> – Browser-level proxies keep geo signals consistent</td>
     <td width="50%"><strong>Full-Proxy QUIC/STUN</strong> – Chromium-level UDP associate keeps QUIC/STUN proxied; ICE presets only needed when UDP is unavailable (ENT Tier3 feature, see <a href="ADVANCED_FEATURES.md#network-fingerprint-control">Network Fingerprint Control</a>)</td>
   </tr>
 </table>
