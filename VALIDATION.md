@@ -11,10 +11,10 @@ Real‑world data showing how BotBrowser performs with a range of sites and secu
 We verify fingerprint consistency across platforms with a repeatable process.
 
 ### What We Test
-- Same profile on Windows, macOS, and Linux — does it produce identical fingerprints?
-- Mobile profiles on desktop — do they behave like real mobile devices?
-- Long‑term stability — do fingerprints remain consistent over time?
-- Popular websites — how well does BotBrowser work in practice?
+- Same profile on Windows, macOS, and Linux: does it produce identical fingerprints?
+- Mobile profiles on desktop: do they behave like real mobile devices?
+- Long‑term stability: do fingerprints remain consistent over time?
+- Popular websites: how well does BotBrowser work in practice?
 
 ### Test Setup
 - Multiple operating systems (Windows, macOS, Linux)
@@ -210,7 +210,7 @@ BotBrowser's cross-platform capabilities enable perfect Android device emulation
 
 ---
 
-## 🧪 Research Applications
+## 🔬 Research Applications
 
 ### Academic Use Cases
 
@@ -419,4 +419,4 @@ Detection System Tests (200+ scenarios)
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)** — BotBrowser is for authorized fingerprint-consistency testing and research only.
+**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

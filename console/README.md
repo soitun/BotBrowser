@@ -1,30 +1,30 @@
-# BotBrowserConsole
+# 🖥️ BotBrowserConsole
 
 BotBrowserConsole is the desktop companion to **[BotBrowser](https://github.com/botswin/BotBrowser)**. It simplifies fingerprint configuration and multi‑profile management for academic study and professional workflows. It also supports API‑based extensions for custom requirements.
 
 <img width="800" alt="image" src="https://github.com/user-attachments/assets/e9c0b656-83b0-4be5-986e-d4bc3c04b4b5">
 
-## 🚀 Key Features
+## ✨ Key Features
 
-### 🔧 Profile Management
+### Profile Management
 - Create browser profiles for different accounts and use cases
 - Choose from a library of fingerprint configuration files
 - Clone existing profiles for faster setup and consistency
 - Import/export profiles for seamless team collaboration
 
-### 🌐 Network & Security
+### Network & Security
 - Per‑profile proxies for secure, privacy‑focused testing
 - Optional fingerprint noise to evaluate consistency
 
-### 🚀 Advanced Operations
+### Advanced Operations
 - Launch multiple isolated browsers with complete data separation
 - Optionally pre‑warm sessions for controlled experiments
 - Organize profiles and settings into groups
 
-### 🔌 Developer Features
+### Developer Features
 - API support for custom workflows and authorized automation
 
-## 💻 Development Setup
+## 🛠️ Development Setup
 
 ### Prerequisites
 Install Neutralino CLI globally:
@@ -67,7 +67,7 @@ Quick Start
 | **Application Runtime** | [Neutralino.js](https://neutralino.js.org) | Lightweight framework leveraging native WebView for efficient resource usage |
 
 
-## 📬 Academic Collaboration & Inquiries
+## 🤝 Academic Collaboration & Inquiries
 
 For research-related collaboration or licensing review, please contact us:
 
@@ -78,4 +78,4 @@ For research-related collaboration or licensing review, please contact us:
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)** — BotBrowser is for authorized fingerprint-consistency testing and research only.
+**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

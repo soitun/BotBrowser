@@ -5,7 +5,7 @@ Academic research framework for browser‑compatibility analysis.
 
 Demonstrates controlled browser‑compatibility research using [Playwright](https://playwright.dev/docs/writing-tests) for academic and security research purposes. Operate these scripts in accordance with the project [Legal Disclaimer](../DISCLAIMER.md) and [Responsible Use Guidelines](../RESPONSIBLE_USE.md). If you ever observe misuse, email [botbrowser@bk.ru](mailto:botbrowser@bk.ru) so we can follow up with the affected service.
 
-## 🌐 Research Environment Setup
+## Research Environment Setup
 
 All tests utilize **controlled network environments** with appropriate proxy configurations for academic analysis. Testing should be conducted through authorized institutional networks.
 
@@ -14,7 +14,7 @@ All tests utilize **controlled network environments** with appropriate proxy con
 ## Usage Context
 
 These materials target university labs, security research groups, and other approved testing programs. Typical scenarios include:
-- Browser compatibility studies comparing multiple anti-bot vendors
+- Browser compatibility studies comparing multiple detection vendors
 - Academic coursework or workshops supervised by faculty
 - Security benchmarking in dedicated staging environments
 - Authorized penetration testing with written approval
@@ -25,7 +25,7 @@ Out-of-scope uses include production attacks, terms-of-service violations, or ha
 
 **All Test Scripts Use Only Synthetic/Invalid Data:**
 - Random/generated usernames (not real accounts)
-- Fake SSNs (e.g., "6789" — obviously invalid)
+- Fake SSNs (e.g., "6789," which is obviously invalid)
 - Non-existent email addresses
 - Invalid credentials that will never authenticate
 - Test endpoints and demo environments
@@ -97,7 +97,7 @@ Before running any tests, ensure you meet ALL of these requirements:
 
 **If you cannot check ALL boxes above, DO NOT proceed with testing.**
 
-### Financial Services Testing — Special Notice
+### Financial Services Testing: Special Notice
 
 Tests involving financial institutions (e.g., `threatmetrix.spec.ts` with Vanguard/Fidelity):
 - ⚠️ Use ONLY publicly accessible "forgot password" or demo pages
@@ -114,7 +114,7 @@ Tests involving financial institutions (e.g., `threatmetrix.spec.ts` with Vangua
 | ❌ Tests failing | ✅ Verify `.env` file paths and profile compatibility |
 | 🐛 Browser environment issues | 🔧 Check BotBrowser executable permissions and research environment setup |
 
-## 📚 Academic Resources
+## 📖 Academic Resources
 
 - [Playwright Documentation](https://playwright.dev/docs/writing-tests)
 - [BotBrowser Profile Configs](https://github.com/botswin/BotBrowser/blob/main/profiles/PROFILE_CONFIGS.md)
@@ -135,4 +135,4 @@ This project uses the following open-source libraries:
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)** — BotBrowser is for authorized fingerprint-consistency testing and research only.
+**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

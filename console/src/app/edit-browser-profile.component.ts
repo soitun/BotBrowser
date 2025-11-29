@@ -194,13 +194,13 @@ export class EditBrowserProfileComponent implements OnInit {
             return;
         }
 
-        // Re-selecting an existing botprofile may result in an unknown antibot error
+        // Re-selecting an existing botprofile may result in an unknown detection error
         this.#dialog
             .open(ConfirmDialogComponent, {
                 data: {
                     defaultCancel: true,
                     message:
-                        'Re-selecting an existing bot profile may result in an unknown antibot error. Are you sure you want to proceed?',
+                        'Re-selecting an existing bot profile may result in an unknown detection error. Are you sure you want to proceed?',
                 },
             })
             .afterClosed()

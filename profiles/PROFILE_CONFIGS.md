@@ -1,4 +1,4 @@
-# 📚 BotBrowser Profile Configuration Guide
+# 📖 BotBrowser Profile Configuration Guide
 
 For Academic and Authorized Testing Environments.
 
@@ -6,25 +6,25 @@ This guide explains BotBrowser’s fingerprint‑customization system for contro
 
 ⚠️ **Usage Policy:** This configuration system is designed for academic study, security analysis, and authorized testing only. Use in compliance with institutional policies and applicable laws.
 
-> 💡 **CLI‑First Configuration:** Use [`--bot-config-*` flags](../CLI_FLAGS.md#⚙️-profile-configuration-override-flags) for runtime fingerprint control without editing encrypted profiles. These carry the highest priority.
+> **CLI‑First Configuration:** Use [`--bot-config-*` flags](../CLI_FLAGS.md#profile-configuration-override-flags) for runtime fingerprint control without editing encrypted profiles. These carry the highest priority.
 
-> 🌍 **Smart Auto‑Configuration:** BotBrowser automatically configures timezone, locale, and languages based on proxy IP. Override only when your scenario requires it.
+> **Smart Auto‑Configuration:** BotBrowser automatically configures timezone, locale, and languages based on proxy IP. Override only when your scenario requires it.
 
-> 🔒 **Data Privacy:** Profiles use synthetic/aggregated configurations for academic compliance. BotBrowser does not collect or distribute personal or user‑identifying data. Use CLI overrides to keep profiles intact while customizing behavior.
+> **Data Privacy:** Profiles use synthetic/aggregated configurations for academic compliance. BotBrowser does not collect or distribute personal or user‑identifying data. Use CLI overrides to keep profiles intact while customizing behavior.
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [⚙️ Configuration Priority System](#️-configuration-priority-system)
-- [⚠️ Important: Profile Data Integrity](#️-important-profile-data-integrity)
-- [🔧 How to Apply Configuration](#-how-to-apply-configuration)
-- [🛠️ Configurable Fields](#️-configurable-fields)
-- [✨ Example Profile `configs` Block](#-example-profile-configs-block)
-- [📌 Important Notes](#-important-notes)
-- [🔥 Best Practices](#-best-practices)
+- [Configuration Priority System](#configuration-priority-system)
+- [Important: Profile Data Integrity](#important-profile-data-integrity)
+- [How to Apply Configuration](#how-to-apply-configuration)
+- [Configurable Fields](#configurable-fields)
+- [Example Profile `configs` Block](#example-profile-configs-block)
+- [Important Notes](#important-notes)
+- [Best Practices](#best-practices)
 
 ---
 
-## ⚙️ Configuration Priority System
+## Configuration Priority System
 
 BotBrowser uses a three-tier priority system for configuration:
 
@@ -34,7 +34,7 @@ BotBrowser uses a three-tier priority system for configuration:
 2. **🥈 Profile `configs` settings** - Medium priority, overrides profile defaults
 3. **🥉 Profile default values** - Lowest priority, built-in profile data
 
-### 💡 Why CLI Flags Are Recommended
+### Why CLI Flags Are Recommended
 
 - **Highest Priority:** Always takes precedence over profile settings
 - **No Profile Editing:** Avoid modifying complex encrypted profile files
@@ -47,25 +47,25 @@ BotBrowser uses a three-tier priority system for configuration:
 chromium-browser \
   --no-sandbox \
   --bot-profile="/absolute/path/to/profile.enc" \
-  --bot-config-browser-brand="edge" \
-  --bot-config-brand-full-version="142.0.3595.65"
+  --bot-config-browser-brand="edge" \  # PRO feature
+  --bot-config-brand-full-version="142.0.3595.65"  # PRO feature
 ```
 
-> 📖 **Complete CLI flags reference:** [CLI Flags Reference](../CLI_FLAGS.md#⚙️-profile-configuration-override-flags)
+> **Complete CLI flags reference:** [CLI Flags Reference](../CLI_FLAGS.md#profile-configuration-override-flags)
 
 ---
 
 ## ⚠️ Important: Profile Data Integrity
 
-Profile data uses synthetic/aggregated configurations. Unless you are certain about the impact, avoid overriding fingerprint properties—defaults provide the most consistent behavior for academic testing.
+Profile data uses synthetic/aggregated configurations. Unless you are certain about the impact, avoid overriding fingerprint properties because defaults provide the most consistent behavior for academic testing.
 
-## 🔧 How to Apply Configuration
+## How to Apply Configuration
 
 All configurations are embedded in the `configs` field inside your profile JSON structure.
 
-### 📁 File‑Based Configuration Only
+### File‑Based Configuration Only
 
-> 💡 Important: BotBrowser only accepts profile input as a file. Shell piping (e.g., `--bot-profile=<(echo '{"x": 1}')`) is not supported due to CLI argument length and file‑descriptor limits.
+> Important: BotBrowser only accepts profile input as a file. Shell piping (e.g., `--bot-profile=<(echo '{"x": 1}')`) is not supported due to CLI argument length and file‑descriptor limits.
 
 **Best Practice:**
 
@@ -77,7 +77,7 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 
 ---
 
-## 🛠️ Configurable Fields
+## Configurable Fields
 
 ### General Settings
 
@@ -85,20 +85,20 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 | ------------------------------- | ----------------------------------------------------------------------------------------- | ----------- |
 | `languages`                     | HTTP `Accept-Language` header values and `navigator.languages`. `auto` = IP-based       | `auto`    |
 | `locale`                        | Browser locale (e.g., en-US, fr-FR, de-DE). `auto` = derived from proxy IP and language settings | `auto`    |
-| `uaFullVersion`                 | Overrides the full browser version returned by `navigator.userAgentData.fullVersion`; must match the Chromium major version (e.g. for major version 138, the full version must start with “138.”). | `""`        |
+| `uaFullVersion` (PRO feature)   | Overrides the full browser version returned by `navigator.userAgentData.fullVersion`; must match the Chromium major version (e.g. for major version 138, the full version must start with “138.”). | `""`        |
 | `colorScheme`                   | Preferred color scheme: light or dark.                                            | `light`   |
 | `disableDeviceScaleFactorOnGUI` | If `true`, ignore device scale factor for GUI elements (disable DPI-based UI scaling).    | `false`     |
 | `disableConsoleMessage`         | Suppresses console message forwarding into page contexts and automation logs.            | `true`     |
 | `timezone`                      | `auto` = IP-based; `real` = system timezone; any other string = custom timezone name. | `auto`    |
 | `location`                      | `auto` = IP-based; `real` = system (GPS); object = custom coordinates (`lat`, `lon`). | `auto`    |
-| `browserBrand`                  | override for `navigator.userAgentData.brands` and related UA fields. Supports chromium, chrome, edge, brave, opera. | `chrome`    |
-| `brandFullVersion`              | Optional brand-specific full version string for UA-CH tuples (Edge/Opera cadences). | `""`    |
-| `injectRandomHistory`           | Optionally injects synthetic navigation history for academic experiments in browser state testing. | `false`    |
+| `browserBrand` (PRO feature)    | override for `navigator.userAgentData.brands` and related UA fields. Supports chromium, chrome, edge, brave, opera. | `chrome`    |
+| `brandFullVersion` (PRO feature)| Optional brand-specific full version string for UA-CH tuples (Edge/Opera cadences). | `""`    |
+| `injectRandomHistory` (PRO feature) | Optionally injects synthetic navigation history for academic experiments in browser state testing. | `false`    |
 | `disableDebugger`               | Prevents unintended interruptions from JavaScript debugger statements during automated academic workflows. | `true`     |
 | `keyboard`                      | Choose keyboard fingerprint source: `profile` (emulated from profile) or `real` (use system keyboard). | `profile` |
 | `mediaTypes`                    | Media types behavior: `expand` (prefer local decoders), `profile` (profile-defined list), `real` (native system). | `expand` |
-| `alwaysActive`                  | Keep windows/tabs in an active state to suppress `blur`/`visibilitychange` events and `document.hidden=true`. | `true` |
-| `webrtcICE`                     | ICE server preset (`google`) or custom list via `custom:stun:host:port,turn:host:port`. | `google` |
+| `alwaysActive` (PRO feature)    | Keep windows/tabs in an active state to suppress `blur`/`visibilitychange` events and `document.hidden=true`. | `true` |
+| `webrtcICE` (PRO feature)       | ICE server preset (`google`) or custom list via `custom:stun:host:port,turn:host:port`. | `google` |
 | `mobileForceTouch`              | Force touch events on/off when simulating mobile devices (`true`, `false`).          | `false`    |
 
 ### Proxy Settings
@@ -108,17 +108,19 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 | `proxy.server`   | Proxy server address (`scheme://username:password@hostname:port`).   | `""`    |
 | `proxy.ip`       | Proxy's public IP address (skips IP lookups for better performance). | `""`    |
 
-> 💡 **Better Approach:** Use CLI flags for proxy configuration:
+> **Better Approach:** Use CLI flags for proxy configuration:
 > ```bash
 > # Embedded credentials (recommended)
 > --proxy-server="http://username:password@proxy.example.com:8080"
 > ```
 >
-> 📖 **For complete CLI flags documentation**, see [⚙️ CLI Flags Reference](../CLI_FLAGS.md)
+> **For complete CLI flags documentation**, see [CLI Flags Reference](../CLI_FLAGS.md#profile-configuration-override-flags)
 
 ⚠️ **Important:** When using automation frameworks (Puppeteer/Playwright), always use CLI flags like `--proxy-server` instead of framework-specific proxy options (like `page.authenticate()` or `proxy` parameter in `launch()`). This ensures BotBrowser can retrieve geo information from proxy IP for accurate timezone/locale auto-configuration.
 
 ⚠️ **Proxy configurations are intended for authorized networks only. They must not be used for unauthorized data collection or abuse.**
+
+> **UDP-over-SOCKS5:** ENT Tier3 support detects when a SOCKS5 upstream offers UDP associate and automatically tunnels QUIC/STUN through it. No additional flag is required; simply provide a SOCKS5 proxy that advertises UDP support.
 
 ### Window & Screen Settings
 
@@ -148,9 +150,16 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 | `noiseClientRects`  | Introduce controlled variance to client rects for academic fingerprint resilience testing.  | `false` |
 | `noiseTextRects`    | Introduce controlled variance to TextRects for academic fingerprint resilience testing.     | `true`  |
 
+### Timing & Deterministic Noise Controls
+
+| Field | Description | Default |
+| ----- | ----------- | ------- |
+| `timeScale` (ENT Tier1 feature) | Fractional scalar applied to `performance.now()` deltas to emulate lower CPU load and shorten observable intervals. Valid range `0 < value < 1`. | `1.0` |
+| `noiseSeed` (ENT Tier2 feature) | Floating seed (1.0–1.2) that stabilizes Canvas/WebGL/Audio noise so repeated sessions preserve identical noise signatures. | `auto` |
+
 ---
 
-## ✨ Example Profile `configs` Block
+## Example Profile `configs` Block
 
 ```json5
 {
@@ -287,7 +296,7 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 
 ---
 
-## 📌 Important Notes
+## Important Notes
 
 ### Configuration Behavior
 - Profile data uses synthetic/aggregated configurations; change only if necessary and you understand the impact.
@@ -299,7 +308,7 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 
 ---
 
-## 🔥 Best Practices
+## Best Practices
 
 ### Fingerprint Consistency
 - **Screen coordination:** Always adjust **window size** and **screen size** together to avoid suspicious fingerprint gaps
@@ -319,4 +328,4 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)** — BotBrowser is for authorized fingerprint-consistency testing and research only.
+**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

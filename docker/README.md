@@ -1,4 +1,4 @@
-# Docker Deployment
+# 🐳 Docker Deployment
 
 For Academic and Authorized Testing Environments. Refer to the project [Legal Disclaimer](../DISCLAIMER.md) and [Responsible Use Guidelines](../RESPONSIBLE_USE.md) when deploying containers.
 
@@ -6,7 +6,7 @@ This guide explains how to deploy BotBrowser using Docker and Docker Compose in 
 
 ---
 
-## Directory Structure
+## 📁 Directory Structure
 
 ```
 repo-root/
@@ -55,7 +55,7 @@ repo-root/
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
 From the project root:
 
@@ -127,7 +127,7 @@ services:
 
 ---
 
-## Troubleshooting
+## 🩺 Troubleshooting
 
 | Issue                  | Solution                                    |
 | ---------------------- | ------------------------------------------- |
@@ -139,7 +139,7 @@ For other issues, see the main README or open a GitHub issue.
 
 ---
 
-## Examples
+## 📖 Examples
 
 | Example Directory | Description                        |
 | ----------------- | ---------------------------------- |
@@ -148,4 +148,4 @@ For other issues, see the main README or open a GitHub issue.
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)** — BotBrowser is for authorized fingerprint-consistency testing and research only.
+**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

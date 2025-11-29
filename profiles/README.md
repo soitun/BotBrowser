@@ -2,7 +2,7 @@
 
 Academic Framework for Browser‑Environment Simulation.
 
-In BotBrowser, everything starts with a profile. Research consistency and compatibility depend on proper profile configuration. Profiles are provided to authorized researchers—see the project [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md) for access policies.
+In BotBrowser, everything starts with a profile. Research consistency and compatibility depend on proper profile configuration. Profiles are provided to authorized researchers, so review the project [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md) for access policies.
 
 ## What Are Profiles?
 
@@ -13,7 +13,7 @@ Profiles are encrypted files that define the complete environment a browser inst
 - **Hardware emulation** (device memory, CPU architecture, screen properties)
 - **Platform simulation** (Android behavior, OS-specific features)
 
-### 🔬 Cross‑Platform Compatibility
+### Cross‑Platform Compatibility
 
 **BotBrowser capability:** Profile compatibility across host systems (Windows, macOS, Android, Ubuntu) for comparative analysis.
 
@@ -21,12 +21,12 @@ By using profiles, BotBrowser launches controlled sessions that simulate consist
 
 **💡 Profile = controlled research‑environment configuration**
 
-## 🤔 Understanding BotBrowser Profiles
+## Understanding BotBrowser Profiles
 
 **Important:** BotBrowser profiles work differently than typical browser‑fingerprinting tools.
 
-### 💻 What BotBrowser Profiles Actually Are
-**Device Models** — think of them as specific hardware configurations.
+### What BotBrowser Profiles Actually Are
+**Device Models**: think of them as specific hardware configurations.
 
 **Real‑World Analogy**
 - Profile = "MacBook Pro M4 Max" (the device type)
@@ -34,7 +34,7 @@ By using profiles, BotBrowser launches controlled sessions that simulate consist
 - You can simulate User B in Europe using the same "M4 Max" profile
 - Same device hardware, but different users and environments
 
-### 🔧 How Profiles Work
+### How Profiles Work
 - **Profile defines the device fingerprint** (hardware, browser capabilities)
 - **Environment settings differentiate users** (proxy, timezone, language, cookies)
 - **Each session can have unique characteristics** while maintaining device consistency
@@ -57,7 +57,7 @@ All appear as different users on the same device type.
 - No extension loading
 - **Not suitable for production research** (widely distributed and may be flagged)
 
-### 🌟 Premium Profiles (Academic Use)
+### Premium Profiles (Academic Use)
 
 **Features:**
 - Unique configurations for controlled studies
@@ -65,7 +65,7 @@ All appear as different users on the same device type.
 - Based on aggregated device/browser patterns
 - Suitable for authorized academic research
 
-### 📬 Access Premium Profiles
+### Access Premium Profiles
 
 For academic institutions and authorized research:
 
@@ -78,7 +78,7 @@ Premium profiles are available to qualified academic institutions with proper et
 
 ---
 
-## 📚 Using Profiles
+## Using Profiles
 
 ### CLI Usage
 
@@ -127,7 +127,7 @@ await page.goto("https://abrahamjuliot.github.io/creepjs/");
 
 ---
 
-## 🎛️ Configuration Approaches
+## Configuration Approaches
 
 ### Profile‑Based Configuration
 - **Purpose**: Stores authentic user fingerprints and base settings
@@ -149,7 +149,7 @@ chromium --no-sandbox \
   --bot-title="current_session_id"
 ```
 
-## ⚡ Why CLI Flags Matter
+## Why CLI Flags Matter
 - **Preserve Integrity:** Don't modify profile data
 - **Runtime Flexibility:** Adjust settings per session without file edits
 - **Session Isolation:** Multiple instances with different settings
@@ -161,15 +161,15 @@ chromium --no-sandbox \
 
 ---
 
-## ✨ Key Features
+## Key Features
 
-### 🛠️ Unique Capabilities
+### Unique Capabilities
 
 ⚠️ **All features are intended for compatibility testing and academic research only, not for use in production against third-party services.**
 
 - [x] **Provides compatibility in incognito-mode environments**
-- [x] **CDP artifact minimization** — native CDP fingerprint consistency
-- [x] **Custom page history** — enhance browsing pattern realism
+- [x] **CDP artifact minimization**: native CDP fingerprint consistency
+- [x] **Custom page history**: enhance browsing pattern realism
 - [x] **Keep pages active** even when they lose focus
 - [x] **Set proxy with embedded credentials directly via profile**
 - [x] **Set language and timezone** based on proxy or manually
@@ -186,7 +186,7 @@ chromium --no-sandbox \
 
 ---
 
-## 📊 Fingerprint Coverage
+## Fingerprint Coverage
 
 | Category | Covered Elements |
 |----------|------------------|
@@ -198,7 +198,7 @@ chromium --no-sandbox \
 | **Media** | MediaDevices, MimeTypes, AudioContext |
 | **Advanced** | Emoji, Unicode, matchMedia control |
 
-## 📌 Best Practices
+## Best Practices
 
 - **Use Premium Profiles** for production traffic
 - **Configure realistic settings** (screen size, devicePixelRatio, proxy)
@@ -208,4 +208,4 @@ chromium --no-sandbox \
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)** — BotBrowser is for authorized fingerprint-consistency testing and research only.
+**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

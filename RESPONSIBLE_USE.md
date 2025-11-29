@@ -12,7 +12,7 @@ BotBrowser is a dual-use research platform. These guidelines clarify the expecta
 
 ## PROHIBITED ACTIVITIES
 
-- Circumventing anti-abuse or anti-bot mechanisms on production services without consent.
+- Circumventing anti-abuse or automated detection mechanisms on production services without consent.
 - Harvesting personal data, account credentials, session tokens, or payment information.
 - Providing the software to third parties who intend to violate laws or service terms.
 - Using BotBrowser outputs to enable fraud, spam, scalping, automated ticket purchasing, or other abusive automation.
@@ -21,7 +21,7 @@ BotBrowser is a dual-use research platform. These guidelines clarify the expecta
 
 - **ABUSE REPORTING:** Service operators or security vendors can contact the maintainers at [botbrowser@bk.ru](mailto:botbrowser@bk.ru). Include evidence (timestamps, IPs, scripts) so investigations can begin immediately.
 - **LICENSE REVOCATION:** Maintainers may revoke access to binaries or profiles for any breach of these rules.
-- **VENDOR COLLABORATION:** We coordinate with anti-bot providers, including Geetest, to share indicators of compromise and mitigate ongoing abuse.
+- **VENDOR COLLABORATION:** We coordinate with bot-detection providers to share indicators of compromise and mitigate ongoing abuse.
 - **TESTING REPORTS:** Qualified vendors who need additional visibility into BotBrowser evaluations may request redacted test reports or joint review calls after verifying ownership of the affected property.
 
 ## PUBLICATION & SHARING

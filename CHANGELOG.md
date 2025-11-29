@@ -1,7 +1,18 @@
 # CHANGELOG
 
-> **Research scope:** Entries in this changelog describe features evaluated in authorized labs and defensive benchmarking programs. Follow the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md). We work with security vendors to investigate any misuse—report concerns to [botbrowser@bk.ru](mailto:botbrowser@bk.ru).
+> **Research scope:** Entries in this changelog describe features evaluated in authorized labs and defensive benchmarking programs. Follow the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md). We work with security vendors to investigate any misuse, so report concerns to [botbrowser@bk.ru](mailto:botbrowser@bk.ru).
 
+## [2025-11-29] 
+
+### New
+- **Runtime timing scaler (ENT Tier1)**: `--bot-time-scale` compresses `performance.now()` deltas to emulate lower CPU load profiles for timing-sensitive research flows.
+- **Deterministic noise seed (ENT Tier2)**: `--bot-noise-seed` stabilizes noise distributions across sessions for reproducible analysis.
+- **UDP over SOCKS5 (ENT Tier3)**: Automatic UDP associate for QUIC and STUN over SOCKS5 proxies; ICE presets often unnecessary when UDP is available.
+- **socks5h proxy support**: Added support for `socks5h://` endpoints to resolve hostnames through the proxy tunnel.
+
+### Fixes
+- **Android text autosizing**: Adjusted Android profile emulation to avoid overly small fonts when Chrome 143’s `ForceOffTextAutosizing` defaults to enabled.
+- **Cached-font CJK rendering**: Corrected a font cache edge case that could suppress CJK glyphs in some flows; characters now render consistently.
 
 
 ## [2025-11-24] 
@@ -33,9 +44,9 @@ Engine updated to Chrome’s current stable. You get up‑to‑date security wor
 
 Example (Edge spoofing):
 ```bash
---bot-config-browser-brand=edge \
---bot-config-ua-full-version=142.0.7444.135 \
---bot-config-brand-full-version=142.0.3595.65
+--bot-config-browser-brand=edge \  # PRO feature
+--bot-config-ua-full-version=142.0.7444.135 \  # PRO feature
+--bot-config-brand-full-version=142.0.3595.65  # PRO feature
 ```
 
 **Opera brand**  
@@ -64,20 +75,20 @@ User‑Agent construction for Edge on Android now carries accurate brand/version
 ## [2025-11-10] 
 
 ### Major
-- **Chromium 142.0.7444.135 parity** — Synced core to the latest Chrome 142 stable build for up‑to‑date security patches, modern Web APIs, and version parity that reduces “version skew” signals used by anti‑bot systems.
+- **Chromium 142.0.7444.135 parity**: Synced core to the latest Chrome 142 stable build for up‑to‑date security patches, modern Web APIs, and version parity that reduces “version skew” signals used by anti‑bot systems.
 
 ### New
-- **Locked user data directory protection** — On startup, if the provided `--user-data-dir` is already held by a running Chromium/BotBrowser process, BotBrowser now **shows a clear message and exits** instead of silently attaching to the old process. This prevents cross‑session contamination (cookies, storage, profile state) and hard‑to‑trace side‑effects.
-- **OS‑specific AudioContext defaults** — Normalized **AudioContext** defaults per OS (e.g., base characteristics like sample rate/latency and related init parameters) so audio capability fingerprints line up with the target platform. This removes subtle OS drift that some risk engines use for anomaly scoring.
+- **Locked user data directory protection**: On startup, if the provided `--user-data-dir` is already held by a running Chromium/BotBrowser process, BotBrowser now **shows a clear message and exits** instead of silently attaching to the old process. This prevents cross‑session contamination (cookies, storage, profile state) and hard‑to‑trace side‑effects.
+- **OS‑specific AudioContext defaults**: Normalized **AudioContext** defaults per OS (e.g., base characteristics like sample rate/latency and related init parameters) so audio capability fingerprints line up with the target platform. This removes subtle OS drift that some risk engines use for anomaly scoring.
 
 ### Improvements
-- **Emoji & font fallback stability across platforms** — Refined the font fallback chain and glyph selection so **emoji and CJK glyphs** render consistently on Windows/macOS/Linux. This reduces cross‑platform text‑metrics variance and avoids mixed‑glyph fallbacks that can change hashes or layout in edge cases.
-- **Touch events in OOPIF** — Improved routing of emulated touch gestures for **Out‑Of‑Process IFrames (OOPIF)**, ensuring CDP commands like `Input.synthesizeTapGesture` work reliably inside OOPIF trees. Mobile flows embedded in cross‑origin iframes now respond as expected.
+- **Emoji & font fallback stability across platforms**: Refined the font fallback chain and glyph selection so **emoji and CJK glyphs** render consistently on Windows/macOS/Linux. This reduces cross‑platform text‑metrics variance and avoids mixed‑glyph fallbacks that can change hashes or layout in edge cases.
+- **Touch events in OOPIF**: Improved routing of emulated touch gestures for **Out‑Of‑Process IFrames (OOPIF)**, ensuring CDP commands like `Input.synthesizeTapGesture` work reliably inside OOPIF trees. Mobile flows embedded in cross‑origin iframes now respond as expected.
 
 ### Fixes
-- **Ubuntu Bluetooth spoof leakage** — Fixed a Linux/Ubuntu‑specific issue where forged Bluetooth properties could leak inconsistent state. Spoofed Bluetooth exposure is now unified so websites can’t infer environment details from mismatched availability/signaling.
-- **Media types (expand) default** — Resolved an issue where `--bot-config-media-types=expand` (and the default behavior) could be ignored in some scenarios. With this fix, local decoders are correctly surfaced so users can **select resolutions** on major video sites.
-- **WebRTC SDP negotiation** — Corrected edge cases where SDP **audio codec selection or direction attributes** failed to negotiate. More robust media negotiation prevents call/setup loops and reduces fingerprinting surface from abnormal SDP.
+- **Ubuntu Bluetooth spoof leakage**: Fixed a Linux/Ubuntu‑specific issue where forged Bluetooth properties could leak inconsistent state. Spoofed Bluetooth exposure is now unified so websites can’t infer environment details from mismatched availability/signaling.
+- **Media types (expand) default**: Resolved an issue where `--bot-config-media-types=expand` (and the default behavior) could be ignored in some scenarios. With this fix, local decoders are correctly surfaced so users can **select resolutions** on major video sites.
+- **WebRTC SDP negotiation**: Corrected edge cases where SDP **audio codec selection or direction attributes** failed to negotiate. More robust media negotiation prevents call/setup loops and reduces fingerprinting surface from abnormal SDP.
 
 ---
 
@@ -182,17 +193,17 @@ User‑Agent construction for Edge on Android now carries accurate brand/version
   - **Docs**: https://github.com/botswin/BotBrowser/tree/main/tools/botcanvas
 
 ### New
-- **CLI: `--bot-config-webrtc-ice` (custom ICE servers)**
+- **CLI: `--bot-webrtc-ice` (custom ICE servers)**
   - **What**: Choose STUN/TURN presets or provide a custom list to **avoid TURN‑level IP disclosure**.
   - **Examples**:
     - Google preset:
-      ```bash
-      --bot-config-webrtc-ice=google
+```bash
+      --bot-webrtc-ice=google  # PRO feature
       ```
     - Custom list (comma‑separated):
       ```bash
-      --bot-config-webrtc-ice=custom:stun:stun.l.google.com:19302,turn:turn.example.com
-      ```
+      --bot-webrtc-ice=custom:stun:stun.l.google.com:19302,turn:turn.example.com  # PRO feature
+```
   - **Why**: Some probes (e.g., https://ipbinding.online/) try to infer the real network by observing TURN traffic; controlling ICE servers reduces unintended leakage.
 
 - **CLI: `--bot-config-always-active` (true/false, default: true)**
@@ -358,11 +369,11 @@ User‑Agent construction for Edge on Android now carries accurate brand/version
 
 ### Improved
 - **Slimmer Profiles (≈1.3 MB → ≈100 KB)**
-  Refactored profile packaging **without reducing fingerprint coverage**. Results: faster startup, lower I/O, and lighter memory—better for high‑QPS orchestration and containerized runs.
+  Refactored profile packaging **without reducing fingerprint coverage**. Results: faster startup, lower I/O, and lighter memory, which is better for high‑QPS orchestration and containerized runs.
 
 ### Fixed
 - **WebGL2 `DRAW_BUFFER*`**
-  Corrected an override that could set **`DRAW_BUFFER*`** state incorrectly during WebGL2 context creation—an issue certain sites probed for detection. Now adheres to spec/real‑device values, restoring pass rates.
+  Corrected an override that could set **`DRAW_BUFFER*`** state incorrectly during WebGL2 context creation, an issue certain sites probed for detection. The implementation now adheres to spec/real‑device values, restoring pass rates.
 
 ---
 
@@ -370,10 +381,10 @@ User‑Agent construction for Edge on Android now carries accurate brand/version
 ## [2025-09-02]
 
 ### Major Feature
-- **Framework‑less Automation — `--bot-script`**
+- **Framework‑less Automation: `--bot-script`**
   - Execute a JavaScript file **right after BotBrowser starts** in a privileged, non‑extension context where **`chrome.debugger`** is available.
-  - Build automation **without Playwright/Puppeteer** while still driving CDP via `chrome.debugger` — reducing framework/CDP leak surface and giving **pre‑navigation control**.
-  - **Docs:** Chrome `chrome.debugger` — <https://developer.chrome.com/docs/extensions/reference/api/debugger/>
+  - Build automation **without Playwright/Puppeteer** while still driving CDP via `chrome.debugger`: reducing framework/CDP leak surface and giving **pre‑navigation control**.
+  - **Docs:** Chrome `chrome.debugger`: <https://developer.chrome.com/docs/extensions/reference/api/debugger/>
   - **Usage:** `botbrowser --no-sandbox --bot-profile=/absolute/path/to/profile.enc --bot-script=/path/boot.js`
   - **Examples:** [Bot Script Automation](examples/bot-script) (includes Cloudflare Turnstile automation)
 
@@ -456,18 +467,18 @@ User‑Agent construction for Edge on Android now carries accurate brand/version
 - **Chromium 139.0.7258.139**
 Synced BotBrowser to the latest stable Chrome build for feature parity, security patches, and minimized fingerprint drift.
 
-### Major Improvement — CLI Configuration Overrides
+### Major Improvement: CLI Configuration Overrides
 - **Configure fingerprints via startup flags (no profile edits required)**
 New `--bot-config-*` flags override corresponding `configs` fields at runtime, enabling per-instance tuning in CI/CD and scripts.
 
 #### Available Configuration Override Flags
 ```bash
---bot-config-browser-brand="chrome" # Browser brand: chrome, chromium, edge, brave
+--bot-config-browser-brand="chrome" # PRO feature: Browser brand: chrome, chromium, edge, brave
 --bot-config-color-scheme="light" # Color scheme: light, dark
 --bot-config-disable-debugger=true # Disable JavaScript debugger: true, false
 --bot-config-disable-device-scale-factor=true # Disable device scale factor: true, false
 --bot-config-fonts="profile" # Font settings: profile (use profile fonts), real (system fonts)
---bot-config-inject-random-history=true # Inject random history: true, false
+--bot-config-inject-random-history=true # PRO feature: Inject random history: true, false
 --bot-config-keyboard="profile" # Keyboard settings: profile (emulated), real (system keyboard)
 --bot-config-languages="auto" # Languages: "lang1,lang2" or "auto" (IP-based)
 --bot-config-locale="auto" # Browser locale: e.g. en-US, fr-FR, de-DE, or "auto" (derived from IP/language)
@@ -481,7 +492,7 @@ New `--bot-config-*` flags override corresponding `configs` fields at runtime, e
 --bot-config-screen="profile" # Screen: profile (use profile), real (system screen)
 --bot-config-speech-voices="profile" # Speech voices: profile (synthetic), real (system)
 --bot-config-timezone="auto" # Timezone: auto (IP-based), real (system), or TZ name
---bot-config-ua-full-version="139.0.6778.85" # UA full version string matching Chromium major
+--bot-config-ua-full-version="139.0.6778.85" # PRO feature: UA full version string matching Chromium major
 --bot-config-webgl="profile" # WebGL: profile, real, disabled
 --bot-config-webgpu="profile" # WebGPU: profile, real, disabled
 --bot-config-webrtc="profile" # WebRTC: profile, real, disabled
@@ -521,7 +532,7 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
 
 ### Improved
 - **TextMetrics Noise Stabilization**
-  Switched from per-string noise to a unified, stable noise model and preserved floating‑point precision after noise injection—better resilience against **hCaptcha** text-metrics checks.
+  Switched from per-string noise to a unified, stable noise model and preserved floating‑point precision after noise injection, which improves resilience against **hCaptcha** text-metrics checks.
 
 - **Dynamic Blink Feature Loading**
   Parses and applies Blink features at runtime based on the emulated environment (**Windows / macOS / Android**), improving realism and compatibility.
@@ -566,7 +577,7 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
 - **CPU Core Count Simulation**: More precise spoofing of logical CPU cores based on profile to evade advanced detection.
 - **WebGPU Limits Simulation**: Emulates `maxStorageBuffersInFragmentStage`, `maxStorageTexturesInFragmentStage`, `maxStorageBuffersInVertexStage`, and `maxStorageTexturesInVertexStage` parameters.
 - **Android Window Defaults**: Android device simulation now defaults to `"window": "profile"`, using profile-defined screen and window dimensions for pixel-perfect accuracy.
-- **Debugger Statement Blocking**: Blocks `debugger` statements by default to prevent DevTools detection by antibot scripts.
+- **Debugger Statement Blocking**: Blocks `debugger` statements by default to prevent DevTools detection by scripted probes.
 
 ### Fixed
 - **Android DevTools Window Mode**: Ensures DevTools open in a separate window (not docked) during Android simulation to avoid UI rendering issues.
@@ -795,7 +806,7 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
 
 ### Added
 - **IP GEO Auto Geolocation**
-  - Automatically simulates geolocation using proxy IP's geo data — no need for manual location overrides.
+  - Automatically simulates geolocation using proxy IP's geo data: no need for manual location overrides.
 
 - **Incognito Extension Support**
   - Extensions are now enabled by default even in incognito mode and inside Playwright/Puppeteer contexts.
@@ -1112,7 +1123,7 @@ Example:
 
 ### Major Upgrade
 - **Canvas Noise Algorithm Overhaul:**
-  Completely reworked the **Canvas noise algorithm** by integrating noise injection into **Skia's anti-aliasing process**, significantly reducing the likelihood of detection by advanced antibot systems.
+  Completely reworked the **Canvas noise algorithm** by integrating noise injection into **Skia's anti-aliasing process**, significantly reducing the likelihood of detection by advanced fingerprinting systems.
 
 ### Fixed
 - **WebGL Context readPixels Bug Fix:**
@@ -1172,7 +1183,7 @@ Example:
 
 ### Improved
 - **Removed RLZ Support:** RLZ support has been removed as it is unnecessary for our product and caused issues in some scenarios.
-- **AdInterest Group Support:** Enhanced support for **AdInterest**, specifically `getInterestGroupAdAuctionData` in Chrome, which now functions seamlessly in **BotBrowser**, improving resistance to antibot detection.
+- **AdInterest Group Support:** Enhanced support for **AdInterest**, specifically `getInterestGroupAdAuctionData` in Chrome, which now functions seamlessly in **BotBrowser**, improving resilience against fingerprinting checks.
 - **Fingerprint Caching:** Introduced caching for specific fingerprints to improve overall performance.
 
 ### Added
@@ -1192,10 +1203,10 @@ Example:
 - **PDF Embedding Behavior:** Disabled **PdfOopif** to ensure PDF embedding behaves similarly to standard browsers, reducing detection risks.
 
 ### Fixed
-- **Document Client Rects Noise:** Resolved an issue where unnecessary noise was added to **Document client rects**, preventing detection by certain antibot systems.
+- **Document Client Rects Noise:** Resolved an issue where unnecessary noise was added to **Document client rects**, reducing false positives in certain detection pipelines.
 
 ### Added
-- **TextMetrics Algorithm Enhancement:** Introduced a new **TextMetrics** algorithm that hashes text and the provided **factor** instead of relying on simple cumulative factors. This improvement reduces detection risks from advanced antibot systems like **F5 Shape**.
+- **TextMetrics Algorithm Enhancement:** Introduced a new **TextMetrics** algorithm that hashes text and the provided **factor** instead of relying on simple cumulative factors. This improvement reduces detection risks from advanced systems.
 
 
 ---
@@ -1209,7 +1220,7 @@ Example:
 - **WebPreferences Update:** Updated **WebPreferences** based on the `ostype` specified in the profile, replacing the previous `BUILDFLAG()` logic for improved flexibility and accuracy.
 
 ### Added
-- **SelectionDirection Simulation:** Implemented **SelectionDirection** simulation to prevent detection by antibot systems.
+- **SelectionDirection Simulation:** Implemented **SelectionDirection** simulation to avoid leaking state to detection systems.
  [#9](https://github.com/botswin/BotBrowser/issues/9)
 - **GPU Optimization:** Updated compilation parameters for better **GPU** performance and enhanced compatibility.
 - **BarcodeDetector Simulation:** Simulated **BarcodeDetector** behavior to mimic macOS characteristics, even when running on **Windows** or **Ubuntu**, as long as the profile specifies `macOS` as the `ostype`.  [#10](https://github.com/botswin/BotBrowser/issues/10)
@@ -1262,4 +1273,4 @@ Example:
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)** — BotBrowser is for authorized fingerprint-consistency testing and research only.
+**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

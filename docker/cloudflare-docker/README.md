@@ -1,4 +1,4 @@
-# Cloudflare Compatibility Testing with Docker
+# ☁️ Cloudflare Compatibility Testing with Docker
 
 For Academic and Authorized Testing Environments. See the project [Legal Disclaimer](../../DISCLAIMER.md) and [Responsible Use Guidelines](../../RESPONSIBLE_USE.md) for usage boundaries.
 
@@ -6,7 +6,7 @@ For Academic and Authorized Testing Environments. See the project [Legal Disclai
 
 This repository contains the Docker setup for Cloudflare compatibility testing using BotBrowser and Playwright, which runs a Python script (`main.py`) inside a Docker container that:
 
-1. Launches BotBrowser in headless mode — **no XDISPLAY or GPU required** — while simulating a full desktop environment.
+1. Launches BotBrowser in headless mode: **no XDISPLAY or GPU required**: while simulating a full desktop environment.
 2. Performs compatibility validation on Cloudflare's demo interface.
 3. Saves screenshots to `screenshots/` for analysis.
 
@@ -28,7 +28,7 @@ This repository contains the Docker setup for Cloudflare compatibility testing u
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 > **Reminder:** run this workflow only with explicit authorization from the environment owner.
 
@@ -68,4 +68,4 @@ This compatibility testing script is not intended for bulk data collection and m
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)** — BotBrowser is for authorized fingerprint-consistency testing and research only.
+**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

@@ -1,4 +1,4 @@
-# BotCanvasLab (Beta)
+# 🎨 BotCanvasLab (Beta): recording for all users; deterministic replay tooling forthcoming
 
 Canvas 2D/WebGL fingerprint forensics for BotBrowser. Capture every API call as a JSONL event stream for analysis and future replay capabilities.
 
@@ -16,7 +16,7 @@ BotCanvas is a comprehensive canvas recording system that captures all Canvas 2D
 
 ## 🎬 Try It Now
 
-> **[▶️ Launch Live Replay Viewer](https://botswin.github.io/BotBrowser/tools/botcanvas/canvas_replay_viewer.html?jsonl=https://botswin.github.io/BotBrowser/tools/botcanvas/canvas_2d_simple_test_record.jsonl)** — Interactive demo preloaded with sample JSONL. Scrub through events, view generated code with source locations, and watch canvas rendering in slow motion!
+> **[▶️ Launch Live Replay Viewer](https://botswin.github.io/BotBrowser/tools/botcanvas/canvas_replay_viewer.html?jsonl=https://botswin.github.io/BotBrowser/tools/botcanvas/canvas_2d_simple_test_record.jsonl)**: Interactive demo preloaded with sample JSONL. Scrub through events, view generated code with source locations, and watch canvas rendering in slow motion!
 
 ### Demo Resources
 
@@ -46,7 +46,7 @@ BotCanvas is a comprehensive canvas recording system that captures all Canvas 2D
 
 ---
 
-## Quick Start: Recording Canvas 2D
+## ⚡ Quick Start: Recording Canvas 2D
 
 **Step 1: Launch with recording enabled**
 ```bash
@@ -158,4 +158,4 @@ Share JSONL samples or feature requests via [GitHub Issues](https://github.com/b
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](../../DISCLAIMER.md)** • **[Responsible Use Guidelines](../../RESPONSIBLE_USE.md)** — BotCanvas is for authorized fingerprint-consistency testing and research only.
+**📋 [Legal Disclaimer & Terms of Use](../../DISCLAIMER.md)** • **[Responsible Use Guidelines](../../RESPONSIBLE_USE.md)**: BotCanvas is for authorized fingerprint-consistency testing and research only.

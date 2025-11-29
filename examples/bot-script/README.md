@@ -1,4 +1,4 @@
-# BotBrowser Script Automation Examples
+# 🔬 BotBrowser Script Automation Examples
 
 Framework‑less automation using BotBrowser’s native `--bot-script` feature.
 
@@ -46,10 +46,10 @@ Because scripts run in a privileged context, you have access to:
 
 ## Best Practices
 
-1. Error handling — always check `chrome.runtime.lastError`
-2. Target management — track active targets to avoid duplicates
-3. Resource cleanup — detach from the debugger when done
-4. Timing control — use appropriate delays between actions
+1. Error handling: always check `chrome.runtime.lastError`
+2. Target management: track active targets to avoid duplicates
+3. Resource cleanup: detach from the debugger when done
+4. Timing control: use appropriate delays between actions
 
 ## Behavior Recipes (Human‑Like Interaction)
 
@@ -86,7 +86,7 @@ for (let i = 0; i < 20; i++) {
 }
 ```
 
-## Documentation
+## 📖 Documentation
 
 📖 **Chrome Debugger API:** https://developer.chrome.com/docs/extensions/reference/api/debugger/
 
@@ -94,4 +94,4 @@ for (let i = 0; i < 20; i++) {
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)** — BotBrowser is for authorized fingerprint-consistency testing and research only.
+**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

@@ -1,35 +1,35 @@
-# 🔧 BotBrowser Advanced Features
+# BotBrowser Advanced Features
 
 Robust capabilities for fingerprint‑consistency testing and automation research.
 
-This document details BotBrowser’s advanced features for researchers, developers, and security professionals working in authorized testing environments. For overall usage terms, refer to the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md).
+Use this document when you need the “deep dive” behind the [README](README.md): CLI semantics, detection-surface coverage, and differentiators that don’t fit on the landing page. Each section links back to the relevant quick-start guide (CLI flags, README, validation repos) so you can jump between overview and detail quickly. For overall usage terms, refer to the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md).
 
-## 🎯 Overview
+## 📘 Overview
 
 BotBrowser offers multi‑layer emulation and control to keep fingerprints consistent across platforms. These controls support research into web compatibility, automation detection, and cross‑environment consistency.
 
 ---
 
-## 🧭 Capabilities Index
+## 📁 Capabilities Index
 
 [navigator.webdriver removal](#chrome-behavior-emulation), [main‑world isolation](#playwright-puppeteer-integration), [JS hook stealth](#playwright-puppeteer-integration), [Canvas noise](#graphics-rendering-engine), [WebGL/WebGPU param control](#graphics-rendering-engine), [Skia anti‑alias](#cross-platform-font-engine), [HarfBuzz shaping](#cross-platform-font-engine), [MediaDevices spoofing](#complete-fingerprint-control), [font list spoofing](#cross-platform-font-engine), [UA congruence](#configuration-and-control), [per‑context proxy geo](#enhanced-proxy-system), [DNS‑through‑proxy](#enhanced-proxy-system), [active window emulation](#active-window-emulation), [HTTP headers/HTTP2/HTTP3](#chrome-behavior-emulation), [headless parity](#headless-incognito-compatibility), [WebRTC SDP/ICE control](#webrtc-leak-protection), [TLS fingerprint (JA3/JARM)](#network-fingerprint-control)
 
 <a id="configuration-and-control"></a>
-## 🔧 Configuration & Control
+## ⚙️ Configuration & Control
 
-### Advanced CLI Configuration
-**[28 `--bot-config-*` flags](CLI_FLAGS.md#⚙️-profile-configuration-override-flags)** override key fingerprint properties at startup—no profile edits required.
+### 🛠️ Advanced CLI Configuration
+**[CLI overrides](CLI_FLAGS.md#profile-configuration-override-flags)** map to profile configs and take highest priority, so no profile edits are required.
 
 **Key Benefits:**
 - **Highest Priority:** CLI flags override profile settings
 - **Dynamic Configuration:** Ideal for scripts and CI/CD
 - **Session Isolation:** Clean separation across instances
 
-**Examples:**
+**Examples (brand identity/UA overrides are PRO-tier features):**
 ```bash
 # Override browser brand and WebGL settings
 chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" \
-           --bot-config-browser-brand="edge" \
+           --bot-config-browser-brand="edge" \  # PRO feature
            --bot-config-webgl="disabled" \
            --bot-config-noise-canvas=true
 
@@ -40,7 +40,7 @@ chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" \
            --bot-config-locale="auto"
 ```
 
-### Session Management
+### 🧭 Session Management
 Comprehensive tools for session control and identification.
 
 **Custom Titles and Labels:**
@@ -54,6 +54,7 @@ Comprehensive tools for session control and identification.
 - `--bot-bookmarks` - JSON string containing bookmark data for startup
 - Maintains session state across restarts
 - Adds authenticity to browser fingerprint
+- `--bot-inject-random-history` (PRO feature) - optional history seeding for session realism
 
 **Example:**
 ```bash
@@ -64,7 +65,7 @@ chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" \
 ```
 
 <a id="enhanced-proxy-system"></a>
-### Enhanced Proxy System
+### 🌐 Enhanced Proxy System
 Rebuilt for stability, per‑context support, and DNS‑leak protection.
 
 **Embedded Credentials:**
@@ -97,9 +98,9 @@ const context2 = await browser.newContext({
 });
 ```
 
-**🌍 Automatic Geo‑Detection:** Each context derives timezone, locale, and languages from its proxy IP—no manual setup.
+Automatic geo‑detection: Each context derives timezone, locale, and languages from its proxy IP, so no manual setup is needed.
 
-**💡 Performance Tip:** If all contexts share the same proxy IP, set `--proxy-ip` to skip repeated lookups.
+Performance tip: If all contexts share the same proxy IP, set `--proxy-ip` to skip repeated lookups.
 
 **Performance Optimization:**
 ```bash
@@ -107,11 +108,20 @@ const context2 = await browser.newContext({
 --proxy-server="http://user:pass@proxy.com:8080" --proxy-ip="203.0.113.1"
 ```
 
-**🛡️ DNS‑Leak Protection:**
-- SOCKS5 proxies now prevent local DNS resolution
+DNS‑leak protection:
+- SOCKS5 proxies prevent local DNS resolution
 - All domain lookups go through the proxy tunnel
 
-**⚠️ Important:** Prefer BotBrowser’s proxy options over framework‑specific settings so geo‑detection remains accurate.
+UDP over SOCKS5 (ENT Tier3): Automatically attempts UDP associate to tunnel QUIC/STUN where supported; ICE presets can often be skipped when UDP is available.
+
+Important: Prefer BotBrowser’s proxy options over framework‑specific settings so geo‑detection remains accurate.
+
+```bash
+# Example: true full-proxy QUIC/STUN (Chromium-level UDP associate, no ProxyChains hacks)
+chromium-browser --no-sandbox --bot-profile="/abs/profile.enc" \
+  --proxy-server="socks5://user:pass@proxy.example.com:1080" \
+  --bot-webrtc-ice=google  # PRO feature
+```
 
 <a id="network-fingerprint-control"></a>
 ## 🌐 Network Fingerprint Control
@@ -120,44 +130,47 @@ const context2 = await browser.newContext({
 
 - **HTTP Headers & Protocol:** Chrome‑like request headers; authentic HTTP/2 and HTTP/3 behavior (see Chrome Behavior Emulation).
 - **DNS Routing:** SOCKS5 avoids local DNS resolution; all lookups go through the proxy tunnel (see Enhanced Proxy System).
+- **UDP over SOCKS5 (ENT Tier3):** Automatic UDP associate when supported to tunnel QUIC and STUN; ICE presets often unnecessary if UDP is available.
 - **WebRTC:** SDP/ICE manipulation and candidate filtering to prevent local IP disclosure (see WebRTC Leak Protection).
-- **TLS Fingerprints (JA3/JARM/ALPN):** Status: Roadmap — evaluation in progress; goals include cipher/extension ordering and ALPN tuning.
+- **TLS Fingerprints (JA3/JARM/ALPN):** Status: Roadmap: evaluation in progress; goals include cipher/extension ordering and ALPN tuning.
+
+**Stack differentiators:**
+- Per-context proxies with automatic geo detection (timezone/locale/language) across contexts and sessions
+- DNS-through-proxy plus credentialed proxy URLs keep browser-level geo signals consistent
+- UDP-over-SOCKS5 tunnel (ENT Tier3 capability) for QUIC/STUN so ICE presets are only needed when UDP is unavailable
+- Optional ICE control via `--bot-webrtc-ice` (PRO) when the proxy lacks UDP support
+- Chromium-level implementation that avoids external Go/ProxyChains hijacking; tunneling lives inside the network stack
+
+> Note: Most fingerprint browsers disable QUIC or avoid UDP entirely. BotBrowser implements UDP-over-SOCKS5 directly inside Chromium’s network stack (no external proxy-chain hijacking) so QUIC/STUN stay proxied and consistent with TCP traffic.
 
 ---
 
 ## 🎭 Automation Artifact Research
 
 ### Multi‑Layer Noise Injection
-Sophisticated noise with consistency algorithms.
+Sophisticated noise with consistency algorithms. Configure everything through CLI so you never touch encrypted profiles.
 
-**Canvas Fingerprinting Protection:**
-- Stabilized noise algorithms ensure consistent results across sessions
-- Per-session consistency with cross-session variation
-- Maintains realistic canvas behavior patterns
+- **Canvas**: `--bot-config-noise-canvas=true`
+- **WebGL image**: `--bot-config-noise-webgl-image=true`
+- **AudioContext**: `--bot-config-noise-audio-context=true`
+- **ClientRects/TextRects**: `--bot-config-noise-client-rects=true`, `--bot-config-noise-text-rects=true`
+- **Deterministic seeds (ENT Tier2 feature)**: `--bot-noise-seed=1.05` (1.0–1.2 range)
 
-**WebGL Fingerprinting Protection:**
-- GPU-specific noise injection patterns
-- Preserves authentic WebGL performance characteristics
-- Supports both WebGL 1.0 and WebGL 2.0 contexts
-
-**Audio Context Protection:**
-- AudioContext fingerprint noise injection
-- Maintains realistic audio processing behavior
-- Cross-worker consistency for complex applications
-- Tuned noise distribution (Chromium 141) to harden probes without audible artifacts
-
-**Text‑Metrics Manipulation:**
-- TextMetrics and client rects noise injection
-- Font measurement consistency across workers
-- Realistic text rendering variations
+Patterns:
+- Stabilized noise algorithms keep intra-session stability but vary across sessions.
+- GPU-specific tuning preserves authentic WebGL/WebGPU behavior (1.0/2.0 contexts).
+- Audio noise is tuned (Chromium 141+) for inaudible probe hardening while keeping cross-worker consistency.
+- TextMetrics/ClientRects noise maintains font measurement realism with cross-worker consistency.
 
 <a id="active-window-emulation"></a>
 ### Active Window Emulation
 Keep automation sessions foreground-consistent even when the host window is unfocused.
 
-- `--bot-config-always-active` defaults to `true`, suppressing `blur`/`visibilitychange` events and pinning `document.hidden=false`.
+- `--bot-config-always-active` (PRO feature) defaults to `true`, suppressing `blur`/`visibilitychange` events and pinning `document.hidden=false`.
 - Works per window: disable explicitly when sites must observe genuine focus changes.
 - Prevents detection heuristics that watch caret blinking, FocusManager events, or inactive viewport throttling.
+- README quick link: see [Workflows → Active Window](README.md#advanced-capabilities)
+- CLI reference: [`--bot-always-active`](CLI_FLAGS.md#⚙️-profile-configuration-override-flags)
 
 <a id="headless-incognito-compatibility"></a>
 ### Headless & Incognito Compatibility
@@ -172,6 +185,7 @@ Consistent behavior across modes with comprehensive simulation.
 - Eliminates incognito-specific detection vectors
 - Consistent fingerprint between normal and incognito modes
 - Maintains privacy features while ensuring consistency
+- For CLI launch guidance, see README “Quick Start” and [`INSTALLATION.md`](INSTALLATION.md#headless)
 
 <a id="webrtc-leak-protection"></a>
 ### WebRTC Leak Protection
@@ -186,7 +200,8 @@ Complete WebRTC fingerprint control and IP protection.
 - MediaStream API consistency
 - RTCPeerConnection behavior modification
 - Network topology hiding
-- ICE server presets and custom lists via `--bot-config-webrtc-ice` to prevent TURN-level IP disclosure
+- ICE server presets and custom lists via `--bot-webrtc-ice` (PRO feature) to override STUN/TURN endpoints observed by page JavaScript
+- Combined with UDP-over-SOCKS5 (ENT Tier3) you get Chromium-level QUIC/STUN tunneling; see [`Network Fingerprint Control`](ADVANCED_FEATURES.md#network-fingerprint-control) and [`CLI_FLAGS`](CLI_FLAGS.md#⚙️-profile-configuration-override-flags) for examples.
 
 <a id="chrome-behavior-emulation"></a>
 ### Chrome Behavior Emulation
@@ -244,7 +259,7 @@ Eliminates host‑specific rendering differences for accurate cross‑platform e
 - macOS profile runs authentically on Windows/Linux hosts
 - Android profile fully emulated on any desktop OS
 - Consistent behavior regardless of host operating system
-- Android DevTools panes stay readable under emulation—the inspector now ignores page zoom/font scaling so toolbars and monospace panes match real devices
+- Android DevTools panes stay readable under emulation because the inspector now ignores page zoom/font scaling so toolbars and monospace panes match real devices
 
 **Rendering Consistency:**
 - Eliminates host OS rendering artifacts
@@ -302,6 +317,7 @@ Advanced frame‑rate and performance emulation.
 - Realistic frame drops and performance variations
 - GPU rendering timing simulation
 - Display synchronization behavior
+- Runtime timing scaling via `--bot-time-scale` (ENT Tier1 feature) to compress `performance.now()` deltas for low-load simulation (e.g., `--bot-time-scale=0.92` for high-load emulation)
 
 ### Performance Fingerprint Controls
 Fine‑grained tuning for authentic device simulation.
@@ -323,6 +339,7 @@ Fine‑grained tuning for authentic device simulation.
 - WebAssembly performance simulation
 - Crypto API timing characteristics
 - Web Worker performance patterns
+- Deterministic noise seeds via `--bot-noise-seed` (ENT Tier2) to stabilize noise distributions across sessions (`--bot-noise-seed=1.07`)
 
 ### Extended Media Types & WebCodecs APIs
 Comprehensive media‑format support and codec emulation.
@@ -596,9 +613,9 @@ For technical questions about advanced features, implementation details, or cust
 - **[CLI Flags Reference](CLI_FLAGS.md)** - Complete command-line options
 - **[Profile Configuration](profiles/PROFILE_CONFIGS.md)** - Advanced profile customization
 - **[Validation Results](VALIDATION.md)** - Research and testing data
-- **[BotCanvasLab](tools/botcanvas/)** - Canvas forensics and fingerprint analysis tool
+- **[BotCanvasLab](tools/botcanvas/)** - Canvas forensics and fingerprint analysis tool (recording available broadly; deterministic replay tooling forthcoming)
 - **[Examples](examples/)** - Automation code samples
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)** — BotBrowser is for authorized fingerprint-consistency testing and research only.
+**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

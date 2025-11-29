@@ -16,7 +16,7 @@ The patches here are select examples published to illustrate techniques for acad
 ## 🔍 What’s Inside
 
 - **Proprietary Foundation**
-  BotBrowser’s engine is built in‑house—no forks, no external project references.
+  BotBrowser’s engine is built in‑house, with no forks or external project references.
 
 - **Selective Academic Disclosure**
   Only select patches are published for educational purposes. The rest remain proprietary to maintain compatibility testing integrity.
@@ -27,7 +27,7 @@ The patches here are select examples published to illustrate techniques for acad
   2. V8-level study of fingerprint collection and validation
   3. Compatibility testing experience in controlled environments
 
-## 📬 Contact (Academic Inquiries Only)
+## Contact (Academic Inquiries Only)
 
 For academic collaboration or licensing review, please reach out:
 
@@ -152,4 +152,4 @@ patches_v2/136.0.7103.49/
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)** — BotBrowser is for authorized fingerprint-consistency testing and research only.
+**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

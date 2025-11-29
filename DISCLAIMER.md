@@ -54,7 +54,7 @@ The following uses are strictly prohibited:
 - Circumventing security controls on production systems
 - Data harvesting or privacy violations
 - Automated abuse of web services
-- Bypassing anti-bot measures for malicious purposes
+- Bypassing automated detection measures for malicious purposes
 - Any use that violates local, state, federal, or international laws
 
 ## PROHIBITED USES - SPECIFIC EXAMPLES
