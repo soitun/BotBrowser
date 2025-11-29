@@ -41,26 +41,22 @@ Designed for automation testing, cross-platform compatibility validation, and ma
 
 > **What makes BotBrowser different:** Cross-platform browser with unified fingerprint technology that keeps fingerprints identical everywhere.
 
-<table style="table-layout:fixed; width:100%;">
-  <colgroup>
-    <col style="width:50%">
-    <col style="width:50%">
-  </colgroup>
+<table cellspacing="0" cellpadding="8">
   <tr>
-    <th>Core Advantages</th>
-    <th>Technical Excellence</th>
+    <th width="50%">Core Advantages</th>
+    <th width="50%">Technical Excellence</th>
   </tr>
   <tr>
-    <td><strong>High-fidelity Profile Simulation</strong> – Synthetic/aggregated profiles for realistic, policy-compliant testing</td>
-    <td><strong>Latest Chromium Base</strong> – Always synced to newest stable Chrome for zero fingerprint drift</td>
+    <td width="50%"><strong>High-fidelity Profile Simulation</strong> – Synthetic/aggregated profiles for realistic, policy-compliant testing</td>
+    <td width="50%"><strong>Latest Chromium Base</strong> – Always synced to newest stable Chrome for zero fingerprint drift</td>
   </tr>
   <tr>
-    <td><strong>Zero-Config Intelligence</strong> – Auto-detects timezone/locale/language from IP</td>
-    <td><strong>Advanced Programmatic Control</strong> – <a href="examples/">Playwright/Puppeteer integration</a> with CDP leak blocking</td>
+    <td width="50%"><strong>Zero-Config Intelligence</strong> – Auto-detects timezone/locale/language from IP</td>
+    <td width="50%"><strong>Advanced Programmatic Control</strong> – <a href="examples/">Playwright/Puppeteer integration</a> with CDP leak blocking</td>
   </tr>
   <tr>
-    <td><strong>Network Stack Parity</strong> – Browser-level proxies keep geo signals consistent (ENT Tier3 feature)</td>
-    <td><strong>Full-Proxy QUIC/STUN</strong> – Chromium-level UDP associate keeps QUIC/STUN proxied; ICE presets only needed when UDP is unavailable (ENT Tier3 feature, see <a href="ADVANCED_FEATURES.md#network-fingerprint-control">Network Fingerprint Control</a>)</td>
+    <td width="50%"><strong>Network Stack Parity</strong> – Browser-level proxies keep geo signals consistent (ENT Tier3 feature)</td>
+    <td width="50%"><strong>Full-Proxy QUIC/STUN</strong> – Chromium-level UDP associate keeps QUIC/STUN proxied; ICE presets only needed when UDP is unavailable (ENT Tier3 feature, see <a href="ADVANCED_FEATURES.md#network-fingerprint-control">Network Fingerprint Control</a>)</td>
   </tr>
 </table>
 
@@ -199,36 +195,30 @@ Our compatibility research examines browser fingerprinting techniques across dif
 
 > ⚠️ Research demos in authorized environments. See [DISCLAIMER](DISCLAIMER.md).
 
-<table style="table-layout:fixed; width:100%;">
-  <colgroup>
-    <col style="width:20%">
-    <col style="width:30%">
-    <col style="width:20%">
-    <col style="width:30%">
-  </colgroup>
+<table cellspacing="0" cellpadding="8">
   <tr>
-    <th>Service</th>
-    <th>Demo</th>
-    <th>Service</th>
-    <th>Demo</th>
+    <th width="20%">Service</th>
+    <th width="30%">Demo</th>
+    <th width="20%">Service</th>
+    <th width="30%">Demo</th>
   </tr>
   <tr>
-    <td><strong><a href="tests/tests/antibots/cloudflare.spec.ts">Cloudflare</a></strong></td>
-    <td><a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-cloudflare-turnstile">▶️ Turnstile Demo</a></td>
-    <td><strong><a href="tests/tests/antibots/creepjs.spec.ts">CreepJS</a></strong></td>
-    <td><a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-creepjs-creepjs">▶️ Desktop Test</a> / <a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-creepjs-creepjs-Android">▶️ Android Profile</a></td>
+    <td width="20%"><strong><a href="tests/tests/antibots/cloudflare.spec.ts">Cloudflare</a></strong></td>
+    <td width="30%"><a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-cloudflare-turnstile">▶️ Turnstile Demo</a></td>
+    <td width="20%"><strong><a href="tests/tests/antibots/creepjs.spec.ts">CreepJS</a></strong></td>
+    <td width="30%"><a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-creepjs-creepjs">▶️ Desktop Test</a> / <a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-creepjs-creepjs-Android">▶️ Android Profile</a></td>
   </tr>
   <tr>
-    <td><strong><a href="tests/tests/antibots/datadome.spec.ts">DataDome</a></strong></td>
-    <td><a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-datadome-fifa">▶️ FIFA2026 Demo</a></td>
-    <td><strong><a href="tests/tests/antibots/fingerprintjs.spec.ts">FingerprintJS Pro</a></strong></td>
-    <td><a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-fingerprintjs-botdetection">▶️ Bot Detection</a></td>
+    <td width="20%"><strong><a href="tests/tests/antibots/datadome.spec.ts">DataDome</a></strong></td>
+    <td width="30%"><a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-datadome-fifa">▶️ FIFA2026 Demo</a></td>
+    <td width="20%"><strong><a href="tests/tests/antibots/fingerprintjs.spec.ts">FingerprintJS Pro</a></strong></td>
+    <td width="30%"><a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-fingerprintjs-botdetection">▶️ Bot Detection</a></td>
   </tr>
   <tr>
-    <td><strong><a href="tests/tests/antibots/perimeterx.spec.ts">PerimeterX</a></strong></td>
-    <td><a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-perimeterx-zillow">▶️ Zillow Demo</a></td>
-    <td><strong><a href="tests/tests/antibots/pixelscan.spec.ts">Pixelscan</a></strong></td>
-    <td><a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-pixelscan-pixelscan">▶️ Comprehensive Scan</a></td>
+    <td width="20%"><strong><a href="tests/tests/antibots/perimeterx.spec.ts">PerimeterX</a></strong></td>
+    <td width="30%"><a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-perimeterx-zillow">▶️ Zillow Demo</a></td>
+    <td width="20%"><strong><a href="tests/tests/antibots/pixelscan.spec.ts">Pixelscan</a></strong></td>
+    <td width="30%"><a href="//botswin.github.io/BotBrowser/video_player/index.html?video=antibots-pixelscan-pixelscan">▶️ Comprehensive Scan</a></td>
   </tr>
 </table>
 

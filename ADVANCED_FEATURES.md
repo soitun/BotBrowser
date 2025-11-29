@@ -138,7 +138,7 @@ chromium-browser --no-sandbox --bot-profile="/abs/profile.enc" \
 - Per-context proxies with automatic geo detection (timezone/locale/language) across contexts and sessions
 - DNS-through-proxy plus credentialed proxy URLs keep browser-level geo signals consistent
 - UDP-over-SOCKS5 tunnel (ENT Tier3 capability) for QUIC/STUN so ICE presets are only needed when UDP is unavailable
-- Optional ICE control via `--bot-webrtc-ice` (PRO) when the proxy lacks UDP support
+- Optional ICE control via `--bot-webrtc-ice` (PRO feature) when the proxy lacks UDP support
 - Chromium-level implementation that avoids external Go/ProxyChains hijacking; tunneling lives inside the network stack
 
 > Note: Most fingerprint browsers disable QUIC or avoid UDP entirely. BotBrowser implements UDP-over-SOCKS5 directly inside Chromium’s network stack (no external proxy-chain hijacking) so QUIC/STUN stay proxied and consistent with TCP traffic.
