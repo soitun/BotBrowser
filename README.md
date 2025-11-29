@@ -108,6 +108,7 @@ await page.goto('https://abrahamjuliot.github.io/creepjs/');
 - Use `--user-data-dir` with a unique temporary folder to avoid conflicts with running Chromium instances
 - Prefer `--proxy-server` or per‑context proxies; auto timezone/locale detection applies in both cases
 - Avoid framework‑specific proxy/auth options (e.g., `page.authenticate()`), which bypass BotBrowser geo detection
+- `socks5h://` is supported when you need hostnames resolved by the proxy
 
 Examples: [Playwright](examples/playwright/) • [Puppeteer](examples/puppeteer/)
 

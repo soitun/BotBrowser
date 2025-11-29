@@ -53,9 +53,11 @@ BotBrowser extends the standard `--proxy-server` flag to accept embedded credent
 
 # SOCKS5 proxy with credentials
 --proxy-server="socks5://username:password@proxy.example.com:1080"
+# SOCKS5H proxy with credentials (hostname resolved by proxy)
+--proxy-server="socks5h://username:password@proxy.example.com:1080"
 ```
 
-**Supported Protocols:** HTTP, HTTPS, SOCKS5
+**Supported Protocols:** HTTP, HTTPS, SOCKS5, SOCKS5H (use `socks5h://` to resolve hostnames through the proxy)
 
 ### UDP over SOCKS5 (ENT Tier3)
 ENT Tier3 adds automatic SOCKS5 UDP ASSOCIATE support with no extra flag required. When the proxy supports UDP, BotBrowser will tunnel QUIC traffic and STUN probes over the proxy to harden proxy checks.
