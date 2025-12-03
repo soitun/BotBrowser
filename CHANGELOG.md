@@ -2,6 +2,46 @@
 
 > **Research scope:** Entries in this changelog describe features evaluated in authorized labs and defensive benchmarking programs. Follow the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md). We work with security vendors to investigate any misuse, so report concerns to [botbrowser@bk.ru](mailto:botbrowser@bk.ru).
 
+
+## [2025-12-03] 
+
+### Major
+**Chromium Core → 143.0.7499.52**  
+Core aligned with Chrome 143 stable. You pick up the latest security work, platform refinements and the 143 UA‑CH major for sites that already gate on it.
+
+### Fixes
+**x‑browser client marker**  
+Only **Chrome brand** emits the x‑browser marker. Other brands no longer inherit it, which avoids unnecessary compatibility checks on non‑Chrome brands.
+
+**Android connection type**  
+Android emulation now reports the correct network connection type so network heuristics match the emulated device.
+
+**WebGL context attributes**  
+`getContext('webgl/webgl2', attrs)` receives the intended `contextAttributes` again. The change improves driver compatibility and feature negotiation.
+
+**OOPIF devicePixelRatio**  
+Out‑of‑process iframes now inherit the right `devicePixelRatio`, which keeps layout, media queries and canvas scaling consistent across frame trees.
+
+**JS heap size limit**  
+`js_heap_size_limit` is read from the fingerprint in all environments. Memory‑related probes no longer see host defaults.
+
+**matchMedia: device‑width / device‑height**  
+Media queries now reflect the actual emulated device metrics. Breakpoints and responsive rules evaluate to the expected values.
+
+**Android brand exposure**  
+`chrome.app` is no longer present in Android emulation. The surface aligns with what real mobile Chrome exposes.
+
+**Screen metrics from profile**  
+`screen.width/height` now reliably come from the profile on every path, avoiding one‑off host reads in edge cases.
+
+### Improvements
+**SOCKS5H support**  
+Name resolution for SOCKS5H is more robust across platforms and failure modes. DNS resolution stays in the tunnel and connection setup is snappier on flaky endpoints.
+
+**Noise‑seed stability**  
+Noise seeds adapt more naturally to environment changes. Fingerprints remain consistent across runs while keeping per‑profile diversity.
+
+
 ## [2025-11-29] 
 
 ### New
