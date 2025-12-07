@@ -88,7 +88,7 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 | `uaFullVersion` (PRO feature)   | Overrides the full browser version returned by `navigator.userAgentData.fullVersion`; must match the Chromium major version (e.g. for major version 138, the full version must start with “138.”). | `""`        |
 | `colorScheme`                   | Preferred color scheme: light or dark.                                            | `light`   |
 | `disableDeviceScaleFactorOnGUI` | If `true`, ignore device scale factor for GUI elements (disable DPI-based UI scaling).    | `false`     |
-| `disableConsoleMessage`         | Suppresses console message forwarding into page contexts and automation logs.            | `true`     |
+| `disableConsoleMessage` (PRO)        | Suppresses console message forwarding into page contexts and automation logs to avoid Console.enable/Runtime.enable stack getter detections. | `true`     |
 | `timezone`                      | `auto` = IP-based; `real` = system timezone; any other string = custom timezone name. | `auto`    |
 | `location`                      | `auto` = IP-based; `real` = system (GPS); object = custom coordinates (`lat`, `lon`). | `auto`    |
 | `browserBrand` (PRO feature)    | override for `navigator.userAgentData.brands` and related UA fields. Supports chromium, chrome, edge, brave, opera. | `chrome`    |
@@ -157,7 +157,7 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 | Field | Description | Default |
 | ----- | ----------- | ------- |
 | `timeScale` (ENT Tier1 feature) | Fractional scalar applied to `performance.now()` deltas to emulate lower CPU load and shorten observable intervals. Valid range `0 < value < 1`. | `1.0` |
-| `noiseSeed` (ENT Tier2 feature) | Floating seed (1.0–1.2) that stabilizes Canvas/WebGL/Audio noise so repeated sessions preserve identical noise signatures. | `auto` |
+| `noiseSeed` (ENT Tier2 feature) | Floating seed (1.0–1.2) that deterministically shapes the noise applied to Canvas 2D/WebGL/WebGPU images, text metrics, HarfBuzz layout, ClientRects, and offline audio hashes so you can assign reproducible yet distinct fingerprints per tenant. | `auto` |
 
 ---
 

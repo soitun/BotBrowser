@@ -12,7 +12,7 @@ BotBrowser offers multi‑layer emulation and control to keep fingerprints consi
 
 ## 📁 Capabilities Index
 
-[navigator.webdriver removal](#chrome-behavior-emulation), [main‑world isolation](#playwright-puppeteer-integration), [JS hook stealth](#playwright-puppeteer-integration), [Canvas noise](#graphics-rendering-engine), [WebGL/WebGPU param control](#graphics-rendering-engine), [Skia anti‑alias](#cross-platform-font-engine), [HarfBuzz shaping](#cross-platform-font-engine), [MediaDevices spoofing](#complete-fingerprint-control), [font list spoofing](#cross-platform-font-engine), [UA congruence](#configuration-and-control), [per‑context proxy geo](#enhanced-proxy-system), [DNS‑through‑proxy](#enhanced-proxy-system), [active window emulation](#active-window-emulation), [HTTP headers/HTTP2/HTTP3](#chrome-behavior-emulation), [headless parity](#headless-incognito-compatibility), [WebRTC SDP/ICE control](#webrtc-leak-protection), [TLS fingerprint (JA3/JARM)](#network-fingerprint-control)
+[navigator.webdriver removal](#chrome-behavior-emulation), [main‑world isolation](#playwright-puppeteer-integration), [JS hook stealth](#playwright-puppeteer-integration), [Canvas noise](#graphics-rendering-engine), [WebGL/WebGPU param control](#graphics-rendering-engine), [Skia anti‑alias](#cross-platform-font-engine), [HarfBuzz shaping](#cross-platform-font-engine), [MediaDevices spoofing](#complete-fingerprint-control), [font list spoofing](#cross-platform-font-engine), [UA congruence](#configuration-and-control), [per‑context proxy geo (ENT Tier1)](#enhanced-proxy-system), [DNS‑through‑proxy](#enhanced-proxy-system), [active window emulation](#active-window-emulation), [HTTP headers/HTTP2/HTTP3](#chrome-behavior-emulation), [headless parity](#headless-incognito-compatibility), [WebRTC SDP/ICE control](#webrtc-leak-protection), [TLS fingerprint (JA3/JARM)](#network-fingerprint-control)
 
 <a id="configuration-and-control"></a>
 ## ⚙️ Configuration & Control
@@ -66,7 +66,7 @@ chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" \
 
 <a id="enhanced-proxy-system"></a>
 ### 🌐 Enhanced Proxy System
-Rebuilt for stability, per‑context support, and DNS‑leak protection.
+Rebuilt for stability, per‑context support (ENT Tier1), and DNS‑leak protection.
 
 **Embedded Credentials:**
 ```bash
@@ -79,7 +79,7 @@ Rebuilt for stability, per‑context support, and DNS‑leak protection.
 ```
 
 
-**Per‑Context Proxy Support:**
+**Per‑Context Proxy Support (ENT Tier1):**
 ```javascript
 // Playwright example with different proxies per context
 const browser = await chromium.launch({
@@ -98,7 +98,7 @@ const context2 = await browser.newContext({
 });
 ```
 
-Automatic geo‑detection: Each context derives timezone, locale, and languages from its proxy IP, so no manual setup is needed.
+Automatic geo‑detection: Each ENT Tier1 context derives timezone, locale, and languages from its proxy IP, so no manual setup is needed.
 
 Performance tip: If all contexts share the same proxy IP, set `--proxy-ip` to skip repeated lookups.
 
@@ -154,7 +154,7 @@ Sophisticated noise with consistency algorithms. Configure everything through CL
 - **WebGL image**: `--bot-config-noise-webgl-image=true`
 - **AudioContext**: `--bot-config-noise-audio-context=true`
 - **ClientRects/TextRects**: `--bot-config-noise-client-rects=true`, `--bot-config-noise-text-rects=true`
-- **Deterministic seeds (ENT Tier2 feature)**: `--bot-noise-seed=1.05` (1.0–1.2 range)
+- **Deterministic seeds (ENT Tier2 feature)**: `--bot-noise-seed=1.05` (1.0–1.2 range) let you pick reproducible yet distinct noise fields for Canvas 2D/WebGL/WebGPU imagery, text metrics/HarfBuzz layout, ClientRects, and offline audio hashes so each seed behaves like its own fingerprint ID.
 
 Patterns:
 - Stabilized noise algorithms keep intra-session stability but vary across sessions.

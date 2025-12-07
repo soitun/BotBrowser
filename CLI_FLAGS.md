@@ -84,7 +84,7 @@ This skips per‑page IP lookups and speeds up navigation.
 
 ⚠️ Important:
 - Browser‑level proxy: use `--proxy-server` for consistent geo‑detection across contexts
-- Per‑context proxy: set different proxies via `createBrowserContext({ proxy })`; BotBrowser auto‑derives geo info in both cases
+- Per‑context proxy (ENT Tier1): set different proxies via `createBrowserContext({ proxy })`; BotBrowser auto‑derives geo info in both cases
 - Avoid: framework‑specific options like `page.authenticate()` that bypass BotBrowser’s geo‑detection
 
 ---
@@ -212,14 +212,25 @@ Flags that directly map to profile `configs` and override them at runtime.
 
 Runtime toggles that don’t rely on profile `configs` but still override behavior at launch.
 
-- `--bot-disable-console-message`: Suppress console.* output from CDP logs (default true)
 - `--bot-disable-debugger`: Ignore JavaScript `debugger` statements to avoid pauses
+- `--bot-mobile-force-touch`: Force touch events on/off for mobile device simulation
+- `--bot-disable-console-message` (PRO): Suppress console.* output from CDP logs (default true); prevents automation hooks from enabling `Console.enable`/`Runtime.enable`, which blocks stack getter detections.
 - `--bot-inject-random-history` (PRO): Inject synthetic browsing history for session authenticity
 - `--bot-always-active` (PRO): Keep windows/tabs active even when unfocused
-- `--bot-mobile-force-touch`: Force touch events on/off for mobile device simulation
 - `--bot-webrtc-ice=google` (PRO): Override STUN/TURN endpoints observed by JavaScript/WebRTC to control ICE signaling; accepts presets (`google`) or `custom:stun:...,turn:...`
 - `--bot-time-scale` (ENT Tier1): Float < 1.0; scales down `performance.now()` intervals to emulate lower load and reduce timing skew signals (typical range 0.80–0.99)
-- `--bot-noise-seed` (ENT Tier2): Float seed for noise RNG; accepts 1.0–1.2 with arbitrary decimal precision to stabilize noise across sessions
+- `--bot-noise-seed` (ENT Tier2): Float seed (1.0–1.2) for the deterministic noise RNG; each seed re-shapes the injected noise across Canvas 2D/WebGL/WebGPU images, text metrics, HarfBuzz layout, ClientRect measurements, and offline audio hashes so you can treat a seed as a reproducible fingerprint ID per tenant while keeping runs stable.
+
+Example detection BotBrowser avoids when console forwarding stays disabled:
+
+```javascript
+let detected = false;
+const err = new Error();
+Object.defineProperty(err, 'stack', {
+  get() { detected = true; }
+});
+console.log(err);  // stack getter fires if Console.enable/Runtime.enable are active
+```
 
 ### Key Benefits of CLI Configuration Flags
 
@@ -227,12 +238,6 @@ Runtime toggles that don’t rely on profile `configs` but still override behavi
 - **No Profile Editing:** Avoid changing encrypted JSON
 - **Dynamic Configuration:** Perfect for automation and CI/CD
 - **Session Isolation:** Different settings per instance
-
-### Spotlight: BotBrowser v142 20251117 Additions
-
-- **Chromium 142.0.7444.163 base**: keeps rendering, networking, and storage surfaces in lockstep with Chrome Stable for minimum version skew.
-- **`--bot-config-brand-full-version`**: decouples UA full version and brand cadence so Edge/Opera style UA-CH tuples remain believable.
-- **Opera brand mode**: `--bot-config-browser-brand=opera` mirrors Opera UA-CH data and branding, while Brave parity fixes hide disallowed fields exactly like the real browser.
 
 ### Configuration Priority
 

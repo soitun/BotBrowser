@@ -102,7 +102,7 @@ await page.goto('https://abrahamjuliot.github.io/creepjs/');
 
 **Notes:**
 - Use `--user-data-dir` with a unique temporary folder to avoid conflicts with running Chromium instances
-- Prefer `--proxy-server` or per‑context proxies; auto timezone/locale detection applies in both cases
+- Prefer `--proxy-server` or per‑context proxies (ENT Tier1); auto timezone/locale detection applies in both cases
 - Avoid framework‑specific proxy/auth options (e.g., `page.authenticate()`), which bypass BotBrowser geo detection
 - `socks5h://` is supported when you need hostnames resolved by the proxy
 
@@ -118,11 +118,11 @@ Examples: [Playwright](examples/playwright/) • [Puppeteer](examples/puppeteer/
 
 - **Multi‑Layer Consistency:** Canvas/WebGL/Text metrics with low‑level Skia/HarfBuzz tuning and targeted WebGL/WebGPU controls
 - **Clean Automation:** CDP/WebDriver hardening, Chrome‑like behavior, and framework‑less early hooks via `--bot-script`
-- **Configurability:** 30+ CLI overrides, per‑context proxies with automatic geo‑detection, and session tools (cookies/bookmarks/title)
+- **Configurability:** 30+ CLI overrides, per‑context proxies (ENT Tier1) with automatic geo‑detection, and session tools (cookies/bookmarks/title)
 - **Headless ↔ GUI Parity:** Stable GPU/WebGPU/media signals and consistent behavior across browser modes
 - **Performance Controls:** Precise FPS simulation, memory/storage timing, and GPU micro‑benchmarks for realistic profiles; runtime timing scaling (ENT Tier1) and deterministic noise seeds (ENT Tier2)
 - **Focus & Session Control:** Always-active tab emulation, configurable WebRTC ICE servers, and expanded media decoder reporting for authentic runtime signals
-- **Network & Proxy Enhancements:** Per-context proxies with auto geo detection; UDP-over-SOCKS5 tunnel for QUIC/STUN in ENT Tier3; ICE presets optional when UDP is available
+- **Network & Proxy Enhancements:** Per-context proxies (ENT Tier1) with auto geo detection; UDP-over-SOCKS5 tunnel for QUIC/STUN in ENT Tier3; ICE presets optional when UDP is available
 > **Professional-grade browser technology** through sophisticated multi-layer fingerprint consistency and cross-platform compatibility systems
 
 <details>

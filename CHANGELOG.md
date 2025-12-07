@@ -26,7 +26,7 @@
 ## [2025-11-29]
 ### New
 - **Runtime timing scaler (ENT Tier1)**: `--bot-time-scale` compresses `performance.now()` deltas to emulate lower CPU load profiles for timing-sensitive research flows.
-- **Deterministic noise seed (ENT Tier2)**: `--bot-noise-seed` stabilizes noise distributions across sessions for reproducible analysis.
+- **Deterministic noise seed (ENT Tier2)**: `--bot-noise-seed` deterministically reshapes the injected noise across Canvas 2D/WebGL/WebGPU imagery, text metrics/HarfBuzz layout, ClientRects, and offline audio hashes so each seed behaves like a reproducible fingerprint ID while remaining stable across sessions.
 - **UDP over SOCKS5 (ENT Tier3)**: Automatic UDP associate for QUIC and STUN over SOCKS5 proxies; ICE presets often unnecessary when UDP is available.
 - **socks5h proxy support**: Added support for `socks5h://` endpoints to resolve hostnames through the proxy tunnel.
 
@@ -102,8 +102,8 @@ Example (Edge spoofing):
   Synced with the latest Chrome 142 stable to keep rendering, networking, storage, and media behavior aligned with upstream, reduce version‑based heuristics, and inherit current security/perf updates.
 
 ### New
-- **`--bot-config-disable-console-message` (default: true)**  
-  Disables console message output to avoid CDP log noise leaking into the page context or logs in production environments. Tracks: issue **#75**.
+- **`--bot-config-disable-console-message` (PRO, default: true)**  
+  Disables console message output to avoid CDP log noise leaking into the page context or logs in production environments and blocks Console.enable/Runtime.enable stack getter detections (e.g., redefining `Error.stack` before `console.log(err)`). Tracks: issue **#75**.
 - **`--bot-config-fonts=expand` mode**  
   When a profile lacks specific fonts, `expand` will load additional system fonts to increase match rate and authenticity.
 
