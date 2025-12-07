@@ -3,6 +3,20 @@
 > **Research scope:** Entries in this changelog describe features evaluated in authorized labs and defensive benchmarking programs. Follow the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md). We work with security vendors to investigate any misuse, so report concerns to [botbrowser@bk.ru](mailto:botbrowser@bk.ru).
 
 
+## [2025-12-08]
+### New
+- **WebGPU canvas noise injector**: Added deterministic noise controls to WebGPU canvas outputs (validated on [webbrowsertools.com/webgpu-fingerprint](https://webbrowsertools.com/webgpu-fingerprint/)) so GPU fingerprints stay aligned with the rest of the noise stack; replayed recordings now preserve the expected variance across browsers that probe WebGPU specifically.
+- **Embedded font rendering per platform**: DOM text rendering now stays within the bundled cross-platform font sets (not just fallback chains), so Windows/macOS/Linux/Android simulations paint both DOM and fallback fonts from the same embedded assets, preventing host font leaks when a site walks `document.fonts` or measures inline text.
+
+### Improvements
+- **Canvas noise edge-cases**: Fixed a rare convergence case spotted on <https://browserscan.com/canvas> where certain seeds produced identical hashes, preventing host hashes from leaking through and ensuring per-profile canvases remain distinguishable across sessions.
+- **HarfBuzz perturbation precision**: Noise applied inside HarfBuzz now respects prior precision and only adjusts `x_advance` / `y_advance` inside a minimal range, which keeps shaping believable on multilingual text (including CJK) while maintaining diversity for creepJS-style text metrics.
+
+### Fixes
+- **Pixelscan WebGL noise**: Refined WebGL canvas noise so <http://pixelscan.net> no longer flags the fraud heuristics triggered by earlier, coarse noise injection; multi-pass renders now inherit the same noise field as the base frame.
+- **Client Hints DPR parity**: `sec-ch-dpr` now matches `window.devicePixelRatio`, eliminating mismatches between Client Hints metadata and JS-observable values, which removes a quick heuristic some anti-bot flows used to detect spoofed DPIs.
+
+
 ## [2025-12-03]
 ### Major
 - **Chromium Core → 143.0.7499.52**: Core aligned with Chrome 143 stable. You pick up the latest security work, platform refinements, and the 143 UA‑CH major for sites that already gate on it.
