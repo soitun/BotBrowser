@@ -3,6 +3,24 @@
 > **Research scope:** Entries in this changelog describe features evaluated in authorized labs and defensive benchmarking programs. Follow the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md). We work with security vendors to investigate any misuse, so report concerns to [botbrowser@bk.ru](mailto:botbrowser@bk.ru).
 
 
+## [2025-12-17]
+### Major
+- **Chromium Core → 143.0.7499.147**: Updated the engine to 143.0.7499.147 to stay aligned with the latest Chrome Stable. This keeps Web Platform behavior, DevTools schemas, and version keyed heuristics in lockstep with upstream.
+
+### New
+- **Local DNS solver (ENT Tier1)**: Added a local DNS resolver that can be enabled with `--bot-dns-local`. This improves privacy and resolution speed, avoids common DNS poisoning scenarios, and bypasses DNS limitations imposed by some proxy providers.
+- **Custom public IP service**: Added `--bot-ip-service` so you can point BotBrowser at your own IP lookup endpoint when you want full control over how the public egress IP is detected. Multiple endpoints can be provided as a comma-separated list, and BotBrowser will race them and use the fastest successful response.
+
+### Improvements
+- **Proxy auth parsing**: Proxy credentials now support additional separators in the username field, including `,` and `｜`. This makes structured usernames work reliably with common proxy provider formats, for example `socks5://user_abc,type_mobile,country_GB,session_1234:11111@portal.proxy.io:1080`.
+- **Extension sync (ENT Tier2)**: Updated extension `ghbmnnjooekpmoecnnnilnnbdlolhkhi` to version 1.98.1 to match the latest Chrome Stable packaging and behavior.
+
+### Fixes
+- **Windows headless without GPU**: Fixed a startup failure affecting the Windows binary in headless mode when no GPU is available in the environment.
+- **Android touch simulation cleanup**: Fixed a memory leak when using Android fingerprints and repeatedly creating and closing contexts, where touch emulation resources were not released correctly.
+- **Multi monitor screen offsets**: Fixed incorrect `screenLeft` and `screenTop` values on certain multi monitor setups.
+
+
 ## [2025-12-08]
 ### New
 - **WebGPU canvas noise injector**: Added deterministic noise controls to WebGPU canvas outputs (validated on [webbrowsertools.com/webgpu-fingerprint](https://webbrowsertools.com/webgpu-fingerprint/)) so GPU fingerprints stay aligned with the rest of the noise stack; replayed recordings now preserve the expected variance across browsers that probe WebGPU specifically.
@@ -22,7 +40,7 @@
 - **Chromium Core → 143.0.7499.52**: Core aligned with Chrome 143 stable. You pick up the latest security work, platform refinements, and the 143 UA‑CH major for sites that already gate on it.
 
 ### Fixes
-- **x‑browser client marker**: Only **Chrome brand** emits the x‑browser marker. Other brands no longer inherit it, which avoids unnecessary compatibility checks on non‑Chrome brands.
+- **x‑browser client marker (ENT Tier1)**: Only **Chrome brand** emits the x‑browser marker. Other brands no longer inherit it, which avoids unnecessary compatibility checks on non‑Chrome brands.
 - **Android connection type**: Android emulation now reports the correct network connection type so network heuristics match the emulated device.
 - **WebGL context attributes**: `getContext('webgl/webgl2', attrs)` receives the intended `contextAttributes` again, which improves driver compatibility and feature negotiation.
 - **OOPIF devicePixelRatio**: Out‑of‑process iframes now inherit the right `devicePixelRatio`, keeping layout, media queries, and canvas scaling consistent across frame trees.
@@ -262,11 +280,11 @@ Example (Edge spoofing):
 - **Chromium Core Upgrade → 141.0.7390.55**  
   Aligned with the latest Chrome 141 for modern API parity, performance, and security fixes.
 
-- **Built‑in Widevine Component**  
+- **Built‑in Widevine Component (ENT Tier2)**  
   Widevine CDM is now bundled. No more per‑launch downloads via ComponentUpdater → faster, deterministic startup and fewer external requests.
 
 ### New
-- **DRM Hardware Simulation**  
+- **DRM Hardware Simulation (ENT Tier2)**  
   Adds platform‑specific DRM capability emulation to satisfy advanced probes on certain sites/platforms.
 
 - **RLZ Re‑enabled**  
@@ -279,7 +297,7 @@ Example (Edge spoofing):
 - **Cross‑platform Feature Parity (outside `runtime_enabled_features.json5`)**  
   Adapts a set of runtime capabilities not listed in the upstream JSON to keep platform‑agnostic fingerprints consistent across OS targets.
 
-- **X‑Browser Identification (Google)**  
+- **X‑Browser Identification (Google, ENT Tier1)**  
   Rewritten per Google‑recommended approach to increase Chrome authenticity signals.
 
 - **Stability with Browser Brand Overrides**  
@@ -300,7 +318,7 @@ Example (Edge spoofing):
   Stay in lock‑step with the latest Chrome for modern API parity, performance, and security fixes.
 
 ### Compatibility / New
-- **MediaCapabilities `decodingInfo` (DRM probing) hardening**  
+- **MediaCapabilities `decodingInfo` (DRM probing) hardening (ENT Tier2)**  
   Aligns responses with real‑Chrome behavior when sites probe **DRM capability** via `MediaCapabilities.decodingInfo` (e.g., H.264/H.265 + Widevine flow). Prevents capability mismatches and reduces a class of DRM‑support fingerprint checks.
 
 ### Fixed

@@ -122,9 +122,9 @@ Examples: [Playwright](examples/playwright/) • [Puppeteer](examples/puppeteer/
 - **Typography Fidelity**: DOM text renders from embedded Windows, macOS, and Android font packs so host fonts never leak during cross-OS simulation
 - **Client Hints Lockstep**: DPR, device-memory, and UA-CH headers match JavaScript-visible values to keep header data in sync with runtime fingerprints
 - **Headless ↔ GUI Parity**: Identical GPU, WebGPU, and media signals across browser modes so privacy regression tests remain stable
-- **Performance Controls**: Precision FPS and memory timings plus ENT Tier1 timing and seed controls for reproducible privacy benchmarks
+- **Performance Controls**: Precision FPS and memory timings plus ENT Tier1 timing controls and ENT Tier2 noise seeds for reproducible privacy benchmarks
 - **Focus & Session Control**: Always-active tabs, configurable ICE presets, and expanded media reporting keep privacy sessions believable
-- **Network Enhancements**: ENT Tier1 per-context proxies, UDP-over-SOCKS5 (ENT Tier3), and SOCKS5H DNS in tunnel behavior for clean geo signals
+- **Network Enhancements**: ENT Tier1 per-context proxies, optional local DNS solver (ENT Tier1), UDP-over-SOCKS5 (ENT Tier3), and SOCKS5H DNS in tunnel behavior for clean geo signals
 
 <details>
 <summary><strong>Fingerprint Consistency Implementation: Privacy Controls → Technical Design → Validation</strong></summary>
@@ -141,11 +141,11 @@ This reference maps privacy protection goals to BotBrowser implementation detail
 | Font availability uniformity | DOM queries return consistent font lists from embedded bundles so host system fonts cannot leak platform identity | [ADVANCED_FEATURES#Cross-Platform Font Engine](ADVANCED_FEATURES.md#cross-platform-font-engine) |
 | Device capabilities | Profile-based device properties maintain consistent device claims across all platforms | [Profile Configs](profiles/PROFILE_CONFIGS.md) |
 | Network topology privacy | WebRTC signaling stays consistent through SDP and ICE controls preventing network topology leakage | [ADVANCED_FEATURES#WebRTC Leak Protection](ADVANCED_FEATURES.md#webrtc-leak-protection) |
-| User agent coherence | Browser brand and version consistency prevents UA string from revealing platform differences | [CLI_FLAGS#Profile Configuration Override Flags](CLI_FLAGS.md#⚙️-profile-configuration-override-flags) |
 | User agent coherence | Browser brand and version consistency prevents UA string from revealing platform differences | [CLI_FLAGS#Profile Configuration Override Flags](CLI_FLAGS.md#profile-configuration-override-flags) |
 | Header to API parity | Client Hints headers DPR, device-memory, and UA-CH align with JavaScript reported values preventing header based identification | [ADVANCED_FEATURES#Browser & OS Fingerprinting](ADVANCED_FEATURES.md#browser--os-fingerprinting) |
 | Execution mode consistency | GPU, WebGPU, and media signals remain identical whether running headless or in GUI mode | [ADVANCED_FEATURES#Headless & Incognito Compatibility](ADVANCED_FEATURES.md#headless-incognito-compatibility) |
-| DNS privacy | DNS queries route through proxy to prevent ISP level tracking | [ADVANCED_FEATURES#Enhanced Proxy System](ADVANCED_FEATURES.md#enhanced-proxy-system) |
+| DNS privacy | DNS can stay in-tunnel via SOCKS5H, or use the local DNS solver (ENT Tier1) to improve privacy and speed while avoiding DNS poisoning and provider DNS limits | [CLI_FLAGS#Enhanced Proxy Configuration](CLI_FLAGS.md#enhanced-proxy-configuration) |
+| Public IP discovery | Customizable IP lookup backend for geo derivation via `--bot-ip-service` (supports comma-separated endpoints; BotBrowser races them and uses the fastest successful response) | [CLI_FLAGS#Enhanced Proxy Configuration](CLI_FLAGS.md#enhanced-proxy-configuration) |
 | Protocol conformance | HTTP/2 and HTTP/3 behavior matches Chrome specifications preventing protocol based differentiation | [ADVANCED_FEATURES#Chrome Behavior Emulation](ADVANCED_FEATURES.md#chrome-behavior-emulation) |
 | TLS fingerprint consistency | JA3, JARM, and ALPN parameters optimized for uniform TLS negotiation across platforms | [CHANGELOG](CHANGELOG.md) |
 

@@ -78,6 +78,12 @@ Rebuilt for stability, per‑context support (ENT Tier1), and DNS‑leak protect
 --proxy-server="socks5://username:password@proxy.example.com:1080"
 ```
 
+Structured proxy usernames: Some providers encode routing hints in the username. BotBrowser supports separators like `,` and `｜` inside the username so formats like the following remain parseable:
+
+```bash
+--proxy-server="socks5://user_abc,type_mobile,country_GB,session_1234:11111@portal.proxy.io:1080"
+```
+
 
 **Per‑Context Proxy Support (ENT Tier1):**
 ```javascript
@@ -108,13 +114,13 @@ Performance tip: If all contexts share the same proxy IP, set `--proxy-ip` to sk
 --proxy-server="http://user:pass@proxy.com:8080" --proxy-ip="203.0.113.1"
 ```
 
-DNS‑leak protection:
-- SOCKS5 proxies prevent local DNS resolution
-- All domain lookups go through the proxy tunnel
+**DNS & IP Discovery**
+- **DNS‑leak protection:** SOCKS5 proxies prevent local DNS resolution, and all domain lookups go through the proxy tunnel.
+- **UDP over SOCKS5 (ENT Tier3):** Automatically attempts UDP associate to tunnel QUIC/STUN where supported; ICE presets can often be skipped when UDP is available.
+- **Local DNS solver (ENT Tier1):** Enable `--bot-dns-local` when you want faster resolution, want to avoid DNS poisoning, or your proxy provider restricts DNS behavior. This keeps DNS resolution local while the rest of the proxy and geo pipeline remains consistent.
+- **Custom public IP service:** Use `--bot-ip-service` to point BotBrowser at your preferred IP lookup endpoint when you need deterministic egress discovery or an in-house IP service. You can provide multiple endpoints separated by commas, and BotBrowser will race them and pick the fastest successful response.
 
-UDP over SOCKS5 (ENT Tier3): Automatically attempts UDP associate to tunnel QUIC/STUN where supported; ICE presets can often be skipped when UDP is available.
-
-Important: Always use BotBrowser's proxy options over framework-specific settings to ensure geo-detection remains accurate and consistent.
+**Important:** Always use BotBrowser's proxy options over framework-specific settings to ensure geo-detection remains accurate and consistent.
 
 ```bash
 # Example: true full-proxy QUIC/STUN (Chromium-level UDP associate, no ProxyChains hacks)
@@ -218,8 +224,8 @@ Consistent Chrome compatible behaviors and standardized API responses.
 - Consistent behavior with standard services integration
 - Standardized JavaScript API responses matching Chrome specifications
 
-**Widevine CDM Integration:**
-> Note: BotBrowser does not distribute proprietary modules (e.g., Widevine). End users must obtain playback components via official channels.
+**Widevine CDM Integration (ENT Tier2):**
+> Note: BotBrowser does not distribute proprietary modules (e.g., Widevine). End users must obtain playback components via official channels, and this integration is available only in ENT Tier2.
 
 ---
 
@@ -360,7 +366,7 @@ Comprehensive media‑format support and codec emulation.
 - Encoding capability emulation
 
 **Media Capabilities:**
-- Realistic mediaCapabilities.decodingInfo() responses
+- Realistic mediaCapabilities.decodingInfo() responses (ENT Tier2 for DRM probing parity)
 - Power efficiency reporting simulation
 - Smooth playback prediction accuracy
 - HDR and wide gamut support detection

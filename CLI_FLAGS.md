@@ -59,6 +59,12 @@ BotBrowser extends the standard `--proxy-server` flag to accept embedded credent
 
 **Supported Protocols:** HTTP, HTTPS, SOCKS5, SOCKS5H (use `socks5h://` to resolve hostnames through the proxy)
 
+**Proxy auth usernames:** Structured proxy usernames can include additional separators such as `,` and `｜` (full-width vertical bar). This is useful for providers that encode routing hints inside the username, for example:
+
+```bash
+--proxy-server="socks5://user_abc,type_mobile,country_GB,session_1234:11111@portal.proxy.io:1080"
+```
+
 ### UDP over SOCKS5 (ENT Tier3)
 ENT Tier3 adds automatic SOCKS5 UDP ASSOCIATE support with no extra flag required. When the proxy supports UDP, BotBrowser will tunnel QUIC traffic and STUN probes over the proxy to harden proxy checks.
 
@@ -86,6 +92,30 @@ This skips per‑page IP lookups and speeds up navigation.
 - Browser-level proxy: use `--proxy-server` for consistent geo-detection across contexts
 - Per-context proxy (ENT Tier1): set different proxies via `createBrowserContext({ proxy })`; BotBrowser auto-derives geo info in both cases
 - Avoid: framework-specific options like `page.authenticate()` that disable BotBrowser's geo-detection, which may leak location information
+
+### `--bot-dns-local` (ENT Tier1)
+Enable the local DNS solver. This keeps DNS resolution local instead of relying on a proxy provider’s DNS behavior, improving privacy and speed while avoiding common DNS poisoning paths.
+
+```bash
+--bot-dns-local=true
+```
+
+Practical notes:
+- Helps when a proxy provider blocks or rewrites DNS lookups
+- Useful when you want to avoid provider-side DNS policies and keep resolution behavior consistent across runs
+
+### `--bot-ip-service`
+Customize the public IP service used to discover your egress IP (and derive geo settings when auto-detection is enabled).
+
+```bash
+--bot-ip-service="https://ip.example.com"
+```
+
+You can provide multiple endpoints as a comma-separated list. BotBrowser will race them and use the fastest successful response.
+
+```bash
+--bot-ip-service="https://ip1.example.com,https://ip2.example.com"
+```
 
 ---
 
