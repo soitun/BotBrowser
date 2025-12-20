@@ -25,7 +25,7 @@
             "minHeight": 200,
             "center": true,
             "icon": "/dist/botbrowser-console/browser/favicon.ico",
-            "enableInspector": true,
+            "enableInspector": false,
             "borderless": false,
             "maximize": false,
             "hidden": false,

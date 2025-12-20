@@ -93,11 +93,11 @@ This skips per‑page IP lookups and speeds up navigation.
 - Per-context proxy (ENT Tier1): set different proxies via `createBrowserContext({ proxy })`; BotBrowser auto-derives geo info in both cases
 - Avoid: framework-specific options like `page.authenticate()` that disable BotBrowser's geo-detection, which may leak location information
 
-### `--bot-dns-local` (ENT Tier1)
+### `--bot-local-dns` (ENT Tier1)
 Enable the local DNS solver. This keeps DNS resolution local instead of relying on a proxy provider’s DNS behavior, improving privacy and speed while avoiding common DNS poisoning paths.
 
 ```bash
---bot-dns-local=true
+--bot-local-dns=true
 ```
 
 Practical notes:

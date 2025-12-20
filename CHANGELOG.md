@@ -8,7 +8,7 @@
 - **Chromium Core → 143.0.7499.147**: Updated the engine to 143.0.7499.147 to stay aligned with the latest Chrome Stable. This keeps Web Platform behavior, DevTools schemas, and version keyed heuristics in lockstep with upstream.
 
 ### New
-- **Local DNS solver (ENT Tier1)**: Added a local DNS resolver that can be enabled with `--bot-dns-local`. This improves privacy and resolution speed, avoids common DNS poisoning scenarios, and bypasses DNS limitations imposed by some proxy providers.
+- **Local DNS solver (ENT Tier1)**: Added a local DNS resolver that can be enabled with `--bot-local-dns`. This improves privacy and resolution speed, avoids common DNS poisoning scenarios, and bypasses DNS limitations imposed by some proxy providers.
 - **Custom public IP service**: Added `--bot-ip-service` so you can point BotBrowser at your own IP lookup endpoint when you want full control over how the public egress IP is detected. Multiple endpoints can be provided as a comma-separated list, and BotBrowser will race them and use the fastest successful response.
 
 ### Improvements

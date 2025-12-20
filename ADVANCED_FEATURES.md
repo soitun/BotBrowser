@@ -117,7 +117,7 @@ Performance tip: If all contexts share the same proxy IP, set `--proxy-ip` to sk
 **DNS & IP Discovery**
 - **DNS‑leak protection:** SOCKS5 proxies prevent local DNS resolution, and all domain lookups go through the proxy tunnel.
 - **UDP over SOCKS5 (ENT Tier3):** Automatically attempts UDP associate to tunnel QUIC/STUN where supported; ICE presets can often be skipped when UDP is available.
-- **Local DNS solver (ENT Tier1):** Enable `--bot-dns-local` when you want faster resolution, want to avoid DNS poisoning, or your proxy provider restricts DNS behavior. This keeps DNS resolution local while the rest of the proxy and geo pipeline remains consistent.
+- **Local DNS solver (ENT Tier1):** Enable `--bot-local-dns` when you want faster resolution, want to avoid DNS poisoning, or your proxy provider restricts DNS behavior. This keeps DNS resolution local while the rest of the proxy and geo pipeline remains consistent.
 - **Custom public IP service:** Use `--bot-ip-service` to point BotBrowser at your preferred IP lookup endpoint when you need deterministic egress discovery or an in-house IP service. You can provide multiple endpoints separated by commas, and BotBrowser will race them and pick the fastest successful response.
 
 **Important:** Always use BotBrowser's proxy options over framework-specific settings to ensure geo-detection remains accurate and consistent.

@@ -161,6 +161,10 @@ export class BrowserLauncherService {
             '--disable-blink-features=AutomationControlled',
             `--user-data-dir="${userDataDirPath}"`,
             `--disk-cache-dir="${diskCacheDirPath}"`,
+            '--bot-local-dns',
+            '--bot-webrtc-ice=google',
+            '--bot-mobile-force-touch',
+            '--bot-always-active',
             `--bot-profile="${botProfilePath}"`,
         ];
 
