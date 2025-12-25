@@ -94,10 +94,10 @@ This skips per‑page IP lookups and speeds up navigation.
 - Avoid: framework-specific options like `page.authenticate()` that disable BotBrowser's geo-detection, which may leak location information
 
 ### `--bot-local-dns` (ENT Tier1)
-Enable the local DNS solver. This keeps DNS resolution local instead of relying on a proxy provider’s DNS behavior, improving privacy and speed while avoiding common DNS poisoning paths.
+Enable the local DNS solver. This keeps DNS resolution local instead of relying on a proxy provider's DNS behavior, improving privacy and speed while avoiding common DNS poisoning paths.
 
 ```bash
---bot-local-dns=true
+--bot-local-dns
 ```
 
 Practical notes:
@@ -221,16 +221,16 @@ Flags that directly map to profile `configs` and override them at runtime.
 - `--bot-config-keyboard=profile`: Keyboard settings: profile (emulated), real (system keyboard)
 - `--bot-config-fonts=profile`: Font settings: profile (embedded), expand (profile + fallback), real (system fonts)
 - `--bot-config-color-scheme=light`: Color scheme: light, dark
-- `--bot-config-disable-device-scale-factor=true`: Disable device scale factor: true, false
+- `--bot-config-disable-device-scale-factor`: Disable device scale factor: true, false
 
 **Rendering, Noise & Media/RTC**
 - `--bot-config-webgl=profile`: WebGL: profile (use profile), real (system), disabled (off)
 - `--bot-config-webgpu=profile`: WebGPU: profile (use profile), real (system), disabled (off)
-- `--bot-config-noise-webgl-image=true`: WebGL image noise: true, false
-- `--bot-config-noise-canvas=true`: Canvas fingerprint noise: true, false
-- `--bot-config-noise-audio-context=true`: Audio context noise: true, false
-- `--bot-config-noise-client-rects=false`: Client rects noise: true, false
-- `--bot-config-noise-text-rects=true`: Text rects noise: true, false
+- `--bot-config-noise-webgl-image`: WebGL image noise: true, false
+- `--bot-config-noise-canvas`: Canvas fingerprint noise: true, false
+- `--bot-config-noise-audio-context`: Audio context noise: true, false
+- `--bot-config-noise-client-rects`: Client rects noise: true, false
+- `--bot-config-noise-text-rects`: Text rects noise: true, false
 - `--bot-config-speech-voices=profile`: Speech voices: profile (synthetic), real (system)
 - `--bot-config-media-devices=profile`: Media devices: profile (fake devices), real (system devices)
 - `--bot-config-media-types=expand`: Media types: expand (default), profile, real
@@ -286,7 +286,6 @@ Behavior & stealth toggles apply at launch and bypass profile data entirely.
 ```bash
 # Essential flags with proxy and remote debugging
 chromium-browser \
-  --no-sandbox \
   --bot-profile="/absolute/path/to/profile.enc" \
   --bot-title="My Session" \
   --proxy-server="http://myuser:mypass@proxy.example.com:8080" \
@@ -297,27 +296,21 @@ chromium-browser \
 ```bash
 # Override only what you need (timezone/locale auto-detected)
 chromium-browser \
-  --no-sandbox \
   --bot-profile="/absolute/path/to/profile.enc" \
   --bot-config-browser-brand="edge" \  # PRO feature
-  --bot-config-webgl="disabled" \
-  --bot-config-noise-canvas=true \
   --bot-title="Custom Session"
 
 # Active window + custom ICE servers
 chromium-browser \
-  --no-sandbox \
   --bot-profile="/absolute/path/to/profile.enc" \
-  --bot-always-active=true \  # PRO feature
-  --bot-webrtc-ice="custom:stun:stun.l.google.com:19302,turn:turn.example.com" \  # PRO feature
-  --bot-config-media-types="expand"
+  --bot-always-active \  # PRO feature
+  --bot-webrtc-ice="custom:stun:stun.l.google.com:19302,turn:turn.example.com"   # PRO feature
 ```
 
 ### Multi-instance setup
 ```bash
 # Instance 1 - Chrome brand with profile window settings
 chromium-browser \
-  --no-sandbox \
   --bot-profile="/absolute/path/to/profile.enc" \
   --bot-config-browser-brand="chrome" \  # PRO feature
   --bot-config-window="profile" \
@@ -327,7 +320,6 @@ chromium-browser \
 
 # Instance 2 - Edge brand with real window settings
 chromium-browser \
-  --no-sandbox \
   --bot-profile="/absolute/path/to/profile.enc" \
   --bot-config-browser-brand="edge" \  # PRO feature
   --bot-config-window="real" \
@@ -338,11 +330,9 @@ chromium-browser \
 ```bash
 # Stabilize performance timing and noise determinism under load
 chromium-browser \
-  --no-sandbox \
   --bot-profile="/absolute/path/to/profile.enc" \
   --bot-time-scale=0.92 \  # ENT Tier1 feature
-  --bot-noise-seed=1.07 \  # ENT Tier2 feature
-  --bot-config-noise-canvas=true
+  --bot-noise-seed=1.07   # ENT Tier2 feature
 ```
 
 ---

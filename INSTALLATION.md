@@ -13,20 +13,18 @@ Get the installer for your OS from the [Releases](https://github.com/botswin/Bot
 #### Standard Installation
 1. Extract the downloaded `.7z` archive
 2. Run `chrome.exe` from the extracted folder
-3. If you encounter `STATUS_ACCESS_VIOLATION`, launch with [--no-sandbox](https://peter.sh/experiments/chromium-command-line-switches/#no-sandbox).
 
 #### Common Windows Issues & Solutions
 
 | Issue | Solution |
 |-------|----------|
-| **STATUS_ACCESS_VIOLATION** | Add `--no-sandbox` flag when launching |
 | **Profile file permission errors** | Ensure `.enc` file has read permissions |
 | **BotBrowser won't start or crashes** | Check that your OS and Chromium version match the build; update BotBrowser to the latest release |
 | **Antivirus blocking execution** | Add BotBrowser directory to antivirus exclusions |
 
 #### Windows Command-Line Example
 ```cmd
-chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" --user-data-dir="%TEMP%\\botprofile_%RANDOM%"
+chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" --user-data-dir="%TEMP%\\botprofile_%RANDOM%"
 ```
 
 ### 3. macOS Installation
@@ -76,7 +74,6 @@ The script will automatically:
 #### macOS Command-Line Example
 ```bash
 /Applications/Chromium.app/Contents/MacOS/Chromium \
-  --no-sandbox \
   --user-data-dir="$(mktemp -d)" \
   --bot-profile="/absolute/path/to/profile.enc"
 ```
@@ -112,7 +109,6 @@ sudo apt-get install -y \
 #### Ubuntu Command-Line Example
 ```bash
 chromium-browser \
-  --no-sandbox \
   --user-data-dir="$(mktemp -d)" \
   --bot-profile="/absolute/path/to/profile.enc"
 ```
@@ -135,7 +131,6 @@ docker run -d \
   -v /path/to/profiles:/app/profiles \
   -p 9222:9222 \
   botbrowser/botbrowser:latest \
-  --no-sandbox \
   --bot-profile="/absolute/path/to/profile.enc" \
   --remote-debugging-port=9222
 ```
@@ -159,10 +154,10 @@ After installation, verify BotBrowser is working correctly:
 
 ```bash
 # Test basic launch (replace with your executable path)
-chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" --version
+chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" --version
 
 # Test with remote debugging
-chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" --remote-debugging-port=9222
+chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" --remote-debugging-port=9222
 
 # Verify remote debugging is active
 curl http://localhost:9222/json/version
@@ -177,7 +172,7 @@ Ensure your profiles are working correctly:
 ls -la ./profiles/*.enc
 
 # Test profile loading
-chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" --headless --dump-dom https://httpbin.org/user-agent
+chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" --headless --dump-dom https://httpbin.org/user-agent
 ```
 
 ---

@@ -3,6 +3,21 @@
 > **Research scope:** Entries in this changelog describe features evaluated in authorized labs and defensive benchmarking programs. Follow the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md). We work with security vendors to investigate any misuse, so report concerns to [botbrowser@bk.ru](mailto:botbrowser@bk.ru).
 
 
+## [2025-12-24]
+### Major
+- **Chromium Core → 143.0.7499.170**: Updated the engine to 143.0.7499.170 to stay aligned with the latest Chrome release. This maintains Web Platform parity, rendering consistency, and security patches with upstream.
+
+### Improvements
+- **Sandbox flag now optional**: `--no-sandbox` is no longer required for BotBrowser startup. The browser now handles sandbox configuration automatically, simplifying command‑line invocation and reducing flag verbosity.
+
+- **Boolean flag syntax simplification**: Toggle flags like `--bot-local-dns`, `--bot-mobile-force-touch`, and `--bot-always-active` no longer require `=true` suffix. Use `--bot-local-dns` instead of `--bot-local-dns=true` for cleaner and more intuitive CLI syntax.
+
+### Fixes
+- **Mobile force-touch reliability**: Fixed an edge case where the `--bot-mobile-force-touch` toggle could fail to apply in certain configurations. Touch event emission is now stable across device profiles and initialization paths.
+
+- **System font alignment (system-ui, emoji)**: Corrected an issue where `system-ui` and emoji fonts could fail to align with their system counterparts in certain scenarios. Font fallback chains now consistently resolve to the correct system fonts, improving text rendering accuracy and cross-platform consistency.
+
+
 ## [2025-12-22]
 ### Improvements
 - **FPS control precision**: Fine‑tuned frame rate simulation logic to deliver more accurate and stable FPS emulation, improving consistency when targeting specific refresh rates and reducing jitter in timing-sensitive scenarios.
@@ -143,7 +158,7 @@ Example (Edge browser emulation):
   Synced with the latest Chrome 142 stable to keep rendering, networking, storage, and media behavior aligned with upstream, reduce version‑based heuristics, and inherit current security/perf updates.
 
 ### New
-- **`--bot-config-disable-console-message` (PRO, default: true)**  
+- **`--bot-disable-console-message` (PRO, default: true)**  
   Disables console message output to avoid CDP log noise leaking into the page context or logs in production environments and blocks Console.enable/Runtime.enable stack getter detections (e.g., redefining `Error.stack` before `console.log(err)`). Tracks: issue **#75**.
 - **`--bot-config-fonts=expand` mode**  
   When a profile lacks specific fonts, `expand` will load additional system fonts to increase match rate and authenticity.
@@ -210,7 +225,7 @@ Example (Edge browser emulation):
 - **Android emoji rendering**  
   Some Android profiles showed missing or incorrect emoji due to fallback mismatches. The emoji font availability and fallback chain have been corrected so shaping matches real Android.
 
-- **Extensions + `--bot-config-always-active=true`**  
+- **Extensions + `--bot-always-active`**  
   Fixed a crash that could occur when loading extensions while the **always‑active** mode was enabled. Extensions now load reliably with the window kept active.
 
 ---
@@ -246,7 +261,7 @@ Example (Edge browser emulation):
 ```
   - **Why**: Some probes (e.g., https://ipbinding.online/) try to infer the real network by observing TURN traffic; controlling ICE servers reduces unintended leakage.
 
-- **CLI: `--bot-config-always-active` (true/false, default: true)**
+- **CLI: `--bot-always-active` (true/false, default: true)**
   - **What**: Keep windows **active** even when unfocused.
   - **Behavior**: Suppresses `blur/visibilitychange`; forces `document.hidden=false`; caret keeps blinking; applies **per‑window** (multi‑window friendly).
   - **Why**: Certain sites degrade features or throttle actions when the tab isn’t considered active.
@@ -385,7 +400,7 @@ Example (Edge browser emulation):
 - **CLI: `--proxy-ip` (profile key: `configs.proxy.ip`)**
   Provide the proxy’s public IP via CLI or profile so BotBrowser **skips per‑page IP lookups**, speeding up page open. Combine with `--bot-config-timezone` to emulate regions/timezones consistently.
 
-- **CLI: `--bot-config-mobile-force-touch` (profile key: `configs.mobileForceTouch`)**
+- **CLI: `--bot-mobile-force-touch` (profile key: `configs.mobileForceTouch`)**
   Force **on/off** touch emission when simulating mobile devices. Useful for sites that require touch events regardless of the detected environment.
   Resolves: https://github.com/botswin/BotBrowser/issues/65
 
@@ -506,10 +521,10 @@ Example (Edge browser emulation):
 ```bash
 --bot-config-browser-brand="chrome" # PRO feature: Browser brand: chrome, chromium, edge, brave
 --bot-config-color-scheme="light" # Color scheme: light, dark
---bot-config-disable-debugger=true # Disable JavaScript debugger: true, false
+--bot-disable-debugger=true # Disable JavaScript debugger: true, false
 --bot-config-disable-device-scale-factor=true # Disable device scale factor: true, false
 --bot-config-fonts="profile" # Font settings: profile (use profile fonts), real (system fonts)
---bot-config-inject-random-history=true # PRO feature: Inject random history: true, false
+--bot-inject-random-history=true # PRO feature: Inject random history: true, false
 --bot-config-keyboard="profile" # Keyboard settings: profile (emulated), real (system keyboard)
 --bot-config-languages="auto" # Languages: "lang1,lang2" or "auto" (IP-based)
 --bot-config-locale="auto" # Browser locale: e.g. en-US, fr-FR, de-DE, or "auto" (derived from IP/language)

@@ -28,13 +28,11 @@ BotBrowser provides multi-layer controls to maintain consistent fingerprints acr
 **Examples (brand identity/UA overrides are PRO-tier features):**
 ```bash
 # Override browser brand and WebGL settings
-chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" \
-           --bot-config-browser-brand="edge" \  # PRO feature
-           --bot-config-webgl="disabled" \
-           --bot-config-noise-canvas=true
+chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" \
+           --bot-config-browser-brand="edge"   # PRO feature
 
 # Auto-detect location and language from proxy IP
-chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" \
+chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" \
            --bot-config-timezone="auto" \
            --bot-config-languages="auto" \
            --bot-config-locale="auto"
@@ -58,7 +56,7 @@ Comprehensive tools for session control and identification.
 
 **Example:**
 ```bash
-chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" \
+chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" \
            --bot-title="Research Session A" \
            --bot-cookies='[{"name":"session","value":"abc123","domain":".example.com"}]' \
            --bot-bookmarks='[{"name":"Research","url":"https://example.com","folder":"Work"}]'
@@ -90,7 +88,7 @@ Structured proxy usernames: Some providers encode routing hints in the username.
 // Playwright example with different proxies per context
 const browser = await chromium.launch({
   executablePath: './chrome', // BotBrowser path
-  args: ['--no-sandbox', '--bot-profile=/absolute/path/to/profile.enc']
+  args: ['--bot-profile=/absolute/path/to/profile.enc']
 });
 
 // Context 1 with proxy A
@@ -124,7 +122,7 @@ Performance tip: If all contexts share the same proxy IP, set `--proxy-ip` to sk
 
 ```bash
 # Example: true full-proxy QUIC/STUN (Chromium-level UDP associate, no ProxyChains hacks)
-chromium-browser --no-sandbox --bot-profile="/abs/profile.enc" \
+chromium-browser --bot-profile="/abs/profile.enc" \
   --proxy-server="socks5://user:pass@proxy.example.com:1080" \
   --bot-webrtc-ice=google  # PRO feature
 ```
@@ -156,11 +154,11 @@ chromium-browser --no-sandbox --bot-profile="/abs/profile.enc" \
 ### Multi Layer Fingerprint Noise
 Deterministic noise generation prevents fingerprint collection and reproducibility. Configure all settings through CLI without modifying encrypted profiles.
 
-- **Canvas**: `--bot-config-noise-canvas=true`
-- **WebGL image**: `--bot-config-noise-webgl-image=true`
+- **Canvas**: `--bot-config-noise-canvas`
+- **WebGL image**: `--bot-config-noise-webgl-image`
 - **WebGPU**: Deterministic noise injected into WebGPU canvases by default so GPU-only analysis inherits the same reproducible noise characteristics without extra configuration
-- **AudioContext**: `--bot-config-noise-audio-context=true`
-- **ClientRects/TextRects**: `--bot-config-noise-client-rects=true`, `--bot-config-noise-text-rects=true`
+- **AudioContext**: `--bot-config-noise-audio-context`
+- **ClientRects/TextRects**: `--bot-config-noise-client-rects`, `--bot-config-noise-text-rects`
 - **Deterministic noise seeds (ENT Tier2 feature)**: `--bot-noise-seed=1.05` (1.0 to 1.2 range) enables reproducible yet distinct noise fields for Canvas 2D, WebGL, WebGPU imagery, text metrics with HarfBuzz layout, ClientRects, and audio hashes so each seed configuration produces consistent fingerprints for research purposes.
 
 Consistency Model:
@@ -173,7 +171,7 @@ Consistency Model:
 ### Active Window Emulation
 Maintains consistent window state to prevent focus-based tracking even when the host window is unfocused.
 
-- `--bot-config-always-active` (PRO feature) defaults to `true`, maintaining consistent `blur` and `visibilitychange` event patterns and keeping `document.hidden=false` for reliable API behavior
+- `--bot-always-active` (PRO feature) defaults to `true`, maintaining consistent `blur` and `visibilitychange` event patterns and keeping `document.hidden=false` for reliable API behavior
 - Configurable per-window to allow legitimate focus-change observation when required by applications
 - Protects against window focus based tracking heuristics that monitor caret blinking, FocusManager events, or inactive viewport throttling
 - README quick link: see [Workflows → Active Window](README.md#advanced-capabilities)
@@ -508,7 +506,7 @@ Execute JavaScript with privileged `chrome.debugger` access.
 
 **Usage Example:**
 ```bash
-chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" --bot-script="automation.js"
+chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" --bot-script="automation.js"
 ```
 
 **Available APIs in Bot‑Script Context:**

@@ -69,7 +69,7 @@ function createWorker(dates, profiles) {
           '--headless',
           '--disable-blink-features=AutomationControlled',
           '--disable-audio-output',
-          '--bot-config-webrtc-ice=google',
+          '--bot-webrtc-ice=google',
           '--no-first-run',
           '--password-store=basic',
           '--disable-dev-shm-usage',

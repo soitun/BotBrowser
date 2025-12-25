@@ -75,7 +75,7 @@ All engineering focuses on automation-assisted privacy research, cross-platform 
 **Step 2: Launch** (⚠️ use absolute paths)
 - **Windows example:**
   ```cmd
-  chrome.exe --no-sandbox --bot-profile="C:\absolute\path\to\profile.enc" --user-data-dir="%TEMP%\botprofile_%RANDOM%"
+  chrome.exe --bot-profile="C:\absolute\path\to\profile.enc" --user-data-dir="%TEMP%\botprofile_%RANDOM%"
   ```
 - macOS/Linux commands follow the same pattern; see [INSTALLATION.md](INSTALLATION.md) for full instructions.
 
@@ -92,7 +92,7 @@ All engineering focuses on automation-assisted privacy research, cross-platform 
 const browser = await chromium.launch({
   headless: true,
   executablePath: BOTBROWSER_EXEC_PATH,
-  args: ['--no-sandbox', `--bot-profile=${BOT_PROFILE_PATH}`],
+  args: [`--bot-profile=${BOT_PROFILE_PATH}`],
   '--proxy-server="socks5://usr:pwd@127.0.0.1:8989"',  // or: "http://usr:pwd@127.0.0.1:8989"
 });
 const page = await browser.newPage();
@@ -271,7 +271,6 @@ Contact [botbrowser@bk.ru](mailto:botbrowser@bk.ru) for source code access and c
 
 | Issue | Platform | Solution |
 |-------|----------|----------|
-| **STATUS_ACCESS_VIOLATION** | Windows | Add `--no-sandbox` flag when launching |
 | **"Chromium" is damaged** | macOS | Run `xattr -rd com.apple.quarantine /Applications/Chromium.app` |
 | **Missing dependencies** | Ubuntu | Run `sudo apt-get install -f` |
 | **Profile file permission errors** | All | Ensure `.enc` file has read permissions (`chmod 644`) |
