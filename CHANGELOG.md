@@ -20,7 +20,7 @@
 
 ## [2025-12-22]
 ### Improvements
-- **FPS control precision**: Fine‑tuned frame rate simulation logic to deliver more accurate and stable FPS emulation, improving consistency when targeting specific refresh rates and reducing jitter in timing-sensitive scenarios.
+- **FPS control precision (ENT Tier2)**: Fingerprint-based FPS simulation that precisely matches profile refresh rates even on low-spec hosts (e.g., VPS running 30 FPS can emit 120 FPS behavior). Recovers high-refresh-rate profiles without leaking underlying infrastructure framerate, and reduces timing jitter in detection-sensitive scenarios.
 
 ### Fixes
 - **Iframe content dimensions**: Resolved an edge case where iframe content dimensions (height/width) could be reported as zero in certain layout conditions. Frame boundaries now render consistently.

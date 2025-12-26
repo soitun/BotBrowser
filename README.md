@@ -118,13 +118,13 @@ Examples: [Playwright](examples/playwright/) • [Puppeteer](examples/puppeteer/
 
 - **Multi Layer Noise**: Canvas, WebGL, WebGPU, text, and AudioContext surfaces share deterministic, cross-worker noise with low-level Skia and HarfBuzz tuning so observers cannot correlate runs
 - **Execution Environment Isolation**: Clean execution contexts prevent framework artifacts from exposing automation details, framework-less `--bot-script`, and console suppression PRO toggles maintain consistent fingerprints across automation modes
-- **Configurable Stack**: 30+ CLI overrides, ENT Tier1 per-context proxies with auto geo, and session tooling (cookies, bookmarks, title, history) make privacy scripting flexible
+- **Configurable Stack**: 30+ CLI overrides, per-context proxies with auto geo (ENT Tier1), and session tooling (cookies, bookmarks, title, history) make privacy scripting flexible
 - **Typography Fidelity**: DOM text renders from embedded Windows, macOS, and Android font packs so host fonts never leak during cross-OS simulation
 - **Client Hints Lockstep**: DPR, device-memory, and UA-CH headers match JavaScript-visible values to keep header data in sync with runtime fingerprints
 - **Headless ↔ GUI Parity**: Identical GPU, WebGPU, and media signals across browser modes so privacy regression tests remain stable
-- **Performance Controls**: Precision FPS and memory timings plus ENT Tier1 timing controls and ENT Tier2 noise seeds for reproducible privacy benchmarks
+- **Performance Controls**: Precision FPS (ENT Tier2) and memory timings plus timing controls (ENT Tier1) and noise seeds for reproducible privacy benchmarks (ENT Tier2)
 - **Focus & Session Control**: Always-active tabs, configurable ICE presets, and expanded media reporting keep privacy sessions believable
-- **Network Enhancements**: ENT Tier1 per-context proxies, optional local DNS solver (ENT Tier1), UDP-over-SOCKS5 (ENT Tier3), and SOCKS5H DNS in tunnel behavior for clean geo signals
+- **Network Enhancements**: (ENT Tier1) per-context proxies, optional local DNS solver (ENT Tier1), UDP-over-SOCKS5 (ENT Tier3), and SOCKS5H DNS in tunnel behavior for clean geo signals
 
 <details>
 <summary><strong>Fingerprint Consistency Implementation: Privacy Controls → Technical Design → Validation</strong></summary>

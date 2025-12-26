@@ -12,7 +12,7 @@ BotBrowser provides multi-layer controls to maintain consistent fingerprints acr
 
 ## 📁 Capabilities Index
 
-[navigator.webdriver removal](#chrome-behavior-emulation), [main‑world isolation](#playwright-puppeteer-integration), [JS hook stealth](#playwright-puppeteer-integration), [Canvas noise](#graphics-rendering-engine), [WebGL/WebGPU param control](#graphics-rendering-engine), [Skia anti‑alias](#cross-platform-font-engine), [HarfBuzz shaping](#cross-platform-font-engine), [MediaDevices spoofing](#complete-fingerprint-control), [font list spoofing](#cross-platform-font-engine), [UA congruence](#configuration-and-control), [per‑context proxy geo (ENT Tier1)](#enhanced-proxy-system), [DNS‑through‑proxy](#enhanced-proxy-system), [active window emulation](#active-window-emulation), [HTTP headers/HTTP2/HTTP3](#chrome-behavior-emulation), [headless parity](#headless-incognito-compatibility), [WebRTC SDP/ICE control](#webrtc-leak-protection), [TLS fingerprint (JA3/JARM)](#network-fingerprint-control)
+[navigator.webdriver removal](#chrome-behavior-emulation), [main‑world isolation](#playwright-puppeteer-integration), [JS hook stealth](#playwright-puppeteer-integration), [Canvas noise](#graphics-rendering-engine), [WebGL/WebGPU param control](#graphics-rendering-engine), [Skia anti‑alias](#cross-platform-font-engine), [HarfBuzz shaping](#cross-platform-font-engine), [MediaDevices spoofing](#complete-fingerprint-control), [font list spoofing](#cross-platform-font-engine), [UA congruence](#configuration-and-control), [per‑context proxy geo (ENT Tier1 feature)](#enhanced-proxy-system), [DNS‑through‑proxy](#enhanced-proxy-system), [active window emulation](#active-window-emulation), [HTTP headers/HTTP2/HTTP3](#chrome-behavior-emulation), [headless parity](#headless-incognito-compatibility), [WebRTC SDP/ICE control](#webrtc-leak-protection), [TLS fingerprint (JA3/JARM)](#network-fingerprint-control)
 
 <a id="configuration-and-control"></a>
 ## ⚙️ Configuration & Control
@@ -64,7 +64,7 @@ chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" \
 
 <a id="enhanced-proxy-system"></a>
 ### 🌐 Enhanced Proxy System
-Rebuilt for stability, per‑context support (ENT Tier1), and DNS‑leak protection.
+Rebuilt for stability, per‑context support (ENT Tier1 feature), and DNS‑leak protection.
 
 **Embedded Credentials:**
 ```bash
@@ -83,7 +83,7 @@ Structured proxy usernames: Some providers encode routing hints in the username.
 ```
 
 
-**Per‑Context Proxy Support (ENT Tier1):**
+**Per‑Context Proxy Support (ENT Tier1 feature):**
 ```javascript
 // Playwright example with different proxies per context
 const browser = await chromium.launch({
@@ -102,7 +102,7 @@ const context2 = await browser.newContext({
 });
 ```
 
-Automatic geo‑detection: Each ENT Tier1 context derives timezone, locale, and languages from its proxy IP, so no manual setup is needed.
+Automatic geo‑detection (ENT Tier1 feature): Each context derives timezone, locale, and languages from its proxy IP, so no manual setup is needed.
 
 Performance tip: If all contexts share the same proxy IP, set `--proxy-ip` to skip repeated lookups.
 
@@ -114,8 +114,8 @@ Performance tip: If all contexts share the same proxy IP, set `--proxy-ip` to sk
 
 **DNS & IP Discovery**
 - **DNS‑leak protection:** SOCKS5 proxies prevent local DNS resolution, and all domain lookups go through the proxy tunnel.
-- **UDP over SOCKS5 (ENT Tier3):** Automatically attempts UDP associate to tunnel QUIC/STUN where supported; ICE presets can often be skipped when UDP is available.
-- **Local DNS solver (ENT Tier1):** Enable `--bot-local-dns` when you want faster resolution, want to avoid DNS poisoning, or your proxy provider restricts DNS behavior. This keeps DNS resolution local while the rest of the proxy and geo pipeline remains consistent.
+- **UDP over SOCKS5 (ENT Tier3 feature):** Automatically attempts UDP associate to tunnel QUIC/STUN where supported; ICE presets can often be skipped when UDP is available.
+- **Local DNS solver (ENT Tier1 feature):** Enable `--bot-local-dns` when you want faster resolution, want to avoid DNS poisoning, or your proxy provider restricts DNS behavior. This keeps DNS resolution local while the rest of the proxy and geo pipeline remains consistent.
 - **Custom public IP service:** Use `--bot-ip-service` to point BotBrowser at your preferred IP lookup endpoint when you need deterministic egress discovery or an in-house IP service. You can provide multiple endpoints separated by commas, and BotBrowser will race them and pick the fastest successful response.
 
 **Important:** Always use BotBrowser's proxy options over framework-specific settings to ensure geo-detection remains accurate and consistent.
@@ -134,14 +134,14 @@ chromium-browser --bot-profile="/abs/profile.enc" \
 
 - **HTTP Headers & Protocol:** Chrome‑like request headers; authentic HTTP/2 and HTTP/3 behavior (see Chrome Behavior Emulation).
 - **DNS Routing:** SOCKS5 avoids local DNS resolution; all lookups go through the proxy tunnel (see Enhanced Proxy System).
-- **UDP over SOCKS5 (ENT Tier3):** Automatic UDP associate when supported to tunnel QUIC and STUN; ICE presets often unnecessary if UDP is available.
+- **UDP over SOCKS5 (ENT Tier3 feature):** Automatic UDP associate when supported to tunnel QUIC and STUN; ICE presets often unnecessary if UDP is available.
 - **WebRTC:** SDP/ICE manipulation and candidate filtering to prevent local IP disclosure (see WebRTC Leak Protection).
 - **TLS Fingerprints (JA3/JARM/ALPN):** Status: Roadmap: evaluation in progress; goals include cipher/extension ordering and ALPN tuning.
 
 **Stack differentiators:**
 - Per-context proxies with automatic geo detection (timezone/locale/language) across contexts and sessions
 - DNS-through-proxy plus credentialed proxy URLs keep browser-level geo signals consistent
-- UDP-over-SOCKS5 tunnel (ENT Tier3 capability) for QUIC/STUN so ICE presets are only needed when UDP is unavailable
+- UDP-over-SOCKS5 tunnel (ENT Tier3 feature) for QUIC/STUN so ICE presets are only needed when UDP is unavailable
 - Optional ICE control via `--bot-webrtc-ice` (PRO feature) when the proxy lacks UDP support
 - Chromium-level implementation that avoids external Go/ProxyChains hijacking; tunneling lives inside the network stack
 
@@ -206,7 +206,7 @@ Complete WebRTC fingerprint consistency and network privacy protection.
 - RTCPeerConnection behavior standardization
 - Network topology protection through controlled signal patterns
 - ICE server presets and custom lists via `--bot-webrtc-ice` (PRO feature) to standardize STUN and TURN endpoints observed by page JavaScript
-- Combined with UDP-over-SOCKS5 (ENT Tier3) you achieve Chromium-level QUIC and STUN tunneling for complete network consistency; see [`Network Fingerprint Control`](ADVANCED_FEATURES.md#network-fingerprint-control) and [`CLI_FLAGS`](CLI_FLAGS.md#⚙️-profile-configuration-override-flags) for implementation examples.
+- Combined with UDP-over-SOCKS5 (ENT Tier3 feature) you achieve Chromium-level QUIC and STUN tunneling for complete network consistency; see [`Network Fingerprint Control`](ADVANCED_FEATURES.md#network-fingerprint-control) and [`CLI_FLAGS`](CLI_FLAGS.md#⚙️-profile-configuration-override-flags) for implementation examples.
 
 <a id="chrome-behavior-emulation"></a>
 ### Chrome Behavior Emulation
@@ -222,8 +222,8 @@ Consistent Chrome compatible behaviors and standardized API responses.
 - Consistent behavior with standard services integration
 - Standardized JavaScript API responses matching Chrome specifications
 
-**Widevine CDM Integration (ENT Tier2):**
-> Note: BotBrowser does not distribute proprietary modules (e.g., Widevine). End users must obtain playback components via official channels, and this integration is available only in ENT Tier2.
+**Widevine CDM Integration (ENT Tier2 feature):**
+> Note: BotBrowser does not distribute proprietary modules (e.g., Widevine). End users must obtain playback components via official channels, and this integration is available only in ENT Tier2 feature.
 
 ---
 
@@ -312,18 +312,16 @@ Compact overview; expand for full details.
 ### Precise FPS Simulation
 Advanced frame‑rate and performance emulation.
 
-**Refresh‑Rate Control:**
+**Refresh‑Rate Control: (ENT Tier2 feature)**
+- requestAnimationFrame delay matching target FPS
 - Emulate target refresh rates (60Hz, 120Hz, 144Hz, etc.)
 - Simulate high-FPS macOS behavior on Ubuntu hosts
 - Authentic vsync and frame timing patterns
-- Input latency simulation matching target devices
 
-**Performance Timing:**
-- requestAnimationFrame delay matching target FPS
+**Performance Timing: (ENT Tier1 feature)**
 - Realistic frame drops and performance variations
 - GPU rendering timing simulation
-- Display synchronization behavior
-- Runtime timing scaling via `--bot-time-scale` (ENT Tier1 feature) to compress `performance.now()` deltas for low-load simulation (e.g., `--bot-time-scale=0.92` for high-load emulation)
+- Runtime timing scaling via `--bot-time-scale` to compress `performance.now()` deltas for low-load simulation (e.g., `--bot-time-scale=0.92` for high-load emulation)
 
 ### Performance Fingerprint Controls
 Fine‑grained tuning for authentic device simulation.
@@ -345,7 +343,7 @@ Fine‑grained tuning for authentic device simulation.
 - WebAssembly performance simulation
 - Crypto API timing characteristics
 - Web Worker performance patterns
-- Deterministic noise seeds via `--bot-noise-seed` (ENT Tier2) to stabilize noise distributions across sessions (`--bot-noise-seed=1.07`)
+- Deterministic noise seeds via `--bot-noise-seed` (ENT Tier2 feature) to stabilize noise distributions across sessions (`--bot-noise-seed=1.07`)
 
 ### Extended Media Types & WebCodecs APIs
 Comprehensive media‑format support and codec emulation.
@@ -364,7 +362,7 @@ Comprehensive media‑format support and codec emulation.
 - Encoding capability emulation
 
 **Media Capabilities:**
-- Realistic mediaCapabilities.decodingInfo() responses (ENT Tier2 for DRM probing parity)
+- Realistic mediaCapabilities.decodingInfo() responses (ENT Tier2 feature for DRM probing parity)
 - Power efficiency reporting simulation
 - Smooth playback prediction accuracy
 - HDR and wide gamut support detection
