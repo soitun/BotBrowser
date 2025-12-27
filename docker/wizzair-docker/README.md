@@ -1,4 +1,4 @@
-# ✈️ WizzAir Compatibility Testing with Docker
+# WizzAir Compatibility Testing with Docker
 
 For Academic and Authorized Testing Environments. See the project [Legal Disclaimer](../../DISCLAIMER.md) and [Responsible Use Guidelines](../../RESPONSIBLE_USE.md) for usage boundaries.
 
@@ -31,7 +31,7 @@ This repository contains a Docker setup for validating fingerprint protection on
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 > **Reminder:** run this workflow only against environments where you have explicit authorization.
 

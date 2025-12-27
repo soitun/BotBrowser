@@ -1,8 +1,8 @@
-# 🛠️ BotBrowser Patch Examples
+# BotBrowser Patch Examples
 
 For Academic and Security Analysis Purposes.
 
-> 🚧 These are selected examples from BotBrowser’s internals for academic study and security analysis. The full core remains proprietary for compatibility testing.
+> These are selected examples from BotBrowser's internals for academic study and security analysis. The full core remains proprietary for compatibility testing.
 
 BotBrowser includes proprietary enhancements built on top of Chromium, developed in‑house for fingerprint protection and privacy research.
 
@@ -13,7 +13,7 @@ The patches here are select examples published to illustrate techniques for acad
 
 ---
 
-## 🔍 What’s Inside
+## What's Inside
 
 - **Proprietary Foundation**
   BotBrowser’s engine is built in‑house, with no forks or external project references.
@@ -24,7 +24,7 @@ The patches here are select examples published to illustrate techniques for acad
 - **Comprehensive Compatibility Coverage**
   These patches address fingerprint consistency across multiple surfaces, informed by:
   1. Security analysis of browser compatibility mechanisms
-  2. V8-level study of fingerprint collection and validation
+  2. V8-level study of tracking data collection and validation
   3. Compatibility testing experience in controlled environments
 
 ## Contact (Academic Inquiries Only)
@@ -32,13 +32,13 @@ The patches here are select examples published to illustrate techniques for acad
 For academic collaboration or licensing review, please reach out:
 
 <table>
-  <tr><td>📧 Email</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
-  <tr><td>📱 Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
+  <tr><td>Email</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
+  <tr><td>Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
 </table>
 
 ---
 
-## 📂 Directory Tree
+## Directory Tree
 
 Below is the structure patches-showing which Chromium source files we’ve tweaked:
 

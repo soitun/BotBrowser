@@ -4,20 +4,20 @@ Comprehensive technical controls for fingerprint consistency that prevent tracki
 
 Use this document for detailed technical reference behind the [README](README.md): implementation strategies for preventing fingerprint collection, consistency controls, and privacy protection mechanisms not on the main page. Each section links back to the relevant quick-start guide (CLI flags, README, validation data) so you can jump between overview and implementation details quickly. For overall usage terms, refer to the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md).
 
-## 📘 Overview
+## Overview
 
-BotBrowser provides multi-layer controls to maintain consistent fingerprints across all platforms. These mechanisms support research into fingerprint based tracking prevention, cross-platform privacy protection, and automated privacy consistency validation.
+BotBrowser provides multi-layer controls to maintain consistent fingerprints across all platforms. These mechanisms support research into fingerprint based tracking prevention, cross-platform privacy protection, and reproducible privacy consistency validation.
 
 ---
 
-## 📁 Capabilities Index
+## Capabilities Index
 
-[navigator.webdriver removal](#chrome-behavior-emulation), [main‑world isolation](#playwright-puppeteer-integration), [JS hook stealth](#playwright-puppeteer-integration), [Canvas noise](#graphics-rendering-engine), [WebGL/WebGPU param control](#graphics-rendering-engine), [Skia anti‑alias](#cross-platform-font-engine), [HarfBuzz shaping](#cross-platform-font-engine), [MediaDevices spoofing](#complete-fingerprint-control), [font list spoofing](#cross-platform-font-engine), [UA congruence](#configuration-and-control), [per‑context proxy geo (ENT Tier1 feature)](#enhanced-proxy-system), [DNS‑through‑proxy](#enhanced-proxy-system), [active window emulation](#active-window-emulation), [HTTP headers/HTTP2/HTTP3](#chrome-behavior-emulation), [headless parity](#headless-incognito-compatibility), [WebRTC SDP/ICE control](#webrtc-leak-protection), [TLS fingerprint (JA3/JARM)](#network-fingerprint-control)
+[navigator.webdriver removal](#chrome-behavior-emulation), [main‑world isolation](#playwright-puppeteer-integration), [JS hook isolation](#playwright-puppeteer-integration), [Canvas noise](#graphics-rendering-engine), [WebGL/WebGPU param control](#graphics-rendering-engine), [Skia anti‑alias](#cross-platform-font-engine), [HarfBuzz shaping](#cross-platform-font-engine), [MediaDevices consistency](#complete-fingerprint-control), [font list authenticity](#cross-platform-font-engine), [UA congruence](#configuration-and-control), [per‑context proxy geo (ENT Tier1 feature)](#enhanced-proxy-system), [DNS‑through‑proxy](#enhanced-proxy-system), [active window emulation](#active-window-emulation), [HTTP headers/HTTP2/HTTP3](#chrome-behavior-emulation), [headless parity](#headless-incognito-compatibility), [WebRTC SDP/ICE control](#webrtc-leak-protection), [TLS fingerprint (JA3/JARM)](#network-fingerprint-control)
 
 <a id="configuration-and-control"></a>
-## ⚙️ Configuration & Control
+## Configuration & Control
 
-### 🛠️ Advanced CLI Configuration
+### Advanced CLI Configuration
 **[CLI overrides](CLI_FLAGS.md#profile-configuration-override-flags)** map to profile configs and take highest priority, so no profile edits are required.
 
 **Key Benefits:**
@@ -38,7 +38,7 @@ chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" \
            --bot-config-locale="auto"
 ```
 
-### 🧭 Session Management
+### Session Management
 Comprehensive tools for session control and identification.
 
 **Custom Titles and Labels:**
@@ -52,7 +52,7 @@ Comprehensive tools for session control and identification.
 - `--bot-bookmarks` - JSON string containing bookmark data for startup
 - Maintains session state across restarts
 - Adds authenticity to browser fingerprint
-- `--bot-inject-random-history` (PRO feature) - optional history seeding for session realism
+- `--bot-inject-random-history` (PRO feature) - optional history augmentation for session authenticity
 
 **Example:**
 ```bash
@@ -63,7 +63,7 @@ chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" \
 ```
 
 <a id="enhanced-proxy-system"></a>
-### 🌐 Enhanced Proxy System
+### Enhanced Proxy System
 Rebuilt for stability, per‑context support (ENT Tier1 feature), and DNS‑leak protection.
 
 **Embedded Credentials:**
@@ -128,9 +128,9 @@ chromium-browser --bot-profile="/abs/profile.enc" \
 ```
 
 <a id="network-fingerprint-control"></a>
-## 🌐 Network Fingerprint Control
+## Network Fingerprint Control
 
-**Scope:** Network‑layer traits that detection systems often score.
+**Scope:** Network‑layer traits that tracking systems often score.
 
 - **HTTP Headers & Protocol:** Chrome‑like request headers; authentic HTTP/2 and HTTP/3 behavior (see Chrome Behavior Emulation).
 - **DNS Routing:** SOCKS5 avoids local DNS resolution; all lookups go through the proxy tunnel (see Enhanced Proxy System).
@@ -139,7 +139,7 @@ chromium-browser --bot-profile="/abs/profile.enc" \
 - **TLS Fingerprints (JA3/JARM/ALPN):** Status: Roadmap: evaluation in progress; goals include cipher/extension ordering and ALPN tuning.
 
 **Stack differentiators:**
-- Per-context proxies with automatic geo detection (timezone/locale/language) across contexts and sessions
+- Per-context proxies with proxy-based geo detection (timezone/locale/language) across contexts and sessions
 - DNS-through-proxy plus credentialed proxy URLs keep browser-level geo signals consistent
 - UDP-over-SOCKS5 tunnel (ENT Tier3 feature) for QUIC/STUN so ICE presets are only needed when UDP is unavailable
 - Optional ICE control via `--bot-webrtc-ice` (PRO feature) when the proxy lacks UDP support
@@ -149,14 +149,14 @@ chromium-browser --bot-profile="/abs/profile.enc" \
 
 ---
 
-## 🔒 Privacy Protection & Fingerprint Randomization
+## Privacy Protection & Fingerprint Randomization
 
 ### Multi Layer Fingerprint Noise
 Deterministic noise generation prevents fingerprint collection and reproducibility. Configure all settings through CLI without modifying encrypted profiles.
 
 - **Canvas**: `--bot-config-noise-canvas`
 - **WebGL image**: `--bot-config-noise-webgl-image`
-- **WebGPU**: Deterministic noise injected into WebGPU canvases by default so GPU-only analysis inherits the same reproducible noise characteristics without extra configuration
+- **WebGPU**: Deterministic noise variance applied to WebGPU canvases by default so GPU-only analysis inherits the same reproducible noise characteristics without extra configuration
 - **AudioContext**: `--bot-config-noise-audio-context`
 - **ClientRects/TextRects**: `--bot-config-noise-client-rects`, `--bot-config-noise-text-rects`
 - **Deterministic noise seeds (ENT Tier2 feature)**: `--bot-noise-seed=1.05` (1.0 to 1.2 range) enables reproducible yet distinct noise fields for Canvas 2D, WebGL, WebGPU imagery, text metrics with HarfBuzz layout, ClientRects, and audio hashes so each seed configuration produces consistent fingerprints for research purposes.
@@ -227,7 +227,7 @@ Consistent Chrome compatible behaviors and standardized API responses.
 
 ---
 
-## 📱 Device & Platform Emulation
+## Device & Platform Emulation
 Compact overview; expand for full details.
 
 <details>
@@ -301,7 +301,7 @@ Comprehensive hardware emulation and fingerprint management.
 
 ---
 
-## ⚡ Deep System Integration
+## Deep System Integration
 </details>
 
 Compact overview; expand for full details.
@@ -405,7 +405,7 @@ Runtime OS‑based feature loading for authentic behavior.
 
 ---
 
-## 📋 Complete Fingerprint Control
+## Complete Fingerprint Control
 </details>
 
 Compact overview; expand for full details.
@@ -430,7 +430,7 @@ Precise geolocation and temporal controls.
 | Component | Capabilities |
 |-----------|-------------|
 | **Timezone** | Automatic IP-based detection, manual override, DST handling |
-| **Geolocation** | Coordinate spoofing, accuracy simulation, permission handling |
+| **Geolocation** | Coordinate consistency, accuracy simulation, permission handling |
 | **Time APIs** | Date/time consistency, performance.now() behavior, timezone transitions |
 
 ### Display & UI Control
@@ -465,7 +465,7 @@ Advanced graphics controls and rendering consistency.
 | **WebGL** | Precision GPU micro-benchmarks, driver-specific behavior, extension simulation |
 | **WebGPU** | Modern GPU API support, compute shader capabilities, buffer management |
 | **Text Rendering** | HarfBuzz text shaping, cross-platform fonts, emoji rendering consistency |
-| **Performance** | Precise FPS simulation, texture hash spoofing, render timing control |
+| **Performance** | Precise FPS simulation, texture hash fidelity, render timing control |
 
 ### Network & Media Subsystems
 Complete network behavior and media‑processing capabilities.
@@ -490,7 +490,7 @@ Fine‑grained performance fingerprint control and timing simulation.
 
 ---
 
-## 🔗 Integration with Automation Frameworks
+## Integration with Automation Frameworks
 </details>
 
 ### Framework‑Less Automation (`--bot-script`)
@@ -500,11 +500,11 @@ Execute JavaScript with privileged `chrome.debugger` access.
 - **No framework dependencies** - Pure Chrome DevTools Protocol access
 - **Earlier intervention** - Execute before page navigation
 - **Privileged context** - Full `chrome.debugger` API access
-- **Isolated automation** - Framework artifacts do not appear in page context
+- **Isolated execution** - Framework artifacts do not appear in page context
 
 **Usage Example:**
 ```bash
-chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" --bot-script="automation.js"
+chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" --bot-script="script.js"
 ```
 
 **Available APIs in Bot‑Script Context:**
@@ -512,15 +512,15 @@ chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" --bot-script="aut
 - `chrome.runtime` - Runtime APIs and event handling
 - Standard browser APIs (console, setTimeout, etc.)
 
-📖 **Documentation:** [Bot Script Automation Examples](examples/bot-script)
+📖 **Documentation:** [Bot Script Examples](examples/bot-script)
 
 <a id="playwright-puppeteer-integration"></a>
 ### Playwright/Puppeteer Integration
-Enhanced compatibility with popular automation frameworks.
+Privacy-preserving integration with popular frameworks.
 
 **CDP‑Leak Protection:**
 - Prevents CDP artifacts from appearing in page context
-- Maintains authentic browser behavior under automation
+- Maintains authentic browser behavior in all contexts
 - Eliminates framework-specific fingerprint signatures
 
 **Enhanced WebDriver Support:**
@@ -530,7 +530,7 @@ Enhanced compatibility with popular automation frameworks.
 
 ---
 
-## 🔬 Research Applications
+## Research Applications
 
 ### Academic Research Use Cases
 BotBrowser’s capabilities support multiple research applications in authorized environments:
@@ -543,7 +543,7 @@ BotBrowser’s capabilities support multiple research applications in authorized
 **Security Research:**
 - Web application security testing
 - Anti-bot system evaluation
-- Fingerprinting technique analysis
+- Tracking technique analysis
 
 **Performance Research:**
 - Browser performance characteristic studies
@@ -565,7 +565,7 @@ BotBrowser’s capabilities support multiple research applications in authorized
 
 ---
 
-## 🛠️ Technical Implementation Details
+## Technical Implementation Details
 
 ### Architecture Overview
 BotBrowser implements advanced features across multiple layers:
@@ -600,27 +600,27 @@ Advanced features are engineered for minimal performance impact:
 
 ---
 
-## 📞 Advanced Feature Support
+## Advanced Feature Support
 
 For technical questions about advanced features, implementation details, or custom requirements:
 
 <table>
-  <tr><td>📧 Email</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
-  <tr><td>📱 Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
+  <tr><td>Email</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
+  <tr><td>Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
 </table>
 
 ---
 
-## 🔗 Related Documentation
+## Related Documentation
 
 - **[Main README](README.md)** - Project overview and quick start
 - **[Installation Guide](INSTALLATION.md)** - Detailed setup instructions
 - **[CLI Flags Reference](CLI_FLAGS.md)** - Complete command-line options
 - **[Profile Configuration](profiles/PROFILE_CONFIGS.md)** - Advanced profile customization
 - **[Validation Results](VALIDATION.md)** - Research and testing data
-- **[BotCanvasLab](tools/botcanvas/)** - Canvas forensics and fingerprint analysis tool (recording available broadly; deterministic replay tooling forthcoming)
+- **[BotCanvasLab](tools/botcanvas/)** - Canvas forensics and tracking analysis tool (recording available broadly; deterministic replay tooling forthcoming)
 - **[Examples](examples/)** - Automation code samples
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.
+**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

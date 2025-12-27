@@ -1,6 +1,6 @@
-# 🎨 BotCanvasLab (Beta): recording for all users; deterministic replay tooling forthcoming
+# BotCanvasLab (Beta): recording for all users; deterministic replay tooling forthcoming
 
-Canvas 2D/WebGL fingerprint forensics for BotBrowser. Capture every API call as a JSONL event stream for analysis and future replay capabilities.
+Canvas 2D/WebGL tracking forensics for BotBrowser. Capture every API call as a JSONL event stream for analysis and future replay capabilities.
 
 ---
 
@@ -8,13 +8,13 @@ Canvas 2D/WebGL fingerprint forensics for BotBrowser. Capture every API call as 
 
 BotCanvas is a comprehensive canvas recording system that captures all Canvas 2D and WebGL API calls with complete parameter serialization. The recorded JSONL format enables:
 
-- **Forensic analysis** – understand how tracking systems build fingerprints so you can defend against collection
+- **Forensic analysis** – understand how tracking systems collect data so you can defend against it
 - **Deterministic testing** – validate cross-platform consistency with identical API sequences
 - **Hash reconstruction** – upcoming replay feature in BotBrowser will restore canvas operations from recordings to reproduce identical hashes
 
 ---
 
-## 🎬 Try It Now
+## Try It Now
 
 > **[▶️ Launch Live Replay Viewer](https://botswin.github.io/BotBrowser/tools/botcanvas/canvas_replay_viewer.html?jsonl=https://botswin.github.io/BotBrowser/tools/botcanvas/canvas_2d_simple_test_record.jsonl)**: Interactive demo preloaded with sample JSONL. Scrub through events, view generated code with source locations, and watch canvas rendering in slow motion!
 
@@ -46,7 +46,7 @@ BotCanvas is a comprehensive canvas recording system that captures all Canvas 2D
 
 ---
 
-## ⚡ Quick Start: Recording Canvas 2D
+## Quick Start: Recording Canvas 2D
 
 **Step 1: Launch with recording enabled**
 ```bash
@@ -58,7 +58,7 @@ chromium \
 ```
 
 **Step 2: Navigate and execute**
-Visit your target site (or load a test scene) and trigger the canvas fingerprinting workflow you want to analyze.
+Visit your target site (or load a test scene) and trigger the canvas tracking workflow you want to analyze.
 
 **Step 3: Collect results**
 Exit BotBrowser. The complete recording is saved to `/tmp/botcanvas.jsonl` in structured JSONL format.
@@ -105,7 +105,7 @@ Exit BotBrowser. The complete recording is saved to `/tmp/botcanvas.jsonl` in st
 - Source location for every API call (`url:line:column`)
 - Function name when available
 - Direct mapping between canvas operations and source code
-- Enables precise debugging and fingerprinting technique analysis
+- Enables precise debugging and tracking technique analysis
 
 **Example event with caller:**
 ```json
@@ -127,11 +127,11 @@ Exit BotBrowser. The complete recording is saved to `/tmp/botcanvas.jsonl` in st
 
 | Scenario | How BotCanvas Helps |
 |----------|---------------------|
-| **Fingerprint Analysis** | Capture exact API sequences used by detection libraries to build canvas hashes |
+| **Fingerprint Analysis** | Capture exact API sequences used by tracking libraries to build canvas hashes |
 | **Source Code Mapping** | Trace every canvas operation back to its exact source location (`url:line:column`) for reverse engineering |
 | **Cross-Platform Validation** | Record on one OS, verify identical API calls reproduce on another platform |
 | **Regression Testing** | Baseline recordings ensure consistent fingerprint behavior across BotBrowser updates |
-| **Research & Documentation** | Archive real-world fingerprinting techniques with complete reproducibility and source attribution |
+| **Research & Documentation** | Archive real-world tracking techniques with complete reproducibility and source attribution |
 
 ---
 
@@ -141,7 +141,7 @@ Exit BotBrowser. The complete recording is saved to `/tmp/botcanvas.jsonl` in st
 The ability to load JSONL recordings directly in BotBrowser and reconstruct canvas operations:
 - **Hash reconstruction** – replay recorded canvas operations in BotBrowser to restore identical canvas hashes
 - **Cross-platform validation** – verify fingerprint consistency by replaying recordings on different OS/hardware
-- **Regression testing** – automated comparison of canvas outputs across browser versions
+- **Regression testing** – systematic comparison of canvas outputs across browser versions
 
 ### WebGL Recording (In Development)
 Same JSONL-based event capture extended to WebGL/WebGL2:
@@ -158,4 +158,4 @@ Share JSONL samples or feature requests via [GitHub Issues](https://github.com/b
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](../../DISCLAIMER.md)** • **[Responsible Use Guidelines](../../RESPONSIBLE_USE.md)**: BotCanvas is for authorized fingerprint-consistency testing and research only.
+**[Legal Disclaimer & Terms of Use](../../DISCLAIMER.md)** • **[Responsible Use Guidelines](../../RESPONSIBLE_USE.md)**: BotCanvas is for authorized fingerprint-consistency testing and research only.

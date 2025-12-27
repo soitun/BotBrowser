@@ -10,7 +10,7 @@ This document explains BotBrowser's CLI configuration system. These flags extend
 
 > License tiers: Some flags show tier hints in parentheses (PRO, ENT Tier1/Tier2/Tier3); those options are subscription-gated.
 
-## 📘 Table of Contents
+## Table of Contents
 
 - [Core BotBrowser Flags](#core-botbrowser-flags)
 - [Enhanced Proxy Configuration](#enhanced-proxy-configuration)
@@ -20,7 +20,7 @@ This document explains BotBrowser's CLI configuration system. These flags extend
 
 ---
 
-## 🛠️ Core BotBrowser Flags
+## Core BotBrowser Flags
 
 ### `--bot-profile`
 The foundation of BotBrowser’s privacy features.
@@ -66,7 +66,7 @@ BotBrowser extends the standard `--proxy-server` flag to accept embedded credent
 ```
 
 ### UDP over SOCKS5 (ENT Tier3)
-ENT Tier3 adds automatic SOCKS5 UDP ASSOCIATE support with no extra flag required. When the proxy supports UDP, BotBrowser will tunnel QUIC traffic and STUN probes over the proxy to harden proxy checks.
+ENT Tier3 adds built-in SOCKS5 UDP ASSOCIATE support with no extra flag required. When the proxy supports UDP, BotBrowser will tunnel QUIC traffic and STUN probes over the proxy to harden proxy checks.
 
 ```bash
 # UDP (QUIC/STUN) auto-tunneled when the SOCKS5 proxy supports UDP associate
@@ -119,7 +119,7 @@ You can provide multiple endpoints as a comma-separated list. BotBrowser will ra
 
 ---
 
-## 🎨 BotBrowser Customization
+## BotBrowser Customization
 
 ### `--bot-title`
 Custom browser identification and session management.
@@ -156,7 +156,7 @@ Accepts a JSON string containing bookmark data for startup.
 ```
 
 ### `--bot-canvas-record-file`
-Canvas forensics and fingerprint analysis.
+Canvas forensics and tracking analysis.
 
 Records all Canvas 2D API calls to a JSONL file for forensic analysis and future replay capabilities.
 
@@ -166,35 +166,35 @@ Records all Canvas 2D API calls to a JSONL file for forensic analysis and future
 
 **Key Features:**
 - Complete Canvas 2D API call recording with full parameter serialization
-- Deterministic capture (noise injection disabled during recording)
+- Deterministic capture (noise variance disabled during recording)
 - JSONL format for easy parsing and analysis
 - HTML viewer included for interactive event inspection
 
 Learn more: [BotCanvas Documentation](tools/botcanvas/)
 
 ### `--bot-script`
-Framework‑less automation with a privileged JavaScript context.
+Framework‑less approach with a privileged JavaScript context.
 
 Execute a JavaScript file right after BotBrowser starts in a privileged, non-extension context where `chrome.debugger` is available.
 
 ```bash
---bot-script="/path/to/automation.js"
+--bot-script="/path/to/script.js"
 ```
 
 **Key Features:**
 - No framework dependencies: pure Chrome DevTools Protocol access
 - Earlier intervention: runs before navigation
 - Privileged context: full `chrome.debugger` API access
-- Isolated automation: framework artifacts do not appear in page context
+- Isolated execution: framework artifacts do not appear in page context
 
 Documentation: Chrome `chrome.debugger` API - <https://developer.chrome.com/docs/extensions/reference/api/debugger/>
 
-Examples: [Bot Script Automation](examples/bot-script)
+Examples: [Bot Script](examples/bot-script)
 
 ---
 
 <a id="profile-configuration-override-flags"></a>
-## ⚙️ Profile Configuration Override Flags
+## Profile Configuration Override Flags
 
 High‑priority configuration overrides: these CLI flags supersede profile settings.
 
@@ -232,7 +232,7 @@ Flags that directly map to profile `configs` and override them at runtime.
 - `--bot-config-noise-client-rects`: Client rects noise: true, false
 - `--bot-config-noise-text-rects`: Text rects noise: true, false
 - `--bot-config-speech-voices=profile`: Speech voices: profile (synthetic), real (system)
-- `--bot-config-media-devices=profile`: Media devices: profile (fake devices), real (system devices)
+- `--bot-config-media-devices=profile`: Media devices: profile (synthetic devices), real (system devices)
 - `--bot-config-media-types=expand`: Media types: expand (default), profile, real
 - `--bot-config-webrtc=profile`: WebRTC: profile (use profile), real (native), disabled (off)
 
@@ -244,14 +244,14 @@ Runtime toggles that don’t rely on profile `configs` but still override behavi
 
 - `--bot-disable-debugger`: Ignore JavaScript `debugger` statements to avoid pauses
 - `--bot-mobile-force-touch`: Force touch events on/off for mobile device simulation
-- `--bot-disable-console-message` (PRO): Suppress console.* output from CDP logs (default true); prevents automation hooks from enabling `Console.enable`/`Runtime.enable`, which blocks stack getter detections.
-- `--bot-inject-random-history` (PRO): Inject synthetic browsing history for session authenticity
+- `--bot-disable-console-message` (PRO): Suppress console.* output from CDP logs (default true); prevents framework hooks from enabling `Console.enable`/`Runtime.enable`, which blocks fingerprint signals.
+- `--bot-inject-random-history` (PRO): Add synthetic browsing history for session authenticity
 - `--bot-always-active` (PRO): Keep windows/tabs active even when unfocused
 - `--bot-webrtc-ice=google` (PRO): Override STUN/TURN endpoints observed by JavaScript/WebRTC to control ICE signaling; accepts presets (`google`) or `custom:stun:...,turn:...`
 - `--bot-time-scale` (ENT Tier1): Float < 1.0; scales down `performance.now()` intervals to emulate lower load and reduce timing skew signals (typical range 0.80–0.99)
-- `--bot-noise-seed` (ENT Tier2): Float seed (1.0–1.2) for the deterministic noise RNG; each seed re-shapes the injected noise across Canvas 2D/WebGL/WebGPU images, text metrics, HarfBuzz layout, ClientRect measurements, and offline audio hashes so you can treat a seed as a reproducible fingerprint ID per tenant while keeping runs stable.
+- `--bot-noise-seed` (ENT Tier2): Float seed (1.0–1.2) for the deterministic noise RNG; each seed augments privacy variance across Canvas 2D/WebGL/WebGPU images, text metrics, HarfBuzz layout, ClientRect measurements, and offline audio hashes so you can treat a seed as a reproducible fingerprint ID per tenant while keeping runs stable.
 
-Example detection BotBrowser avoids when console forwarding stays disabled:
+Example tracking probe BotBrowser avoids when console forwarding stays disabled:
 
 ```javascript
 let detected = false;
@@ -266,7 +266,7 @@ console.log(err);  // stack getter fires if Console.enable/Runtime.enable are ac
 
 - **Highest Priority:** Overrides profile settings
 - **No Profile Editing:** Avoid changing encrypted JSON
-- **Dynamic Configuration:** Perfect for automation and CI/CD
+- **Dynamic Configuration:** Perfect for testing and CI/CD
 - **Session Isolation:** Different settings per instance
 
 ### Configuration Priority
@@ -275,14 +275,14 @@ console.log(err);  // stack getter fires if Console.enable/Runtime.enable are ac
 2. Profile `configs` settings (Medium priority)
 3. Profile default values (Lowest priority)
 
-Behavior & stealth toggles apply at launch and bypass profile data entirely.
+Behavior & privacy toggles apply at launch and override profile data entirely.
 
 ---
 
-## 🔬 Usage Examples
+## Usage Examples
 📌 Quick launch patterns and reference commands.
 
-### Minimal launch + proxy/automation
+### Minimal launch with proxy
 ```bash
 # Essential flags with proxy and remote debugging
 chromium-browser \
@@ -337,7 +337,7 @@ chromium-browser \
 
 ---
 
-## 📖 Related Documentation
+## Related Documentation
 📎 Quick links to supporting materials.
 
 - [Profile Configuration Guide](profiles/PROFILE_CONFIGS.md) - Configure browser behavior via profiles
@@ -347,7 +347,7 @@ chromium-browser \
 
 ---
 
-## 💡 Tips & Best Practices
+## Tips & Best Practices
 💡 Practical pointers for stable runs.
 
 ### BotBrowser-Specific Considerations

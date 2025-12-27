@@ -1,4 +1,4 @@
-# 📦 BotBrowser v141 Profiles
+# BotBrowser v141 Profiles
 
 Please download the 141 kernel BotBrowser from [this release](https://github.com/botswin/BotBrowser/releases/tag/v141-20251020).
 

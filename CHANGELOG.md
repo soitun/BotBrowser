@@ -8,7 +8,7 @@
 - **Chromium Core → 143.0.7499.170**: Updated the engine to 143.0.7499.170 to stay aligned with the latest Chrome release. This maintains Web Platform parity, rendering consistency, and security patches with upstream.
 
 ### Improvements
-- **Sandbox flag now optional**: `--no-sandbox` is no longer required for BotBrowser startup. The browser now handles sandbox configuration automatically, simplifying command‑line invocation and reducing flag verbosity.
+- **Sandbox flag now optional**: `--no-sandbox` is no longer required for BotBrowser startup. The browser now manages sandbox configuration internally, simplifying command‑line invocation and reducing flag verbosity.
 
 - **Boolean flag syntax simplification**: Toggle flags like `--bot-local-dns`, `--bot-mobile-force-touch`, and `--bot-always-active` no longer require `=true` suffix. Use `--bot-local-dns` instead of `--bot-local-dns=true` for cleaner and more intuitive CLI syntax.
 
@@ -20,7 +20,7 @@
 
 ## [2025-12-22]
 ### Improvements
-- **FPS control precision (ENT Tier2)**: Fingerprint-based FPS simulation that precisely matches profile refresh rates even on low-spec hosts (e.g., VPS running 30 FPS can emit 120 FPS behavior). Recovers high-refresh-rate profiles without leaking underlying infrastructure framerate, and reduces timing jitter in detection-sensitive scenarios.
+- **FPS control precision (ENT Tier2)**: Fingerprint-based FPS simulation that precisely matches profile refresh rates even on low-spec hosts (e.g., VPS running 30 FPS can emit 120 FPS behavior). Recovers high-refresh-rate profiles without leaking underlying infrastructure framerate, and reduces timing jitter in timing-sensitive scenarios.
 
 ### Fixes
 - **Iframe content dimensions**: Resolved an edge case where iframe content dimensions (height/width) could be reported as zero in certain layout conditions. Frame boundaries now render consistently.
@@ -47,7 +47,7 @@
 
 ## [2025-12-08]
 ### New
-- **WebGPU canvas noise injector**: Added deterministic noise controls to WebGPU canvas outputs (validated on [webbrowsertools.com/webgpu-fingerprint](https://webbrowsertools.com/webgpu-fingerprint/)) so GPU fingerprints stay aligned with the rest of the noise stack; replayed recordings now preserve the expected variance across browsers that probe WebGPU specifically.
+- **WebGPU canvas noise augmentor**: Added deterministic noise controls to WebGPU canvas outputs (validated on [webbrowsertools.com/webgpu-fingerprint](https://webbrowsertools.com/webgpu-fingerprint/)) so GPU fingerprints stay aligned with the rest of the noise stack; replayed recordings now preserve the expected variance across browsers that probe WebGPU specifically.
 - **Embedded font rendering per platform**: DOM text rendering now stays within the bundled cross-platform font sets (not just fallback chains), so Windows/macOS/Linux/Android simulations paint both DOM and fallback fonts from the same embedded assets, preventing host font leaks when a site walks `document.fonts` or measures inline text.
 
 ### Improvements
@@ -55,8 +55,8 @@
 - **HarfBuzz perturbation precision**: Noise applied inside HarfBuzz now respects prior precision and only adjusts `x_advance` / `y_advance` inside a minimal range, which keeps shaping believable on multilingual text (including CJK) while maintaining diversity for creepJS-style text metrics.
 
 ### Fixes
-- **Pixelscan WebGL noise**: Refined WebGL canvas noise so <http://pixelscan.net> no longer flags the fraud heuristics triggered by earlier, coarse noise injection; multi-pass renders now inherit the same noise field as the base frame.
-- **Client Hints DPR parity**: `sec-ch-dpr` now matches `window.devicePixelRatio`, eliminating mismatches between Client Hints metadata and JS-observable values, ensuring consistency across detection systems.
+- **Pixelscan WebGL noise**: Refined WebGL canvas noise so <http://pixelscan.net> no longer flags the fraud heuristics triggered by earlier, coarse noise variance; multi-pass renders now inherit the same noise field as the base frame.
+- **Client Hints DPR parity**: `sec-ch-dpr` now matches `window.devicePixelRatio`, eliminating mismatches between Client Hints metadata and JS-observable values, ensuring consistency across fingerprint probes.
 
 
 ## [2025-12-03]
@@ -82,7 +82,7 @@
 ## [2025-11-29]
 ### New
 - **Runtime timing scaler (ENT Tier1)**: `--bot-time-scale` compresses `performance.now()` deltas to emulate lower CPU load profiles for timing-sensitive research flows.
-- **Deterministic noise seed (ENT Tier2)**: `--bot-noise-seed` deterministically reshapes the injected noise across Canvas 2D/WebGL/WebGPU imagery, text metrics/HarfBuzz layout, ClientRects, and offline audio hashes so each seed behaves like a reproducible fingerprint ID while remaining stable across sessions.
+- **Deterministic noise seed (ENT Tier2)**: `--bot-noise-seed` deterministically augments privacy variance across Canvas 2D/WebGL/WebGPU imagery, text metrics/HarfBuzz layout, ClientRects, and offline audio hashes so each seed behaves like a reproducible fingerprint ID while remaining stable across sessions.
 - **UDP over SOCKS5 (ENT Tier3)**: Automatic UDP associate for QUIC and STUN over SOCKS5 proxies; ICE presets often unnecessary when UDP is available.
 - **socks5h proxy support**: Added support for `socks5h://` endpoints to resolve hostnames through the proxy tunnel.
 
@@ -147,7 +147,7 @@ Example (Edge browser emulation):
 ### Fixes
 - **Ubuntu Bluetooth emulation leakage**: Fixed a Linux/Ubuntu‑specific issue where emulated Bluetooth properties could leak inconsistent state. Bluetooth emulation exposure is now unified so websites can't infer environment details from mismatched availability/signaling.
 - **Media types (expand) default**: Resolved an issue where `--bot-config-media-types=expand` (and the default behavior) could be ignored in some scenarios. With this fix, local decoders are correctly surfaced so users can **select resolutions** on major video sites.
-- **WebRTC SDP negotiation**: Corrected edge cases where SDP **audio codec selection or direction attributes** failed to negotiate. More robust media negotiation prevents call/setup loops and reduces fingerprinting surface from abnormal SDP.
+- **WebRTC SDP negotiation**: Corrected edge cases where SDP **audio codec selection or direction attributes** failed to negotiate. More robust media negotiation prevents call/setup loops and reduces tracking surface from abnormal SDP.
 
 ---
 
@@ -217,7 +217,7 @@ Example (Edge browser emulation):
   Opening the native date/time picker while using Android profiles could crash in some environments. The initialization path has been corrected so the picker works reliably.
 
 - **`--proxy-ip` with auto language/locale**  
-  When a proxy IP was provided via `--proxy-ip`, automatic language and locale did not always align with the supplied region. Mapping now follows the provided proxy IP so UI language updates correctly.
+  When a proxy IP was provided via `--proxy-ip`, proxy-derived language and locale did not always align with the supplied region. Mapping now follows the provided proxy IP so UI language updates correctly.
 
 - **Performance jitter alignment**  
   Modeling jitter could desynchronize timing between the main thread and Workers/SharedWorkers. Jitter seed and variance are now coordinated so threads remain time‑aligned while keeping natural variability.
@@ -281,7 +281,7 @@ Example (Edge browser emulation):
   - To keep old behavior, pass `--bot-config-media-types=profile`.
 
 - **AudioContext noise tuning**
-  - Adjusted distribution/phase to better defend against **audio fingerprinting** with minimal audible/timing side‑effects.
+  - Adjusted distribution/phase to better defend against **audio tracking** with minimal audible/timing side‑effects.
 
 ### Fixed
 - **Font sizes stable under `--bot-config-noise-text-rects`**
@@ -343,7 +343,7 @@ Example (Edge browser emulation):
 
 ### Compatibility / New
 - **MediaCapabilities `decodingInfo` (DRM probing) hardening (ENT Tier2)**  
-  Aligns responses with real‑Chrome behavior when sites probe **DRM capability** via `MediaCapabilities.decodingInfo` (e.g., H.264/H.265 + Widevine flow). Prevents capability mismatches and reduces a class of DRM‑support fingerprint checks.
+  Aligns responses with real‑Chrome behavior when sites probe **DRM capability** via `MediaCapabilities.decodingInfo` (e.g., H.264/H.265 + Widevine flow). Prevents capability mismatches and reduces DRM-support tracking checks.
 
 ### Fixed
 - **Chrome component plugin preload**  
@@ -357,11 +357,11 @@ Example (Edge browser emulation):
 
 ## [2025-09-22]
 ### Improved
-- **Audio fingerprinting on x86 (no-noise hardware modeling)**
-  Refined DSP/stack paths so x86 architectures can produce **native‑like audio fingerprints without injecting noise**, improving pass rates on vendors that score audio stability.
+- **Audio tracking on x86 (no-noise hardware modeling)**
+  Refined DSP/stack paths so x86 architectures can produce **native‑like audio fingerprints without noise variance**, improving pass rates on vendors that score audio stability.
 
 - **Chrome brand fidelity & de‑Chromiumization**
-  Audited and tuned brand/feature switches to better emulate **Chrome** and suppress Chromium‑specific traits, improving compatibility across brand detection systems.
+  Audited and tuned brand/feature switches to better emulate **Chrome** and suppress Chromium‑specific traits, improving fingerprint consistency across tracking probes.
 
 ### Privacy
 - **First‑run telemetry suppression**
@@ -369,7 +369,7 @@ Example (Edge browser emulation):
 
 ### Authenticity
 - **Bundled Chrome component plugin**
-  Preloads the stock Chrome component extension (**ID: ghbmnnjooekpmoecnnnilnnbdlolhkhi**) to mirror real‑Chrome environments. Improves compatibility with fingerprinting tools like **fingerprint‑scan.com** that expect this presence.
+  Preloads the stock Chrome component extension (**ID: ghbmnnjooekpmoecnnnilnnbdlolhkhi**) to mirror real‑Chrome environments. Improves compatibility with tracking tools like **fingerprint‑scan.com** that expect this presence.
 
 ### Fixed
 - **Locale ↔ Speech voice alignment**
@@ -394,7 +394,7 @@ Example (Edge browser emulation):
 
 ### Improved / Fixed
 - **DNS Leak Hardening for SOCKS5**
-  Fixed a case where domain resolution might occur locally under SOCKS5, preventing DNS leaks and strengthening stealth.
+  Fixed a case where domain resolution might occur locally under SOCKS5, preventing DNS leaks and strengthening privacy.
 
 ### New
 - **CLI: `--proxy-ip` (profile key: `configs.proxy.ip`)**
@@ -414,7 +414,7 @@ Example (Edge browser emulation):
 ## [2025-09-06]
 ### Major
 - **Chromium Core Upgrade → 140**
-  Upgraded engine to Chromium **140** to maintain Chrome‑level parity and fingerprint consistency across APIs and fingerprinting surfaces.
+  Upgraded engine to Chromium **140** to maintain Chrome‑level parity and fingerprint consistency across APIs and tracking surfaces.
 
 ### Improved
 - **Slimmer Profiles (≈1.3 MB → ≈100 KB)**
@@ -422,19 +422,19 @@ Example (Edge browser emulation):
 
 ### Fixed
 - **WebGL2 `DRAW_BUFFER*`**
-  Corrected an override that could set **`DRAW_BUFFER*`** state incorrectly during WebGL2 context creation, an issue certain sites probed for detection. The implementation now adheres to spec/real‑device values, restoring pass rates.
+  Corrected an override that could set **`DRAW_BUFFER*`** state incorrectly during WebGL2 context creation, an issue certain sites probed for tracking. The implementation now adheres to spec/real‑device values, restoring pass rates.
 
 ---
 
 
 ## [2025-09-02]
 ### Major Feature
-- **Framework‑less Automation: `--bot-script`**
+- **Framework‑less Script Execution: `--bot-script`**
   - Execute a JavaScript file **right after BotBrowser starts** in a privileged, non‑extension context where **`chrome.debugger`** is available.
-  - Build automation **without Playwright/Puppeteer** while still driving CDP via `chrome.debugger`: reducing framework/CDP leak surface and giving **pre‑navigation control**.
+  - Build scripts **without Playwright/Puppeteer** while still driving CDP via `chrome.debugger`: reducing framework/CDP leak surface and giving **pre‑navigation control**.
   - **Docs:** Chrome `chrome.debugger`: <https://developer.chrome.com/docs/extensions/reference/api/debugger/>
   - **Usage:** `botbrowser --no-sandbox --bot-profile=/absolute/path/to/profile.enc --bot-script=/path/boot.js`
-  - **Examples:** [Bot Script Automation](examples/bot-script) (includes Cloudflare Turnstile automation)
+  - **Examples:** [Bot Script](examples/bot-script) (includes Cloudflare Turnstile challenge handling)
 
 ### Improved
 - **Embedded System Fonts (Cross‑OS)**
@@ -470,12 +470,12 @@ Example (Edge browser emulation):
   *Aligns rendering cadence and user input timing with the profiled device.*
 
 - **GPUAdapter `textureHashes`**
-  Added spoofing for `textureHashes` to strengthen GPU identity simulation.
+  Enhanced texture hash authenticity to maintain GPU identity consistency.
   *Reduces GPU-surface inconsistencies across contexts.*
 
 - **New Fingerprint APIs**
   Implemented `mediaCapabilities`, `videoDecoderSupport`, `audioDecoderSupport` and other WebCodecs-related capability signals.
-  *Prevents easy capability-based bot detection.*
+  *Prevents easy capability-based bot tracking.*
 
 - **Faster Proxy IP Detection (Endpoint Race)**
   Parallel fetch to:
@@ -524,12 +524,12 @@ Example (Edge browser emulation):
 --bot-disable-debugger=true # Disable JavaScript debugger: true, false
 --bot-config-disable-device-scale-factor=true # Disable device scale factor: true, false
 --bot-config-fonts="profile" # Font settings: profile (use profile fonts), real (system fonts)
---bot-inject-random-history=true # PRO feature: Inject random history: true, false
+--bot-inject-random-history # PRO feature: Add synthetic history: true, false
 --bot-config-keyboard="profile" # Keyboard settings: profile (emulated), real (system keyboard)
 --bot-config-languages="auto" # Languages: "lang1,lang2" or "auto" (IP-based)
 --bot-config-locale="auto" # Browser locale: e.g. en-US, fr-FR, de-DE, or "auto" (derived from IP/language)
 --bot-config-location="40.7128,-74.0060" # Location: "lat,lon" or "auto" (IP-based)
---bot-config-media-devices="profile" # Media devices: profile (fake), real (system)
+--bot-config-media-devices="profile" # Media devices: profile (synthetic), real (system)
 --bot-config-noise-audio-context=true # AudioContext noise: true, false
 --bot-config-noise-canvas=true # Canvas fingerprint noise: true, false
 --bot-config-noise-client-rects=false # Client rects noise: true, false
@@ -563,7 +563,7 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
 ## [2025-08-17]
 ### Added
 - **`configs.disableDebugger` (default: `true`)**
-  Prevents JavaScript `debugger` statements from pausing execution, keeping flows non-interactive during automation.
+  Prevents JavaScript `debugger` statements from pausing execution, keeping scripts running smoothly in all contexts.
 
 - **New Start Page (New Tab)**
   Replaced new-tab page to display live environment data: Proxy IP, Timezone, Latitude/Longitude, User-Agent, WebGL, etc., giving instant visibility into the BotBrowser context.
@@ -577,7 +577,7 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
 
 ### Improved
 - **TextMetrics Noise Stabilization**
-  Switched from per-string noise to a unified, stable noise model and preserved floating‑point precision after noise injection, which improves resilience against **hCaptcha** text-metrics checks.
+  Switched from per-string noise to a unified, stable noise model and preserved floating‑point precision after noise variance, which improves resilience against **hCaptcha** text-metrics checks.
 
 - **Dynamic Blink Feature Loading**
   Parses and applies Blink features at runtime based on the emulated environment (**Windows / macOS / Android**), improving realism and compatibility.
@@ -613,17 +613,17 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
 - **Brave Simulation**: Full Brave browser emulation including `userAgent`, `userAgentData`, and `navigator.brave.isBrave` properties.
 - **Edge Simulation**: Full Microsoft Edge emulation covering `userAgent`, `userAgentData`, and Edge-specific APIs.
 - **WebKit Emulation**: Preliminary WebKit engine simulation for basic Safari-like behaviors.
-- **Random History Injection**: `configs.injectRandomHistory` injects realistic history entries (URLs, timestamps) on new page loads without an opener.
+- **Random History Augmentation**: `configs.injectRandomHistory` adds realistic history entries (URLs, timestamps) on new page loads without an opener.
 
 ### Improved
-- **CPU Core Count Simulation**: More precise spoofing of logical CPU cores based on profile to evade advanced detection.
+- **CPU Core Count Simulation**: Enhanced profile-based CPU core authenticity for stronger privacy resilience.
 - **WebGPU Limits Simulation**: Emulates `maxStorageBuffersInFragmentStage`, `maxStorageTexturesInFragmentStage`, `maxStorageBuffersInVertexStage`, and `maxStorageTexturesInVertexStage` parameters.
 - **Android Window Defaults**: Android device simulation now defaults to `"window": "profile"`, using profile-defined screen and window dimensions for pixel-perfect accuracy.
-- **Debugger Statement Blocking**: Blocks `debugger` statements by default to prevent DevTools detection by scripted probes.
+- **Debugger Statement Blocking**: Blocks `debugger` statements by default to prevent DevTools exposure to scripted probes.
 
 ### Fixed
 - **Android DevTools Window Mode**: Ensures DevTools open in a separate window (not docked) during Android simulation to avoid UI rendering issues.
-- **Auto Language/Locale Sync**: Fixed issue where `configs.languages = "auto"` sometimes failed to update the browser’s locale automatically.
+- **Auto Language/Locale Sync**: Fixed issue where `configs.languages = "auto"` sometimes failed to update the browser's locale correctly.
 - **Iframe WebRTC IP Leak**: Fixed a WebRTC local IP leak when running inside iframes.
 
 
@@ -634,7 +634,7 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
 - **Upgraded to Chromium 138**: BotBrowser now runs on **Chromium 138**, matching the latest Chrome release for up‑to‑date features and security patches. (Ensures continued compatibility testing accuracy.)
 
 ### Fixed
-- **System UI Font Simulation Crash**: Resolved an issue where simulating system UI fonts would crash the rendering process. (Improves stability when spoofing UI fonts.)
+- **System UI Font Simulation Crash**: Resolved an issue where simulating system UI fonts would crash the rendering process. (Improves stability for authentic font rendering.)
 
 ---
 
@@ -642,7 +642,7 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
 ## [2025-07-18]
 ### Improved
 - **macOS Auto-Quit on Last Tab**
-  When the final tab closes on macOS, BotBrowser now quits automatically.
+  When the final tab closes on macOS, BotBrowser now quits gracefully.
   *Ensures native macOS behavior and resource cleanup.*
 
 ### Fixed
@@ -664,12 +664,12 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
   *Automatically syncs Accept-Language and navigator.languages with location.*
 
 - **Google Header Simulation**
-  Automatically injects [X-Browser-Validation](https://news.ycombinator.com/item?id=44527739) and related headers for google domains, emulating Chrome's behavior for Google compatibility testing.
+  Automatically includes [X-Browser-Validation](https://news.ycombinator.com/item?id=44527739) and related headers for google domains, emulating Chrome's behavior for Google compatibility testing.
   *Mimics Chrome's network validation for seamless compatibility analysis.*
 
 - **Bookmarks Loader**
   Introduced `--bot-bookmarks` flag to load bookmarks from a specified JSON file at startup.
-  *Allows pre-populating bookmarks for testing and automation.*
+  *Allows pre-populating bookmarks for testing and script control.*
 
 - **Custom Browser Title**
   Added `--bot-title` flag to set the browser window title and display it on the dock/taskbar icon.
@@ -693,16 +693,16 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
 
 ### Improved
 5. **Proxy IP & WebRTC Refactor**
-   Overhauled the logic for retrieving and spoofing proxy exit IPs in automation contexts, ensuring reliable public-IP simulation in WebRTC and preventing leaks.
+   Overhauled the logic for retrieving and maintaining proxy exit IP authenticity across all contexts, ensuring reliable public-IP consistency in WebRTC and preventing leaks.
 
 6. **autoTimezone Consistency**
-   Fixed cases where automatic timezone detection (`configs.autoTimezone`) did not apply, ensuring accurate time and locale behavior.
+   Fixed cases where timezone detection (`configs.autoTimezone`) did not apply, ensuring accurate time and locale behavior.
 
-7. **WebGL Version Forgery**
-   Now forges both `shadingLanguageVersion` and `version` in WebGL and WebGL2 contexts to avoid fingerprint signature checks.
+7. **WebGL Version Consistency**
+   Now renders both `shadingLanguageVersion` and `version` in WebGL and WebGL2 contexts to ensure fingerprint consistency checks.
 
 8. **Imperva Strict Mode Compatibility**
-   Adjusted noise injection to satisfy Imperva’s strict fingerprint detection without false positives.
+   Adjusted noise variance to satisfy Imperva's strict tracking checks without false positives.
 
 9. **configs.languages Fix**
    Ensured `configs.languages` array applies correctly to HTTP `Accept-Language` headers and `navigator.languages`.
@@ -781,7 +781,7 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
     // WebGPU: same semantics as WebGL
     "webgpu": "profile",
 
-    // Media devices: 'profile' = fake camera/mic devices; 'real' = actual system devices
+    // Media devices: 'profile' = synthetic camera/mic devices; 'real' = actual system devices
     "mediaDevices": "profile",
 
     // Speech voices: 'profile' = profile’s synthetic voices; 'real' = system voices
@@ -814,7 +814,7 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
 ### Improved
 - **On-Demand Proxy Geo & Timezone Fetch**
   - Shifted proxy geolocation, timezone, and public IP retrieval from browser startup to page load via a request interceptor.
-  - Eliminates startup delays while proxy is initializing and enables each `BrowserContext` to use a different proxy seamlessly for automated testing tasks.
+  - Eliminates startup delays while proxy is initializing and enables each `BrowserContext` to use a different proxy seamlessly for testing tasks.
 
 
 ---
@@ -852,7 +852,7 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
 
 ### Fixed
 - **Kasada Fingerprint Leak Patch**
-  - Fixed a critical fingerprint that was detectable by the latest Kasada release.
+  - Fixed a critical fingerprint inconsistency identified by the latest Kasada release.
 
 - **Permissions Simulation Overhaul**
   - Refactored permission handling for more accurate simulation (e.g., notifications, geolocation, mic).
@@ -867,14 +867,14 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
 ---
 
 ## [Unreleased]
-- Chromium Extension fingerprint spoofing. [#3](https://github.com/botswin/BotBrowser/issues/3)
+- Chromium Extension fingerprint authenticity assurance. [#3](https://github.com/botswin/BotBrowser/issues/3)
 
 ---
 
 ## [2025-05-13]
 ### Added
 - **Auto Timezone via IP Lookup**
-  - Introduced built-in IP geolocation detection based on proxy exit IP, allowing automatic adjustment of timezone and location.
+  - Introduced built-in IP geolocation detection based on proxy exit IP, enabling smart timezone and location alignment.
   - Controlled via the `configs.autoTimezone` flag (enabled by default). See [PROFILE_CONFIGS.md](https://github.com/botswin/BotBrowser/blob/main/profiles/PROFILE_CONFIGS.md) for details.
 
 - **Theme Control via `configs.colorScheme`**
@@ -892,7 +892,7 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
   - Allows simulating native font environments across platforms (e.g. load macOS fonts on Ubuntu), preventing rendering mismatches and fingerprint leaks.
 
 - **matchMedia Hardened in WebPreferences**
-  - Improved injection of matchMedia parameters directly into WebPreferences for greater reliability and fingerprint consistency.
+  - Improved integration of matchMedia parameters directly into WebPreferences for greater reliability and fingerprint consistency.
   - Fixes occasional race conditions where matchMedia simulation failed to load.
 
 - **System UI Font Emulation**
@@ -909,7 +909,7 @@ Refined per‑OS rendering differences (fonts, CSS, anti‑aliasing, text sizing
 ### Improved
 - **Upgraded to Chromium 136**
   - Synced BotBrowser to the latest **Chromium 136**, ensuring full compatibility with the most recent Chrome features, rendering behavior, and security updates.
-  - Improves stealth and reduces fingerprint mismatches by staying aligned with upstream Chromium.
+  - Improves privacy consistency and reduces fingerprint mismatches by staying aligned with upstream Chromium.
 
 ---
 
@@ -990,7 +990,7 @@ Example:
 ## [2025-04-13]
 ### Added
 - **Proxy, Timezone, Locale Support via Profile**
-  - You can now configure `proxy` (with embedded credentials), `timezone`, and `locale` directly through the **profile**, removing the need for CDP-based injection.
+  - You can now configure `proxy` (with embedded credentials), `timezone`, and `locale` directly through the **profile**, eliminating CDP-based configuration overhead.
 
 - **JavaScript Stack Limit Control**
   - Fine-tuned the JS stack depth to closely match official Chrome's behavior.
@@ -999,7 +999,7 @@ Example:
 ### Improved
 - **Advanced matchMedia CSS Fingerprint Handling**
   - Upgraded CSS-related matchMedia control to better simulate complex media conditions under real environments.
-  - Enhances stealth against modern anti-scraping and antifraud strategies.
+  - Improves privacy resilience against modern anti-scraping and antifraud strategies.
 
 ### Fixed
 - **GPU Limits Mismatch on Ubuntu**
@@ -1026,7 +1026,7 @@ Example:
   - Optimized the profile loading logic to significantly reduce load time and improve overall performance.
 
 - **JavaScript Stack Limit Alignment**
-  - Adjusted JavaScript stack limit to match official Chrome behavior exactly, improving parity and reducing detection risk.
+  - Adjusted JavaScript stack limit to match official Chrome behavior exactly, improving parity and privacy consistency.
 
 - **Unified NaN Conversion Logic Across Architectures**
   - Ensured consistent `NaN` bit-level structure across both **x86** and **ARM**, avoiding architecture-specific fingerprint inconsistencies.
@@ -1034,7 +1034,7 @@ Example:
 
 ### Added
 - **Notification API Normalization Across Platforms**
-  - Standardized the behavior of the `Notification` API on different operating systems, closing a detection vector used by **DataDome**.
+  - Standardized the behavior of the `Notification` API on different operating systems, closing a tracking vector used by **DataDome**.
 
 - **Chromium 134: `CustomizableSelect` Runtime Feature Support**
   - Added OS-specific behavior simulation for the experimental `CustomizableSelect` runtime feature, collected from profiles.
@@ -1044,16 +1044,16 @@ Example:
   - Successfully supports compatibility testing with **hCaptcha** and **DataDome** systems that rely on subtle media query validation.
 
 - **New GPU Fingerprint Fields**
-  - Added support for new `GPUAdapter` and `GPUDevice` fingerprint fields to enhance hardware-level spoofing accuracy.
+  - Added support for new `GPUAdapter` and `GPUDevice` fingerprint fields to strengthen GPU hardware authenticity.
 
 ### Removed
-- **Scrollbar Width Spoofing**
+- **Scrollbar Width Consistency**
   - Removed static 17px scrollbar width simulation, which proved unnecessary after extensive testing.
-  - Thanks to community feedback for identifying its low fingerprinting value.
+  - Thanks to community feedback for identifying its low tracking value.
 
 ### Fixed
 - **mimeTypes Fingerprint Handling**
-  - Fixed a long-standing issue where important `mimeTypes` were missed during processing, improving detection resistance.
+  - Fixed a long-standing issue where important `mimeTypes` were missed during processing, improving fingerprint consistency.
 
 
 ---
@@ -1106,7 +1106,7 @@ Example:
   - Added fingerprint support for `CSSValueID::kSelecteditem` and `CSSValueID::kSelecteditemtext` to improve compatibility testing accuracy.
 
 - **Blocked Local Port Scanning via WebSocket & Image Requests**
-  - Prevented websites from scanning **local ports** using **WebSocket** or **Image requests** to detect automation-related services.
+  - Prevented websites from scanning **local ports** using **WebSocket** or **Image requests** to detect script execution services.
   - Blocked common ports associated with debugging and remote access:
     - `7070, 7071` (Remote debugging)
     - `3389` (RDP)
@@ -1118,10 +1118,10 @@ Example:
 
 ### Fixed
 - **Prevent Local Video File Leaks**
-  - Modified **FileVideoCaptureDevice** to ensure that opening local video files does not expose detectable traces to websites.
+  - Modified **FileVideoCaptureDevice** to ensure that opening local video files does not expose distinguishing traces to websites.
 
-- **Improved Accept-Language Header Compatibility in Automation Frameworks**
-  - Addressed a compatibility issue where automation frameworks like **Playwright** set a default **Accept-Language** header, which could cause inconsistencies with **Adscore** testing.
+- **Improved Accept-Language Header Compatibility with Frameworks**
+  - Addressed a compatibility issue where frameworks like **Playwright** set a default **Accept-Language** header, which could cause inconsistencies with **Adscore** testing.
   - **CDP-based fingerprint modification is now restricted** to ensure stable compatibility testing when using **BotBrowser** with **CDP**.
 
 ### Improved
@@ -1137,8 +1137,8 @@ Example:
 ## [2025-02-04]
 ### Improved
 - **Enhanced Fingerprint Protection in AnalyserNode**
-  - Added **noise injection** to **AnalyserNode**, making it significantly harder for detection systems to identify synthetic audio processing behavior.
-  - This improvement further strengthens **Web Audio API** fingerprint obfuscation against targeted detection techniques.
+  - Added **noise variance** to **AnalyserNode**, significantly strengthening **Web Audio API** privacy protection against tracking.
+  - This improvement further enhances **Web Audio API** authenticity for privacy-consistent behavior.
 
 
 ---
@@ -1146,11 +1146,11 @@ Example:
 ## [2025-02-02]
 ### Major Upgrade
 - **Canvas Noise Algorithm Overhaul:**
-  Completely reworked the **Canvas noise algorithm** by integrating noise injection into **Skia's anti-aliasing process**, significantly reducing the likelihood of detection by advanced fingerprinting systems.
+  Completely reworked the **Canvas noise algorithm** by integrating privacy variance into **Skia's anti-aliasing process**, significantly strengthening resistance against tracking probes.
 
 ### Fixed
 - **WebGL Context readPixels Bug Fix:**
-  Optimized **readPixels** in **WebGL Context** to prevent incorrect noise injection on solid-color images, ensuring accurate rendering.
+  Optimized **readPixels** in **WebGL Context** to prevent incorrect noise variance on solid-color images, ensuring accurate rendering.
 
 ### Added
 - **Chrome 132 Test Profiles for Windows & macOS:**
@@ -1166,14 +1166,14 @@ Example:
 *These GPU emulation capabilities are for authorized academic benchmarking only, not intended for use against production services.*
 
 ### Added
-- **GPUAdapterInfo and WGSLLanguageFeatures Fingerprinting:** Added support for fingerprinting **GPUAdapterInfo** and **WGSLLanguageFeatures**, ensuring comprehensive GPU-related data coverage.
+- **GPUAdapterInfo and WGSLLanguageFeatures Tracking:** Added support for tracking **GPUAdapterInfo** and **WGSLLanguageFeatures**, ensuring comprehensive GPU-related data coverage.
 
 
 ---
 
 ## [2025-01-22]
 ### Improved
-- **MimeTypes Fingerprinting:** Optimized **mimeTypes** fingerprinting by converting them to **ContentType**, followed by parsing `type` and `codecs` separately. This enhancement improves fingerprint consistency and accuracy across systems.
+- **MimeTypes Tracking Resistance:** Optimized **mimeTypes** handling by converting them to **ContentType**, followed by parsing `type` and `codecs` separately. This enhancement improves fingerprint consistency and accuracy across systems.
 - **Font Matching Accuracy:** Improved font matching logic to avoid unnecessary matches, significantly enhancing font accuracy and reducing false positives.
 
 ### Major Update
@@ -1197,12 +1197,12 @@ Example:
 
 ## [2025-01-12]
 ### Fixed
-- **Mimetypes, MediaRecorder, and MediaSource Fingerprints:** Fixed issues where fingerprints were not correctly recognized under certain conditions. Optimized handling to ignore spaces after `;` in mimetypes, addressing antifraud tricks that exploit this discrepancy.
+- **Mimetypes, MediaRecorder, and MediaSource Fingerprints:** Fixed issues where tracking data was not correctly recognized under certain conditions. Optimized handling to ignore spaces after `;` in mimetypes, addressing antifraud techniques that exploit this discrepancy.
   [Issue Reference: #8](https://github.com/botswin/BotBrowser/issues/8)
 
 ### Improved
 - **Removed RLZ Support:** RLZ support has been removed as it is unnecessary for our product and caused issues in some scenarios.
-- **AdInterest Group Support:** Enhanced support for **AdInterest**, specifically `getInterestGroupAdAuctionData` in Chrome, which now functions seamlessly in **BotBrowser**, improving resilience against fingerprinting checks.
+- **AdInterest Group Support:** Enhanced support for **AdInterest**, specifically `getInterestGroupAdAuctionData` in Chrome, which now functions seamlessly in **BotBrowser**, improving resilience against tracking checks.
 - **Fingerprint Caching:** Introduced caching for specific fingerprints to improve overall performance.
 
 ### Added
@@ -1218,10 +1218,10 @@ Example:
 ### Improved
 - **SwiftShader Parameter Adjustment:** Enhanced **SwiftShader** parameters on **Linux**, providing broader support and improved **EGL compatibility**.
 - **Background Networking Control:** Replaced the `disable-background-networking` flag with a custom `botbrowser-disable-background-networking` flag to prevent **CDP** from interfering with **CDM downloads**.
-- **PDF Embedding Behavior:** Disabled **PdfOopif** to ensure PDF embedding behaves similarly to standard browsers, reducing detection risks.
+- **PDF Embedding Behavior:** Disabled **PdfOopif** to ensure PDF embedding behaves similarly to standard browsers, improving fingerprint consistency.
 
 ### Fixed
-- **Document Client Rects Noise:** Resolved an issue where unnecessary noise was added to **Document client rects**, reducing false positives in certain detection pipelines.
+- **Document Client Rects Noise:** Resolved an issue where unnecessary noise was added to **Document client rects**, reducing false positives in certain tracking pipelines.
 
 ### Added
 - **TextMetrics Algorithm Enhancement:** Introduced a new **TextMetrics** algorithm that hashes text and the provided **factor** instead of relying on simple cumulative factors. This improvement enhances fingerprint consistency and stability.
@@ -1237,7 +1237,7 @@ Example:
 - **WebPreferences Update:** Updated **WebPreferences** based on the `ostype` specified in the profile, replacing the previous `BUILDFLAG()` logic for improved flexibility and accuracy.
 
 ### Added
-- **SelectionDirection Simulation:** Implemented **SelectionDirection** simulation to avoid leaking state to detection systems.
+- **SelectionDirection Simulation:** Implemented **SelectionDirection** simulation to avoid leaking state to tracking systems.
  [#9](https://github.com/botswin/BotBrowser/issues/9)
 - **GPU Optimization:** Updated compilation parameters for better **GPU** performance and enhanced compatibility.
 - **BarcodeDetector Simulation:** Simulated **BarcodeDetector** behavior to mimic macOS characteristics, even when running on **Windows** or **Ubuntu**, as long as the profile specifies `macOS` as the `ostype`.  [#10](https://github.com/botswin/BotBrowser/issues/10)
@@ -1255,7 +1255,7 @@ Example:
 
 ### Fixed
 - **CDM Component Download:** Ensured CDM components are downloaded **independently of proxy settings**, guaranteeing successful downloads regardless of network configuration.
-- **CDM Key System Handling:** Ensured **CDM Key system requests** complete loading before returning results to JavaScript, effectively preventing leakage detection.
+- **CDM Key System Handling:** Ensured **CDM Key system requests** complete loading before returning results to JavaScript, effectively preventing leakage exposure.
 
 
 ---
@@ -1273,7 +1273,7 @@ Example:
 - **WebGL2 Renderer and Vendor Bug:** Fixed an issue where `renderer` and `vendor` could not be retrieved under **WebGL2** environments.
 
 ### Improved
-- **WebGL Parameters Simulation:** Inspired by **FakeVision**, refined WebGL parameters simulation to minimize detection risks through more cautious handling.
+- **WebGL Parameters Simulation:** Inspired by **FakeVision**, refined WebGL parameters simulation to enhance fingerprint fidelity through more cautious handling.
   [FakeVision Decompiled Source Code](https://github.com/botswin/FakeVision-Reverse)
 
 

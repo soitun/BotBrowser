@@ -1,10 +1,10 @@
-# 🖥️ BotBrowserConsole
+# BotBrowserConsole
 
 BotBrowserConsole is the desktop companion to **[BotBrowser](https://github.com/botswin/BotBrowser)**. It simplifies privacy-focused fingerprint configuration and multi-profile management for academic study and professional workflows. It also supports API-based extensions for custom requirements in authorized labs.
 
 <img width="800" alt="image" src="https://github.com/user-attachments/assets/e9c0b656-83b0-4be5-986e-d4bc3c04b4b5">
 
-## ✨ Key Features
+## Key Features
 
 ### Profile Management
 - Create browser profiles for different accounts and use cases
@@ -22,9 +22,9 @@ BotBrowserConsole is the desktop companion to **[BotBrowser](https://github.com/
 - Organize profiles and settings into groups
 
 ### Developer Features
-- API support for custom workflows and authorized automation
+- API support for custom workflows and authorized research
 
-## 🛠️ Development Setup
+## Development Setup
 
 ### Prerequisites
 Install Neutralino CLI globally:
@@ -49,7 +49,7 @@ npm i -g @neutralinojs/neu
    npm run app
    ```
 
-## 🚀 Getting Started
+## Getting Started
 
 Quick Start
 
@@ -58,7 +58,7 @@ Quick Start
 3. Configure fingerprints, privacy controls, and settings
 4. Start preparing research profiles and test environments
 
-## 🛠️ Technical Stack
+## Technical Stack
 
 | Component | Technology | Description |
 |-----------|------------|-------------|
@@ -67,15 +67,15 @@ Quick Start
 | **Application Runtime** | [Neutralino.js](https://neutralino.js.org) | Lightweight framework leveraging native WebView for efficient resource usage |
 
 
-## 🤝 Academic Collaboration & Inquiries
+## Academic Collaboration & Inquiries
 
 For research-related collaboration or licensing review, please contact us:
 
 <table>
-  <tr><td>📧 Email</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
-  <tr><td>📱 Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
+  <tr><td>Email</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
+  <tr><td>Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
 </table>
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint protection and privacy research only.
+**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint protection and privacy research only.

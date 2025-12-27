@@ -61,16 +61,16 @@ The following uses are strictly prohibited:
 
 **Unauthorized Financial Services Testing:**
 - **PROHIBITED:** Testing against production banking systems without written authorization
-- **PROHIBITED:** Attempting to bypass fraud detection on payment systems
+- **PROHIBITED:** Attempting to disable fraud protection mechanisms on payment systems
 - **PROHIBITED:** Using real or stolen credentials in any context
 
 **Terms of Service Violations:**
-- **PROHIBITED:** Bypassing rate limits on public APIs
-- **PROHIBITED:** Circumventing CAPTCHA on production websites
+- **PROHIBITED:** Violating rate limit controls on public APIs
+- **PROHIBITED:** Defeating CAPTCHA protections on production websites
 - **PROHIBITED:** Automated account creation against ToS
 
 **Ticketing & Event Systems:**
-- **PROHIBITED:** Automated ticket purchasing or queue bypassing that reduce fair access
+- **PROHIBITED:** Automated ticket purchasing or unauthorized queue jumping that reduce fair access
 - **PROHIBITED:** Testing production ticketing flows without written authorization from the event operator
 - **PROHIBITED:** Using BotBrowser for ticket scalping that harms consumers
 
@@ -159,7 +159,7 @@ The maintainers reserve the right to revoke the license to use this software for
 
 ### Security Risks
 - Users are responsible for securing their own systems
-- No guarantee that use of this software is undetectable
+- No guarantee that use of this software maintains complete privacy
 - Potential for exposure if misused
 
 ### Legal Risks

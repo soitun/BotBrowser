@@ -1,7 +1,7 @@
 /**
  * E-COMMERCE, TICKETING & PAYMENT SERVICES TESTING - AUTHORIZED USE ONLY
  *
- * This test demonstrates DataDome fingerprinting in AUTHORIZED TEST ENVIRONMENTS ONLY.
+ * This test demonstrates DataDome tracking in AUTHORIZED TEST ENVIRONMENTS ONLY.
  *
  * Test Methodology:
  * - Uses publicly accessible pages (search, browse, demo pages)

@@ -1,4 +1,4 @@
-# ☁️ Cloudflare Compatibility Testing with Docker
+# Cloudflare Compatibility Testing with Docker
 
 For Academic and Authorized Testing Environments. See the project [Legal Disclaimer](../../DISCLAIMER.md) and [Responsible Use Guidelines](../../RESPONSIBLE_USE.md) for usage boundaries.
 
@@ -28,7 +28,7 @@ This repository contains the Docker setup for validating fingerprint protection 
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 > **Reminder:** run this workflow only with explicit authorization from the environment owner.
 

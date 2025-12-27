@@ -1,5 +1,5 @@
 
-# 🔬 BotBrowser Fingerprint Consistency Research Suite
+# BotBrowser Fingerprint Consistency Research Suite
 
 Automated validation framework for preventing fingerprint collection and cross-platform tracking prevention.
 
@@ -38,7 +38,7 @@ Out-of-scope uses include production attacks, terms-of-service violations, or ha
 
 ---
 
-## 🔧 Getting Started
+## Getting Started
 
 ### Step 1: Research Environment Setup
 
@@ -74,7 +74,7 @@ npx playwright show-report
 
 ---
 
-## 📝 Research Methodology
+## Research Methodology
 
 **Purpose:** Controlled fingerprint consistency validation scripts for academic study.
 
@@ -82,7 +82,7 @@ npx playwright show-report
 
 **Data Collection:** Fingerprint data collected only from publicly accessible test interfaces and demonstration sites under controlled, non-production conditions.
 
-⚠️ **Important:** Results from these tests demonstrate fingerprint consistency research and should not be used as instructions for unauthorized access or circumventing production security systems.
+⚠️ **Important:** Results from these tests demonstrate fingerprint consistency research and should not be used as instructions for unauthorized access or violating production security controls.
 
 ### Responsible Research Guidelines
 
@@ -101,9 +101,9 @@ Before running any validation tests, ensure you meet ALL of these requirements:
 
 Validation tests involving financial institutions (e.g., `threatmetrix.spec.ts` with Vanguard/Fidelity):
 - ⚠️ Use ONLY publicly accessible demo pages or authorized test environments
-- ⚠️ Submit ONLY synthetic or invalid data (fake names, obviously invalid identifiers)
+- ⚠️ Submit ONLY synthetic or invalid data (test identifiers, obviously invalid values)
 - ⚠️ Do NOT attempt actual account authentication or access real user accounts
-- ⚠️ Intended to analyze fingerprinting methodology in authorized research context only
+- ⚠️ Intended to analyze tracking methodology in authorized research context only
 - ⚠️ Any production environment testing requires explicit written authorization from the financial institution
 
 ### Validation Environment Troubleshooting
@@ -114,14 +114,14 @@ Validation tests involving financial institutions (e.g., `threatmetrix.spec.ts` 
 | ❌ Tests failing | ✅ Verify `.env` file paths and profile compatibility |
 | 🐛 Browser environment issues | 🔧 Check BotBrowser executable permissions and validation environment setup |
 
-## 📖 Academic Resources
+## Academic Resources
 
 - [Playwright Documentation](https://playwright.dev/docs/writing-tests)
 - [BotBrowser Profile Configs](https://github.com/botswin/BotBrowser/blob/main/profiles/PROFILE_CONFIGS.md)
 - [Test Results & Reports](./test-results/)
 - [ACM Code of Ethics](https://www.acm.org/code-of-ethics)
 
-## 🙏 Research Dependencies
+## Research Dependencies
 
 This project uses the following open-source libraries:
 
@@ -135,4 +135,4 @@ This project uses the following open-source libraries:
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.
+**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

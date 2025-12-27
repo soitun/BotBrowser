@@ -23,8 +23,6 @@ By using profiles, BotBrowser launches controlled sessions that simulate consist
 
 ## Understanding BotBrowser Profiles
 
-**Important:** BotBrowser profiles work differently than typical browser‑fingerprinting tools.
-
 ### What BotBrowser Profiles Actually Are
 **Device Models**: think of them as specific hardware configurations.
 
@@ -48,12 +46,12 @@ All appear as different users on the same device type.
 
 ## ⚠️ Profile Types
 
-### 🚨 Demo Profiles (Educational Testing Only)
+### Demo Profiles (Educational Testing Only)
 
 **Limitations**
 - Limited-time educational testing only
 - No headless mode support
-- No automation framework connection
+- No framework integration
 - No extension loading
 - **Not suitable for production research** (widely distributed and may be flagged)
 
@@ -70,8 +68,8 @@ All appear as different users on the same device type.
 For academic institutions and authorized research:
 
 <table>
-  <tr><td>📧 Email</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
-  <tr><td>📱 Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
+  <tr><td>Email</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
+  <tr><td>Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
 </table>
 
 Premium profiles are available to qualified academic institutions with proper ethical approvals.
@@ -122,7 +120,7 @@ await page.addInitScript(() => {
 await page.goto("https://abrahamjuliot.github.io/creepjs/");
 ```
 
-⚠️ Important: With automation frameworks (Puppeteer/Playwright), use the `--proxy-server` flag instead of framework‑specific proxy options (like `page.authenticate()` or a `proxy` parameter in `launch()`). This ensures BotBrowser can derive accurate timezone/locale from the proxy IP.
+⚠️ Important: When using frameworks (Puppeteer/Playwright), use the `--proxy-server` flag instead of framework‑specific proxy options (like `page.authenticate()` or a `proxy` parameter in `launch()`). This ensures BotBrowser can derive accurate timezone/locale from the proxy IP.
 
 
 ---
@@ -174,9 +172,9 @@ chromium --no-sandbox \
 - [x] **Set proxy with embedded credentials directly via profile**
 - [x] **Set language and timezone** based on proxy or manually
 - [x] **WebRTC configuration control**
-- [x] **Canvas / WebGL noise injection** for consistency
+- [x] **Canvas / WebGL noise augmentation** for consistency
 - [x] **DOM text renders from embedded fonts** so cross-OS simulations never fall through to host font files
-- [x] **Audio fingerprinting variation**
+- [x] **Audio tracking variation**
 - [x] **Control scroll bar width**
 - [x] **Supports CDM compatibility** (no proprietary modules distributed)
 - [x] **Customizable remote-debugging-address** (bind to 0.0.0.0)
@@ -187,7 +185,7 @@ chromium --no-sandbox \
 
 ### Tiered capabilities (subscription-gated):
 
-- **PRO** — Browser brand/UA overrides (`browserBrand`, `uaFullVersion`, `brandFullVersion`), WebRTC ICE presets, injected history, always-active tabs.
+- **PRO** — Browser brand/UA overrides (`browserBrand`, `uaFullVersion`, `brandFullVersion`), WebRTC ICE presets, augmented history, always-active tabs.
 - **ENT Tier1** — Runtime timing scaler (`--bot-time-scale`) for compressing `performance.now()` intervals.
 - **ENT Tier2** — Deterministic noise seed (`--bot-noise-seed`) to stabilize Canvas/WebGL/Audio noise across sessions.
 - **ENT Tier3** — UDP-over-SOCKS5 tunneling for QUIC/STUN when the proxy supports UDP associate.

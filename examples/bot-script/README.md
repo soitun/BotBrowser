@@ -1,6 +1,6 @@
-# 🔬 BotBrowser Script Automation Examples
+# BotBrowser Script Examples
 
-Privacy-first, framework-less automation using BotBrowser’s native `--bot-script` feature.
+Privacy-first, framework-less scripting using BotBrowser's native `--bot-script` feature.
 
 These examples assume an authorized privacy research environment. Review the project [Legal Disclaimer](../../DISCLAIMER.md) and [Responsible Use Guidelines](../../RESPONSIBLE_USE.md) before adapting them to your own lab.
 
@@ -11,7 +11,7 @@ These examples assume an authorized privacy research environment. Review the pro
 - **No framework dependencies**: pure Chrome DevTools Protocol access for fingerprint protection research
 - **Earlier intervention**: execute before page navigation to establish privacy protections
 - **Privileged context**: full `chrome.debugger` API access
-- **Isolated automation**: framework artifacts do not appear in page context, maintaining fingerprint consistency
+- **Isolated execution**: framework artifacts do not appear in page context, maintaining fingerprint consistency
 
 ## Usage
 
@@ -21,10 +21,10 @@ chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" --bo
 
 ## Examples
 
-### Cloudflare Turnstile Automation
+### Cloudflare Turnstile Challenge Handler
 **File:** `cloudflare-turnstile.js`
 
-Demonstrates automated handling of Cloudflare Turnstile challenges using:
+Demonstrates handling of Cloudflare Turnstile challenges using:
 - `chrome.debugger.getTargets()` - Find challenge frames
 - `chrome.debugger.attach()` - Attach to targets
 - `chrome.debugger.sendCommand()` - Send CDP commands
@@ -86,12 +86,12 @@ for (let i = 0; i < 20; i++) {
 }
 ```
 
-## 📖 Documentation
+## Documentation
 
-📖 **Chrome Debugger API:** https://developer.chrome.com/docs/extensions/reference/api/debugger/
+**Chrome Debugger API:** https://developer.chrome.com/docs/extensions/reference/api/debugger/
 
-📖 **Chrome DevTools Protocol:** https://chromedevtools.github.io/devtools-protocol/
+**Chrome DevTools Protocol:** https://chromedevtools.github.io/devtools-protocol/
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.
+**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.

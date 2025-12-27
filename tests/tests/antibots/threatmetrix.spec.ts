@@ -1,7 +1,7 @@
 /**
  * FINANCIAL SERVICES TESTING - AUTHORIZED USE ONLY
  *
- * This test demonstrates ThreatMetrix fingerprinting in AUTHORIZED TEST ENVIRONMENTS ONLY.
+ * This test demonstrates ThreatMetrix tracking in AUTHORIZED TEST ENVIRONMENTS ONLY.
  *
  * Test Methodology:
  * - Uses publicly accessible "forgot password" pages (NOT login/account access)

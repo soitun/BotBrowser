@@ -1,6 +1,6 @@
-# 🔧 BotBrowser Build Guide
+# BotBrowser Build Guide
 
-## 🐧 How to compile Chromium step-by-step (Ubuntu)
+## How to compile Chromium step-by-step (Ubuntu)
 
 1. Prepare a clean Ubuntu 22 host.
 2. Install some dependencies:

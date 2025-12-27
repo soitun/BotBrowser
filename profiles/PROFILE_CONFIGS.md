@@ -8,7 +8,7 @@ This guide explains BotBrowser's fingerprint‑customization system that prevent
 
 > **CLI‑First Configuration:** Use [`--bot-config-*` flags](../CLI_FLAGS.md#profile-configuration-override-flags) for runtime fingerprint control without editing encrypted profiles. These carry the highest priority.
 
-> **Smart Auto‑Configuration:** BotBrowser automatically configures timezone, locale, and languages based on proxy IP. Override only when your scenario requires it.
+> **Smart Configuration:** BotBrowser intelligently derives timezone, locale, and languages from proxy IP. Override only when your scenario requires it.
 
 > **Data Privacy:** Profiles use synthetic/aggregated configurations to prevent tracking. BotBrowser does not enable fingerprint collection or tracking system data linkage. Use CLI overrides to keep profiles intact while customizing behavior.
 
@@ -38,7 +38,7 @@ BotBrowser uses a three-tier priority system for configuration:
 
 - **Highest Priority:** Always takes precedence over profile settings
 - **No Profile Editing:** Avoid modifying complex encrypted profile files
-- **Dynamic Configuration:** Perfect for automation and different environments
+- **Dynamic Configuration:** Perfect for testing and different environments
 - **Session Isolation:** Different settings per browser instance without conflicts
 
 **Example:**
@@ -88,13 +88,13 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 | `uaFullVersion` (PRO feature)   | Overrides the full browser version returned by `navigator.userAgentData.fullVersion`; must match the Chromium major version (e.g. for major version 138, the full version must start with “138.”). | `""`        |
 | `colorScheme`                   | Preferred color scheme: light or dark.                                            | `light`   |
 | `disableDeviceScaleFactorOnGUI` | If `true`, ignore device scale factor for GUI elements (disable DPI-based UI scaling).    | `false`     |
-| `disableConsoleMessage` (PRO)        | Suppresses console message forwarding into page contexts and automation logs to prevent CDP log noise from leaking. | `true`     |
+| `disableConsoleMessage` (PRO)        | Suppresses console message forwarding into page contexts and CDP logs to prevent CDP log noise from leaking. | `true`     |
 | `timezone`                      | `auto` = IP-based; `real` = system timezone; any other string = custom timezone name. | `auto`    |
 | `location`                      | `auto` = IP-based; `real` = system (GPS); object = custom coordinates (`lat`, `lon`). | `auto`    |
 | `browserBrand` (PRO feature)    | override for `navigator.userAgentData.brands` and related UA fields. Supports chromium, chrome, edge, brave, opera. | `chrome`    |
 | `brandFullVersion` (PRO feature)| Optional brand-specific full version string for UA-CH tuples (Edge/Opera cadences). | `""`    |
-| `injectRandomHistory` (PRO feature) | Optionally injects synthetic navigation history for academic experiments in browser state testing. | `false`    |
-| `disableDebugger`               | Prevents unintended interruptions from JavaScript debugger statements during automated academic workflows. | `true`     |
+| `injectRandomHistory` (PRO feature) | Optionally adds synthetic navigation history for academic experiments in browser state testing. | `false`    |
+| `disableDebugger`               | Prevents unintended interruptions from JavaScript debugger statements during academic research workflows. | `true`     |
 | `keyboard`                      | Choose keyboard fingerprint source: `profile` (emulated from profile) or `real` (use system keyboard). | `profile` |
 | `mediaTypes`                    | Media types behavior: `expand` (prefer local decoders), `profile` (profile-defined list), `real` (native system). | `expand` |
 | `alwaysActive` (PRO feature)    | Keep windows/tabs in an active state to suppress `blur`/`visibilitychange` events and `document.hidden=true`. | `true` |
@@ -118,11 +118,11 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 >
 > **For complete CLI flags documentation**, see [CLI Flags Reference](../CLI_FLAGS.md#profile-configuration-override-flags)
 
-⚠️ **Important:** When using automation frameworks (Puppeteer/Playwright), always use CLI flags like `--proxy-server` instead of framework-specific proxy options (like `page.authenticate()` or `proxy` parameter in `launch()`). This ensures BotBrowser can retrieve geo information from proxy IP for accurate timezone/locale auto-configuration.
+⚠️ **Important:** When using frameworks (Puppeteer/Playwright), always use CLI flags like `--proxy-server` instead of framework-specific proxy options (like `page.authenticate()` or `proxy` parameter in `launch()`). This ensures BotBrowser can retrieve geo information from proxy IP for accurate timezone/locale configuration.
 
 ⚠️ **Proxy configurations are intended for authorized networks only. They must not be used for unauthorized data collection or abuse.**
 
-> **UDP-over-SOCKS5:** ENT Tier3 support detects when a SOCKS5 upstream offers UDP associate and automatically tunnels QUIC/STUN through it. No additional flag is required; simply provide a SOCKS5 proxy that advertises UDP support.
+> **UDP-over-SOCKS5:** ENT Tier3 support detects when a SOCKS5 upstream offers UDP associate and natively tunnels QUIC/STUN through it. No additional flag is required; simply provide a SOCKS5 proxy that advertises UDP support.
 
 ### Window & Screen Settings
 
@@ -139,7 +139,7 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 | `fonts`        | `profile` = profile's embedded font list;`expand` = profile list plus supplemental system fonts;`real` = system-installed fonts. | `profile` |
 | `webgl`        | `profile` = profile's WebGL parameters;`real` = system WebGL;`disabled` = off.     | `profile` |
 | `webgpu`       | Same semantics as `webgl`.                                                               | `profile` |
-| `mediaDevices` | `profile` = fake camera/mic devices;`real` = actual system devices.                  | `profile` |
+| `mediaDevices` | `profile` = synthetic camera/mic devices;`real` = actual system devices.                  | `profile` |
 | `speechVoices` | `profile` = profile's TTS voices;`real` = system voices.                             | `profile` |
 
 ### Noise Toggles
@@ -219,7 +219,7 @@ All configurations are embedded in the `configs` field inside your profile JSON 
     // WebGPU: same semantics as WebGL
     "webgpu": "profile",
 
-    // Media devices: 'profile' = fake camera/mic devices; 'real' = actual system devices
+    // Media devices: 'profile' = synthetic camera/mic devices; 'real' = actual system devices
     "mediaDevices": "profile",
 
     // Media types: 'expand' = prefer local decoders; switch to 'profile' for legacy behavior
@@ -249,10 +249,10 @@ All configurations are embedded in the `configs` field inside your profile JSON 
     // brandFullVersion: optional brand-specific full version string for UA-CH tuples when the vendor’s cadence diverges
     "brandFullVersion": "142.0.3595.65",
 
-    // injectRandomHistory: Optionally injects synthetic navigation history for academic experiments in browser state testing
+    // injectRandomHistory: Optionally adds synthetic navigation history for academic experiments in browser state testing
     "injectRandomHistory": false,
 
-    // disableDebugger: Prevents unintended interruptions from JavaScript debugger statements during automated academic workflows
+    // disableDebugger: Prevents unintended interruptions from JavaScript debugger statements during academic research workflows
     "disableDebugger": true,
 
     // disableConsoleMessage: Suppress console.* output forwarded through CDP logging

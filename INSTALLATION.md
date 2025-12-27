@@ -1,8 +1,8 @@
-# 🛠️ BotBrowser Installation Guide
+# BotBrowser Installation Guide
 
 This guide provides step‑by‑step installation, troubleshooting, and deployment options across operating systems. Usage remains subject to the project [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md).
 
-## 📥 Download & Installation
+## Download & Installation
 
 ### 1. Download Installer
 
@@ -29,8 +29,8 @@ chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" --user-data-dir="
 
 ### 3. macOS Installation
 
-#### Quick Install (Automated)
-For the fastest setup, use our automated installation script:
+#### Quick Install (Script)
+For the fastest setup, use our installation script:
 
 ```bash
 # One-line install (downloads and runs script directly)
@@ -45,7 +45,7 @@ cd BotBrowser
 ./scripts/install_botbrowser.sh
 ```
 
-The script will automatically:
+The script will:
 - Download the latest BotBrowser DMG
 - Mount and copy the application to `/Applications/`
 - Remove macOS quarantine attributes
@@ -115,7 +115,7 @@ chromium-browser \
 
 ---
 
-## 🐳 Docker Deployment
+## Docker Deployment
 
 For containerized deployment with full isolation and scalability:
 
@@ -146,7 +146,7 @@ For production environments, see the complete [Docker deployment guide](docker/R
 
 ---
 
-## 🚀 First Launch Verification
+## First Launch Verification
 
 ### Basic Functionality Test
 
@@ -177,7 +177,7 @@ chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" --headless --dump
 
 ---
 
-## 🔧 Advanced Installation Options
+## Advanced Installation Options
 
 ### Custom Build Installation
 
@@ -196,7 +196,7 @@ For advanced users building from source:
 
 ---
 
-## 🛡️ Security Considerations
+## Security Considerations
 
 ### Firewall Configuration
 
@@ -227,7 +227,7 @@ ufw allow out on <proxy-port>
 
 ---
 
-## 📞 Installation Support
+## Installation Support
 
 ### Getting Help
 
@@ -241,8 +241,8 @@ If you encounter installation issues:
 ### Contact Information
 
 <table>
-  <tr><td>📧 Email</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
-  <tr><td>📱 Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
+  <tr><td>Email</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
+  <tr><td>Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
 </table>
 
 ### Reporting Installation Issues
@@ -256,7 +256,7 @@ When reporting installation problems, please include:
 
 ---
 
-## 🔗 Related Documentation
+## Related Documentation
 
 - **[Main README](README.md)** - Project overview and quick start
 - **[CLI Flags Reference](CLI_FLAGS.md)** - Complete command-line options
@@ -266,4 +266,4 @@ When reporting installation problems, please include:
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint protection and privacy research only.
+**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint protection and privacy research only.

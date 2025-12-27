@@ -6,7 +6,7 @@ BotBrowser is a privacy protection platform designed for fingerprint consistency
 
 - **AUTHORIZATION:** Operate the software only on systems you own or have written permission to test. Maintain signed approvals or tickets for auditing.
 - **CONTROLLED ENVIRONMENTS:** Prefer testbeds, sandboxes, or clearly documented demo endpoints. Production services require explicit opt-in from the owner.
-- **SYNTHETIC DATA ONLY:** Use fake credentials, generated identities, or anonymized datasets. Never process personal data or live customer accounts.
+- **SYNTHETIC DATA ONLY:** Use test credentials, synthetic identities, or anonymized datasets. Never process personal data or live customer accounts.
 - **LEGAL COMPLIANCE:** Follow all applicable laws (e.g., CFAA, GDPR, CCPA) and institutional policies. When uncertain, consult qualified legal counsel before proceeding.
 - **ETHICS REVIEW:** Obtain IRB or equivalent ethics clearance whenever research involves user-impacting systems or data collection.
 
@@ -15,13 +15,13 @@ BotBrowser is a privacy protection platform designed for fingerprint consistency
 - Deploying BotBrowser against production systems without explicit authorization from the system owner.
 - Harvesting personal data, account credentials, session tokens, or payment information.
 - Providing the software to third parties who intend to violate laws or service terms.
-- Using BotBrowser to facilitate fraud, spam, scalping, unauthorized ticket purchasing, or other unauthorized automated activities.
+- Using BotBrowser to facilitate fraud, spam, scalping, unauthorized ticket purchasing, or other unauthorized activities.
 
 ## RESPONSIBLE DISCLOSURE & COOPERATION
 
 - **ABUSE REPORTING:** Service operators or security vendors can contact the maintainers at [botbrowser@bk.ru](mailto:botbrowser@bk.ru). Include evidence (timestamps, IPs, scripts) so investigations can begin immediately.
 - **LICENSE REVOCATION:** Maintainers may revoke access to binaries or profiles for any breach of these rules.
-- **VENDOR COLLABORATION:** We coordinate with bot-detection providers to share indicators of compromise and mitigate ongoing abuse.
+- **VENDOR COLLABORATION:** We coordinate with security vendors to share indicators of compromise and mitigate ongoing abuse.
 - **TESTING REPORTS:** Qualified vendors who need additional visibility into BotBrowser evaluations may request redacted test reports or joint review calls after verifying ownership of the affected property.
 
 ## PUBLICATION & SHARING
