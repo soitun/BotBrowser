@@ -32,15 +32,15 @@ BotCanvas is a comprehensive canvas recording system that captures all Canvas 2D
 | Component | Status | Timeline |
 |-----------|--------|----------|
 | **Canvas 2D Recording** | ✅ **Shipped** | Production-ready with full API coverage |
-| **Canvas 2D Browser Replay** | 🚧 **In Development** | Target: 2025 Q4 |
-| **WebGL Recording** | 🚧 **In Development** | Target: 2025 Q4 |
-| **WebGL Browser Replay** | 🔜 **Planned** | Post-Q4 2025 |
+| **Canvas 2D Browser Replay** | 🚧 **In Development** | Target: 2026 Q1 |
+| **WebGL Recording** | 🚧 **In Development** | Target: 2026 Q1 |
+| **WebGL Browser Replay** | 🔜 **Planned** | Post-Q1 2026 |
 
 **What's shipped now:**
 - ✅ Canvas 2D recording with complete API coverage and call stack tracking
 - ✅ HTML-based event viewer for forensic analysis with source location mapping
 
-**What's coming in Q4 2025:**
+**What's coming in Q1 2026:**
 - 🚧 Canvas 2D replay in BotBrowser (read JSONL and reconstruct canvas operations to restore hash)
 - 🚧 WebGL recording with shader and texture capture
 
@@ -135,7 +135,7 @@ Exit BotBrowser. The complete recording is saved to `/tmp/botcanvas.jsonl` in st
 
 ---
 
-## What's Coming in Q4 2025
+## What's Coming in Q1 2026
 
 ### Canvas 2D Browser Replay (In Development)
 The ability to load JSONL recordings directly in BotBrowser and reconstruct canvas operations:
