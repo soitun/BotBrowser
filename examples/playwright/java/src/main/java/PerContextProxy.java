@@ -40,7 +40,6 @@ public class PerContextProxy {
                 .setHeadless(false) // Set to true for headless mode
                 .setArgs(Arrays.asList(
                     "--bot-profile=" + botProfilePath,
-                    "--no-sandbox",
                     "--user-data-dir=" + System.getProperty("java.io.tmpdir") + "/botbrowser-" + System.currentTimeMillis()
                 ));
 

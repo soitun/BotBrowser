@@ -16,6 +16,7 @@ This document explains BotBrowser's CLI configuration system. These flags extend
 - [Enhanced Proxy Configuration](#enhanced-proxy-configuration)
 - [BotBrowser Customization](#botbrowser-customization)
 - [Profile Configuration Override Flags](#profile-configuration-override-flags)
+- [Mirror: Distributed Privacy Consistency](#mirror-distributed-privacy-consistency)
 - [Usage Examples](#usage-examples)
 
 ---
@@ -23,7 +24,7 @@ This document explains BotBrowser's CLI configuration system. These flags extend
 ## Core BotBrowser Flags
 
 ### `--bot-profile`
-The foundation of BotBrowser’s privacy features.
+The foundation of BotBrowser's privacy features.
 
 Specifies the path to the BotBrowser profile file (.enc).
 
@@ -35,6 +36,20 @@ Specifies the path to the BotBrowser profile file (.enc).
 - The profile determines the fingerprint, OS emulation, and privacy controls
 - Use profiles from the [profiles directory](profiles/) or contact support for custom profiles
 - This is the core difference from stock Chromium
+
+### `--bot-profile-dir`
+Random profile selection for fingerprint diversity.
+
+Specify a directory containing multiple `.enc` profile files. BotBrowser will randomly select one profile on each startup for fingerprint diversity without manual configuration.
+
+```bash
+--bot-profile-dir="/absolute/path/to/profiles/directory"
+```
+
+**Notes:**
+- Each startup randomly selects a different profile from the directory
+- Useful for multi-instance deployments requiring fingerprint variation
+- Cannot be used together with `--bot-profile` (directory takes precedence if both are specified)
 
 ---
 
@@ -140,11 +155,19 @@ Sets custom browser window title and taskbar/dock icon label.
 ### `--bot-cookies`
 Session restoration and cookie management.
 
-Accepts a JSON string containing cookie data for startup.
+Accepts cookie data as either inline JSON or from a file.
 
+**Inline JSON:**
 ```bash
 --bot-cookies='[{"name":"session","value":"abc123","domain":".example.com"}]'
 ```
+
+**From JSON file:**
+```bash
+--bot-cookies="@/path/to/cookies.json"
+```
+
+The file should contain a JSON array of cookie objects with name, value, and domain fields.
 
 ### `--bot-bookmarks`
 Pre‑populate bookmarks for session consistency.
@@ -161,7 +184,7 @@ Canvas forensics and tracking analysis.
 Records all Canvas 2D API calls to a JSONL file for forensic analysis and future replay capabilities.
 
 ```bash
---bot-canvas-record-file="/tmp/botcanvas.jsonl"
+--bot-canvas-record-file="/tmp/canvaslab.jsonl"
 ```
 
 **Key Features:**
@@ -170,7 +193,7 @@ Records all Canvas 2D API calls to a JSONL file for forensic analysis and future
 - JSONL format for easy parsing and analysis
 - HTML viewer included for interactive event inspection
 
-Learn more: [BotCanvas Documentation](tools/botcanvas/)
+Learn more: [CanvasLab Documentation](tools/canvaslab/)
 
 ### `--bot-script`
 Framework‑less approach with a privileged JavaScript context.
@@ -279,6 +302,19 @@ Behavior & privacy toggles apply at launch and override profile data entirely.
 
 ---
 
+<a id="mirror-distributed-privacy-consistency"></a>
+## Mirror: Distributed Privacy Consistency (ENT Tier3)
+
+Verify that your privacy protection works consistently across platforms and networks. Run a controller instance and multiple clients to ensure all instances maintain identical privacy defenses, protecting you from tracking across Windows, macOS, Linux, and remote deployment environments.
+
+**Key flags:**
+- `--bot-mirror-controller-endpoint=host:port` - Launch as controller (captures your actions)
+- `--bot-mirror-client-endpoint=host:port` - Launch as client (receives controller actions)
+
+**For complete setup instructions, examples, and troubleshooting, see the [Mirror documentation](tools/mirror/).**
+
+---
+
 ## Usage Examples
 📌 Quick launch patterns and reference commands.
 
@@ -370,4 +406,4 @@ Proxy authentication: embed credentials directly in the proxy URL.
 
 ---
 
-**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**: BotBrowser is for authorized fingerprint-consistency testing and research only.
+**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md) • [Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint protection and privacy research only.

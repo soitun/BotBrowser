@@ -18,7 +18,6 @@ const browser = await chromium.launch({
     "--disable-gpu-watchdog",
   ],
   args: [
-    "--no-sandbox",
     "--disable-blink-features=AutomationControlled",
     "--disable-audio-output",
     `--bot-profile=${BOT_PROFILE_PATH}`,

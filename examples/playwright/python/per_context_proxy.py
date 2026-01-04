@@ -90,7 +90,6 @@ async def main():
             executable_path=os.getenv('BOTBROWSER_EXEC_PATH', '/path/to/chrome'),  # Update this path
             args=[
                 f"--bot-profile={os.getenv('BOT_PROFILE_PATH', '/absolute/path/to/profile.enc')}",  # Update this path
-                '--no-sandbox',
                 f'--user-data-dir={tempfile.gettempdir()}/botbrowser-{int(time.time())}',
             ]
         )

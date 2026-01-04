@@ -5,7 +5,7 @@
  */
 
 /**
- * BotBrowser Per-Context Proxy Example (Puppeteer)
+ * BotBrowser Per-Context Proxy Example
  *
  * This example demonstrates how to use different proxies for each browser context
  * while maintaining automatic geo-detection for timezone, locale, and languages.
@@ -16,18 +16,16 @@
  * - Cost-effective alternative to launching multiple browser processes
  */
 
-const puppeteer = require('puppeteer-core');
-const os = require('os');
+const { chromium } = require('playwright');
 
 (async () => {
   // Launch BotBrowser with profile but no global proxy
-  const browser = await puppeteer.launch({
+  const browser = await chromium.launch({
     headless: false, // Set to true for headless mode
     executablePath: process.env.BOTBROWSER_EXEC_PATH || '/path/to/chrome', // Update this path
     args: [
       `--bot-profile=${process.env.BOT_PROFILE_PATH || '/absolute/path/to/profile.enc'}`, // Update this path
-      '--no-sandbox',
-      '--user-data-dir=' + os.tmpdir() + '/botbrowser-' + Date.now(),
+      '--user-data-dir=' + require('os').tmpdir() + '/botbrowser-' + Date.now(),
     ],
   });
 
@@ -36,20 +34,26 @@ const os = require('os');
   try {
     // Context 1: US Proxy
     console.log('\n📍 Creating Context 1 with US proxy...');
-    const context1 = await browser.createBrowserContext({
-      proxyServer: 'http://username:password@us-proxy.example.com:8080', // Replace with your US proxy
+    const context1 = await browser.newContext({
+      proxy: {
+        server: 'http://username:password@us-proxy.example.com:8080' // Replace with your US proxy
+      }
     });
 
     // Context 2: EU Proxy
     console.log('📍 Creating Context 2 with EU proxy...');
-    const context2 = await browser.createBrowserContext({
-      proxyServer: 'socks5://username:password@eu-proxy.example.com:1080', // Replace with your EU proxy
+    const context2 = await browser.newContext({
+      proxy: {
+        server: 'socks5://username:password@eu-proxy.example.com:1080' // Replace with your EU proxy
+      }
     });
 
     // Context 3: APAC Proxy
     console.log('📍 Creating Context 3 with APAC proxy...');
-    const context3 = await browser.createBrowserContext({
-      proxyServer: 'http://username:password@apac-proxy.example.com:8080', // Replace with your APAC proxy
+    const context3 = await browser.newContext({
+      proxy: {
+        server: 'http://username:password@apac-proxy.example.com:8080' // Replace with your APAC proxy
+      }
     });
 
     // Test each context
@@ -76,11 +80,18 @@ async function testContext(context, label, testUrl) {
   console.log(`\n🧪 Testing ${label}:`);
 
   const page = await context.newPage();
+
+  // Remove Playwright bindings to maintain consistent fingerprint
+  await page.addInitScript(() => {
+    delete window.__playwright_binding__;
+    delete window.__pwInitScripts;
+  });
+
   try {
-    await page.goto(testUrl, { waitUntil: 'networkidle2' });
+    await page.goto(testUrl, { waitUntil: 'networkidle' });
 
     // Get IP information
-    const ipInfo = await page.$eval('pre', el => el.textContent);
+    const ipInfo = await page.textContent('pre');
     console.log(`   📡 IP Response: ${ipInfo.trim()}`);
 
     // Get browser timezone (automatically set by BotBrowser based on proxy IP)

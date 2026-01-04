@@ -39,7 +39,6 @@ class PerContextProxy
             Args = new[]
             {
                 $"--bot-profile={botProfilePath}",
-                "--no-sandbox",
                 $"--user-data-dir={Path.GetTempPath()}botbrowser-{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}"
             }
         });

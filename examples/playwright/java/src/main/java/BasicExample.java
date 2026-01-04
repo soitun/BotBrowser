@@ -12,8 +12,8 @@ public class BasicExample {
     public static void main(String[] args) {
         String botBrowserExecPath = System.getenv("BOTBROWSER_EXEC_PATH");
         String botProfilePath = System.getenv("BOT_PROFILE_PATH");
-        
-        if (botBrowserExecPath == null || botBrowserExecPath.isEmpty() || 
+
+        if (botBrowserExecPath == null || botBrowserExecPath.isEmpty() ||
             botProfilePath == null || botProfilePath.isEmpty()) {
             throw new RuntimeException("Both BOTBROWSER_EXEC_PATH and BOT_PROFILE_PATH environment variables must be set.");
         }
@@ -24,11 +24,10 @@ public class BasicExample {
                 .setHeadless(false) // Set to true for production
                 .setIgnoreDefaultArgs(Arrays.asList(
                     "--disable-crash-reporter",
-                    "--disable-crashpad-for-testing", 
+                    "--disable-crashpad-for-testing",
                     "--disable-gpu-watchdog"
                 ))
                 .setArgs(Arrays.asList(
-                    "--no-sandbox",
                     "--disable-blink-features=AutomationControlled",
                     "--disable-audio-output",
                     "--bot-profile=" + botProfilePath
@@ -51,7 +50,7 @@ public class BasicExample {
             );
 
             page.navigate("https://abrahamjuliot.github.io/creepjs/");
-            
+
             // Keep the browser open
             try {
                 Thread.sleep(Long.MAX_VALUE);

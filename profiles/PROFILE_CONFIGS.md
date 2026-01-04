@@ -45,7 +45,6 @@ BotBrowser uses a three-tier priority system for configuration:
 ```bash
 # Use CLI flags to override profile settings dynamically (timezone/locale auto-detected)
 chromium-browser \
-  --no-sandbox \
   --bot-profile="/absolute/path/to/profile.enc" \
   --bot-config-browser-brand="edge" \  # PRO feature
   --bot-config-brand-full-version="142.0.3595.65"  # PRO feature
@@ -330,4 +329,4 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.
+**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md) • [Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint protection and privacy research only.

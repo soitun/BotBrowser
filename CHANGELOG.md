@@ -3,6 +3,24 @@
 > **Research scope:** Entries in this changelog describe features evaluated in authorized labs and defensive benchmarking programs. Follow the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md). We work with security vendors to investigate any misuse, so report concerns to [botbrowser@bk.ru](mailto:botbrowser@bk.ru).
 
 
+## [2026-01-05]
+### Major
+- **Mirror: Distributed Privacy Consistency (ENT Tier3)**: Verify privacy protection works consistently across platforms and networks. Run a controller instance and multiple clients to ensure identical privacy defenses against tracking across Windows, macOS, Linux, and remote environments. Controller captures input events (mouse, keyboard, scroll) and broadcasts them to clients in real time via TCP, enabling synchronous privacy validation across geographies and platforms.
+
+### New
+- **Profile randomization (--bot-profile-dir)**: Added `--bot-profile-dir` flag to specify a directory containing multiple `.enc` profile files. BotBrowser will randomly select one profile on each startup for fingerprint diversity without manual configuration.
+- **Cookie file import (--bot-cookies)**: `--bot-cookies` now supports reading from a JSON file path in addition to inline JSON strings. Use `--bot-cookies="@/path/to/cookies.json"` to load cookies from disk and inject them into storage on startup.
+
+### Improvements
+- **Mouse screen position patch removal**: Removed the `mouse_event.diff` patch after upstream Chromium fix landed in [CL 6917162](https://chromium-review.googlesource.com/c/chromium/src/+/6917162) for [issue 40280325](https://issues.chromium.org/issues/40280325). BotBrowser now tracks the upstream implementation directly.
+- **Android layout centering**: Improved Android emulation layout by centering page content within the browser UI, providing better visual consistency with real mobile device behavior.
+
+### Fixes
+- **PaymentRequest capability leak**: Fixed a privacy leak where `PaymentRequest` capability detection could expose information during capacity checks. Capability queries now remain properly isolated within the profile.
+- **Bookmark file reading**: Resolved an issue where `--bot-bookmarks` would fail to read from JSON files in certain conditions. File I/O now handles edge cases reliably across platforms.
+- **Geolocation precision**: Fixed `navigator.geolocation.getCurrentPosition()` in some scenarios where coordinates failed to match the proxy IP location precisely. Geolocation coordinates now derive accurately from proxy-based geo detection every time.
+
+
 ## [2025-12-24]
 ### Major
 - **Chromium Core → 143.0.7499.170**: Updated the engine to 143.0.7499.170 to stay aligned with the latest Chrome release. This maintains Web Platform parity, rendering consistency, and security patches with upstream.
@@ -237,15 +255,15 @@ Example (Edge browser emulation):
   - **Why**: Keeps Rendering/Network/Storage/Media in parity with upstream, reduces version‑based heuristics, and includes current security fixes.
   - **Impact**: More deterministic behavior on sites that gate features by major version; lower drift on fingerprint surfaces impacted by minor engine changes.
 
-- **Experimental: BotCanvasLab (Canvas2D recorder)**
+- **Experimental: CanvasLab (Canvas2D recorder)**
   - **What**: An opt‑in tool that **records Canvas2D draw operations** and exports **replayable code snippets** (trace → code).
   - **Use cases**: Reverse‑inspect how a site draws charts/captchas/signature pads; reproduce rendering flows; compare visual diffs across hosts/profiles.
   - **Enable**:
     ```bash
-    chrome.exe --no-sandbox --bot-canvas-record-file=/abs/path/trace.canvas.jsonl --bot-profile="C:\\absolute\\path\\to\\profile.enc"
+    chrome.exe --bot-canvas-record-file=/abs/path/trace.canvas.jsonl --bot-profile="C:\\absolute\\path\\to\\profile.enc"
     ```
   - **Notes**: Recording is **local** and grows with draw calls; recommended for analysis/debug, not for high‑volume production.
-  - **Docs**: https://github.com/botswin/BotBrowser/tree/main/tools/botcanvas
+  - **Docs**: https://github.com/botswin/BotBrowser/tree/main/tools/canvaslab
 
 ### New
 - **CLI: `--bot-webrtc-ice` (custom ICE servers)**
@@ -433,7 +451,7 @@ Example (Edge browser emulation):
   - Execute a JavaScript file **right after BotBrowser starts** in a privileged, non‑extension context where **`chrome.debugger`** is available.
   - Build scripts **without Playwright/Puppeteer** while still driving CDP via `chrome.debugger`: reducing framework/CDP leak surface and giving **pre‑navigation control**.
   - **Docs:** Chrome `chrome.debugger`: <https://developer.chrome.com/docs/extensions/reference/api/debugger/>
-  - **Usage:** `botbrowser --no-sandbox --bot-profile=/absolute/path/to/profile.enc --bot-script=/path/boot.js`
+  - **Usage:** `chromium --bot-profile=/absolute/path/to/profile.enc --bot-script=/path/boot.js`
   - **Examples:** [Bot Script](examples/bot-script) (includes Cloudflare Turnstile challenge handling)
 
 ### Improved
@@ -1274,7 +1292,7 @@ Example:
 
 ### Improved
 - **WebGL Parameters Simulation:** Inspired by **FakeVision**, refined WebGL parameters simulation to enhance fingerprint fidelity through more cautious handling.
-  [FakeVision Decompiled Source Code](https://github.com/botswin/FakeVision-Reverse)
+  [FakeVision Decompiled Source Code](https://github.com/botswin/FakeVision-Privacy-Research)
 
 
 ---
@@ -1288,4 +1306,4 @@ Example:
 
 ---
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.
+**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md) • [Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint protection and privacy research only.

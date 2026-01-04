@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BotBrowser BotCanvas JSONL Replay Viewer</title>
+  <title>BotBrowser CanvasLab JSONL Replay Viewer</title>
   <style>
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 16px; color: #222; line-height: 1.5; }
     header { margin-bottom: 16px; }
@@ -851,14 +851,14 @@
 
       // Initialize full restore toggle from localStorage
       try {
-        const saved = localStorage.getItem('botcanvas.fullRestoreExport');
+        const saved = localStorage.getItem('canvaslab.fullRestoreExport');
         if (saved != null) fullRestoreExport = (saved === 'true');
       } catch {}
       if (fullRestoreChk) {
         fullRestoreChk.checked = !!fullRestoreExport;
         fullRestoreChk.addEventListener('change', () => {
           fullRestoreExport = !!fullRestoreChk.checked;
-          try { localStorage.setItem('botcanvas.fullRestoreExport', String(fullRestoreExport)); } catch {}
+          try { localStorage.setItem('canvaslab.fullRestoreExport', String(fullRestoreExport)); } catch {}
           // Regenerate code panes immediately to reflect the mode change
           regenerateExportCodeFromCurrentCards();
         });
@@ -970,7 +970,7 @@
 </head>
 <body>
   <header>
-    <h1>BotBrowser BotCanvas JSONL Replay Viewer</h1>
+    <h1>BotBrowser CanvasLab JSONL Replay Viewer</h1>
     <div class="row">
       <input id="file" type="file" accept=".jsonl,.log,.txt,application/json" />
       <label class="note" style="display:flex;align-items:center;gap:6px;">

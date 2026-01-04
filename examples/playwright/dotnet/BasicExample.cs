@@ -35,7 +35,6 @@ class BasicExample
                 },
                 Args = new[]
                 {
-                    "--no-sandbox",
                     "--disable-blink-features=AutomationControlled",
                     "--disable-audio-output",
                     $"--bot-profile={botProfilePath}"
@@ -56,7 +55,7 @@ class BasicExample
         ");
 
         await page.GotoAsync("https://abrahamjuliot.github.io/creepjs/");
-        
+
         // Keep the browser open
         await Task.Delay(-1);
     }

@@ -30,4 +30,4 @@ RUN dpkg -i botbrowser_*.deb || apt-get update && apt-get install -f -y \
 VOLUME ["/botbrowser/profiles", "/botbrowser/user-data-dir"]
 
 # CMD: start Xvfb then Chromium with CDP and user args
-CMD sh -c 'rm -f /tmp/.X99-lock && Xvfb :99 -screen 0 1x1x8 -ac +extension GLX +render -noreset & sleep 3 && exec "$BOTBROWSER_EXEC_PATH" --no-sandbox --headless --disable-blink-features=AutomationControlled --disable-audio-output --remote-debugging-port=9222 --remote-debugging-address=0.0.0.0 --disable-dev-shm-usage --no-first-run --disable-default-apps $CHROME_ARGS'
+CMD sh -c 'rm -f /tmp/.X99-lock && Xvfb :99 -screen 0 1x1x8 -ac +extension GLX +render -noreset & sleep 3 && exec "$BOTBROWSER_EXEC_PATH" --headless --disable-blink-features=AutomationControlled --disable-audio-output --remote-debugging-port=9222 --remote-debugging-address=0.0.0.0 --disable-dev-shm-usage --no-first-run --disable-default-apps $CHROME_ARGS'

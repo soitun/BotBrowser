@@ -29,7 +29,6 @@ async def process(playwright):
             "--disable-gpu-watchdog",
         ],
         args=[
-            "--no-sandbox",
             "--disable-blink-features=AutomationControlled",
             "--disable-audio-output",
             f"--bot-profile={BOT_PROFILE_PATH}",

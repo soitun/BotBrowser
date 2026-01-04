@@ -65,7 +65,6 @@ function createWorker(dates, profiles) {
         // One fresh browser per date to allow distinct bot-profile and proxy.
         const profilePath = pickProfile(profiles);
         const launchArgs = [
-          '--no-sandbox',
           '--headless',
           '--disable-blink-features=AutomationControlled',
           '--disable-audio-output',

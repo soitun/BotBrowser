@@ -47,12 +47,12 @@ All engineering focuses on privacy research, cross-platform tracking-resistance 
     <td width="50%"><strong>Latest Chromium Base</strong> stays synced to the newest stable Chrome so trackers cannot key on stale engines</td>
   </tr>
   <tr>
-    <td width="50%"><strong>Zero-Config Intelligence</strong> reads timezone, locale, and languages from IP to mirror the network story without extra scripting</td>
     <td width="50%"><strong>Advanced Programmatic Control</strong> offers <a href="examples/">Playwright/Puppeteer integration</a> with CDP leak blocking so privacy tooling leaves no telemetry residue</td>
+    <td width="50%"><strong>Network Stack Parity</strong> with <a href="ADVANCED_FEATURES.md#network-fingerprint-control">Full-Proxy QUIC/STUN</a> (UDP over SOCKS5, ENT Tier3 feature) delivers Chromium-level tunneling so geo metadata does not leak and privacy labs maintain clean transport parity</td>
   </tr>
   <tr>
-    <td width="50%"><strong>Network Stack Parity</strong> keeps browser-level proxies aligned so geo metadata does not leak real locations</td>
-    <td width="50%"><strong>Full-Proxy QUIC/STUN</strong> delivers Chromium-level UDP associate so QUIC and STUN stay proxied, giving privacy labs clean transport parity (ENT Tier3 feature, see <a href="ADVANCED_FEATURES.md#network-fingerprint-control">Network Fingerprint Control</a>)</td>
+    <td width="50%"><strong>Distributed Privacy Consistency</strong> lets you verify privacy protection consistency across multiple browser instances simultaneously <a href="tools/mirror/">with Mirror</a>, validating privacy posture in parallel (ENT Tier3 feature)</td>
+    <td width="50%"><strong>Execution Environment Isolation</strong> provides clean contexts that prevent framework artifacts and external libraries from exposing privacy leaks through side channels</td>
   </tr>
 </table>
 
@@ -188,6 +188,16 @@ Prefer a GUI launcher? See [console/README.md](console) for BotBrowserConsole us
 
 ---
 
+## Mirror: Distributed Privacy Consistency
+
+Ensure your privacy protection works consistently across platforms and networks. Run a controller instance and multiple client instances to verify that all instances maintain identical privacy defenses, protecting you from tracking across Windows, macOS, Linux, and remote environments.
+
+Launch with CLI flags: `--bot-mirror-controller-endpoint=127.0.0.1:9990` on the controller, `--bot-mirror-client-endpoint=127.0.0.1:9990` on each client. Runtime activation via CDP is also supported for programmatic control.
+
+See [Mirror documentation](tools/mirror/) for detailed setup, testing procedures, and troubleshooting.
+
+---
+
 ## Fingerprint Consistency Research
 
 ### Research Methodology
@@ -237,7 +247,8 @@ Our fingerprint consistency research examines how standardized browser fingerpri
 | **[Validation Results](VALIDATION.md)** | Research data | 31+ tracking observatories, 50,000+ test sessions, statistical analysis |
 | **[CLI Flags Reference](CLI_FLAGS.md)** | Command-line options | `--bot-config-*` flags, proxy auth, session management |
 | **[Profile Configuration](profiles/PROFILE_CONFIGS.md)** | Profile customization | Fingerprint control, cross-platform compatibility |
-| **[BotCanvasLab](tools/botcanvas/)** | Canvas forensics tool | Canvas 2D recording with JSONL viewer (deterministic replay under development) |
+| **[Mirror](tools/mirror/)** | Distributed privacy consistency | Verify privacy protection consistency across multiple browser instances simultaneously |
+| **[CanvasLab](tools/canvaslab/)** | Canvas forensics tool | Canvas 2D recording with JSONL viewer (deterministic replay under development) |
 | **[Examples](examples/)** | Code samples | Playwright, Puppeteer, bot-script integration |
 
 ### Quick Access
@@ -284,4 +295,4 @@ Contact [botbrowser@bk.ru](mailto:botbrowser@bk.ru) for source code access and c
 - Maintain written authorization for every environment you test, and record the synthetic data sets you rely on.
 - Contact the maintainers at [botbrowser@bk.ru](mailto:botbrowser@bk.ru) if you observe suspicious activity or need to report an abuse incident.
 
-**📋 [Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.
+**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md) • [Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint protection and privacy research only.

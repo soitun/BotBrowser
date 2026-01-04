@@ -16,7 +16,7 @@ These examples assume an authorized privacy research environment. Review the pro
 ## Usage
 
 ```bash
-chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" --bot-script="your-script.js"
+chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" --bot-script="your-script.js"
 ```
 
 ## Examples
@@ -33,7 +33,7 @@ Demonstrates handling of Cloudflare Turnstile challenges using:
 
 **Usage:**
 ```bash
-chrome.exe --no-sandbox --bot-profile="C:\\absolute\\path\\to\\profile.enc" --bot-script="cloudflare-turnstile.js"
+chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" --bot-script="cloudflare-turnstile.js"
 ```
 
 ## Key APIs Available
@@ -94,4 +94,4 @@ for (let i = 0; i < 20; i++) {
 
 ---
 
-**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.
+**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md) • [Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint protection and privacy research only.

@@ -12,7 +12,7 @@ BotBrowser provides multi-layer controls to maintain consistent fingerprints acr
 
 ## Capabilities Index
 
-[navigator.webdriver removal](#chrome-behavior-emulation), [main‑world isolation](#playwright-puppeteer-integration), [JS hook isolation](#playwright-puppeteer-integration), [Canvas noise](#graphics-rendering-engine), [WebGL/WebGPU param control](#graphics-rendering-engine), [Skia anti‑alias](#cross-platform-font-engine), [HarfBuzz shaping](#cross-platform-font-engine), [MediaDevices consistency](#complete-fingerprint-control), [font list authenticity](#cross-platform-font-engine), [UA congruence](#configuration-and-control), [per‑context proxy geo (ENT Tier1 feature)](#enhanced-proxy-system), [DNS‑through‑proxy](#enhanced-proxy-system), [active window emulation](#active-window-emulation), [HTTP headers/HTTP2/HTTP3](#chrome-behavior-emulation), [headless parity](#headless-incognito-compatibility), [WebRTC SDP/ICE control](#webrtc-leak-protection), [TLS fingerprint (JA3/JARM)](#network-fingerprint-control)
+[navigator.webdriver removal](#chrome-behavior-emulation), [main‑world isolation](#playwright-puppeteer-integration), [JS hook isolation](#playwright-puppeteer-integration), [Canvas noise](#graphics-rendering-engine), [WebGL/WebGPU param control](#graphics-rendering-engine), [Skia anti‑alias](#cross-platform-font-engine), [HarfBuzz shaping](#cross-platform-font-engine), [MediaDevices consistency](#complete-fingerprint-control), [font list authenticity](#cross-platform-font-engine), [UA congruence](#configuration-and-control), [per‑context proxy geo (ENT Tier1 feature)](#enhanced-proxy-system), [DNS‑through‑proxy](#enhanced-proxy-system), [active window emulation](#active-window-emulation), [HTTP headers/HTTP2/HTTP3](#chrome-behavior-emulation), [headless parity](#headless-incognito-compatibility), [WebRTC SDP/ICE control](#webrtc-leak-protection), [TLS fingerprint (JA3/JARM)](#network-fingerprint-control), [distributed privacy consistency](#mirror-distributed-privacy-consistency)
 
 <a id="configuration-and-control"></a>
 ## Configuration & Control
@@ -611,6 +611,15 @@ For technical questions about advanced features, implementation details, or cust
 
 ---
 
+<a id="mirror-distributed-privacy-consistency"></a>
+## Mirror: Distributed Privacy Consistency (ENT Tier3 feature)
+
+Ensure your privacy defenses work consistently across platforms and networks. Run a controller instance and multiple clients to verify that all instances maintain identical privacy protection against tracking, protecting you across Windows, macOS, Linux, and remote deployment environments.
+
+**For complete documentation including setup, CLI flags, CDP examples, and troubleshooting, see the [Mirror documentation](tools/mirror/).**
+
+---
+
 ## Related Documentation
 
 - **[Main README](README.md)** - Project overview and quick start
@@ -618,9 +627,10 @@ For technical questions about advanced features, implementation details, or cust
 - **[CLI Flags Reference](CLI_FLAGS.md)** - Complete command-line options
 - **[Profile Configuration](profiles/PROFILE_CONFIGS.md)** - Advanced profile customization
 - **[Validation Results](VALIDATION.md)** - Research and testing data
-- **[BotCanvasLab](tools/botcanvas/)** - Canvas forensics and tracking analysis tool (recording available broadly; deterministic replay tooling forthcoming)
+- **[Mirror](tools/mirror/)** - Distributed privacy consistency verification tool
+- **[CanvasLab](tools/canvaslab/)** - Canvas forensics and tracking analysis tool (recording available broadly; deterministic replay tooling forthcoming)
 - **[Examples](examples/)** - Automation code samples
 
 ---
 
-**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md)** • **[Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint-consistency testing and research only.
+**[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md) • [Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint protection and privacy research only.
