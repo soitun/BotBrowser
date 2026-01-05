@@ -127,21 +127,6 @@ Mirror captures input through Views framework components (tabstrip, omnibox, too
 
 Mirror routes all input through Aura's unified event system. Keyboard input is intelligently split: non-text keys (arrows, enter, etc.) use the standard dispatch path, while printable characters route through text input handling to preserve IME and input method behavior. Scroll wheel events include tick count information to prevent small deltas from being lost.
 
-## Debugging
-
-Enable logging to see event flow and diagnose synchronization issues:
-
-```bash
-chromium --bot-mirror-controller-endpoint=127.0.0.1:9990 \
-  --enable-logging --v=1 --log-file="mirror.log"
-```
-
-Check the log file for:
-- Controller startup confirmation on the specified port
-- Client connection messages
-- Event capture and broadcast records
-- Window selection and coordinate transformation details
-
 ## Important Notes
 
 ### Constraints
