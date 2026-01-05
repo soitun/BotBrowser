@@ -261,7 +261,7 @@ Flags that directly map to profile `configs` and override them at runtime.
 
 > **Note: UA/Engine Congruence:** Keep `--bot-config-ua-full-version` aligned with your Chromium major version, and use `--bot-config-brand-full-version` when a vendor's cadence (Edge, Opera, Brave) diverges so UA-CH metadata stays internally protected.
 
-### Behavior & Stealth Toggles
+### Behavior & Protection Toggles
 
 Runtime toggles that don’t rely on profile `configs` but still override behavior at launch.
 
