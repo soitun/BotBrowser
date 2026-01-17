@@ -1,4 +1,4 @@
-<h1 align="center"><img src="docs/assets/logo-option-24.svg" alt="BotBrowser logo" width="32" height="32" /> BotBrowser</h1>
+<h1 align="center"><img src="docs/assets/logo-32.svg" alt="BotBrowser logo" width="32" height="32" /> BotBrowser</h1>
 
 <h4 align="center">Advanced Privacy Browser Core with Unified Fingerprint Defense 🚀</h4>
 
