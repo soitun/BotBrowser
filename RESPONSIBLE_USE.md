@@ -19,7 +19,7 @@ BotBrowser is a privacy protection platform designed for fingerprint protection 
 
 ## RESPONSIBLE DISCLOSURE & COOPERATION
 
-- **ABUSE REPORTING:** Service operators or security vendors can contact the maintainers at [botbrowser@bk.ru](mailto:botbrowser@bk.ru). Include evidence (timestamps, IPs, scripts) so investigations can begin immediately.
+- **ABUSE REPORTING:** Service operators or security vendors can contact the maintainers at [support@botbrowser.io](mailto:support@botbrowser.io). Include evidence (timestamps, IPs, scripts) so investigations can begin immediately.
 - **LICENSE REVOCATION:** Maintainers may revoke access to binaries or profiles for any breach of these rules.
 - **VENDOR COLLABORATION:** We coordinate with security vendors to share indicators of compromise and mitigate ongoing abuse.
 - **TESTING REPORTS:** Qualified vendors who need additional visibility into BotBrowser evaluations may request redacted test reports or joint review calls after verifying ownership of the affected property.

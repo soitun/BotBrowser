@@ -67,15 +67,6 @@ Quick Start
 | **Application Runtime** | [Neutralino.js](https://neutralino.js.org) | Lightweight framework leveraging native WebView for efficient resource usage |
 
 
-## Academic Collaboration & Inquiries
-
-For research-related collaboration or licensing review, please contact us:
-
-<table>
-  <tr><td>Email</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
-  <tr><td>Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
-</table>
-
 ---
 
 **[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md) • [Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint protection and privacy research only.

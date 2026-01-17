@@ -1,4 +1,9 @@
-<h1 align="center">🤖 BotBrowser</h1>
+<h1 align="center" style="display:flex;align-items:center;justify-content:center;gap:8px;">
+  <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#0b63f6 0%,#1d9bf0 100%);border-radius:8px;line-height:0;">
+    <img src="docs/assets/logo-option-24.svg" alt="BotBrowser logo" width="30" height="30" style="filter:invert(1);" />
+  </span>
+  BotBrowser
+</h1>
 
 <h4 align="center">Advanced Privacy Browser Core with Unified Fingerprint Defense 🚀</h4>
 
@@ -141,7 +146,7 @@ This reference maps privacy protection goals to BotBrowser implementation detail
 | Device capabilities | Profile-based device properties maintain protected device claims across all platforms | [Profile Configs](profiles/PROFILE_CONFIGS.md) |
 | Network topology privacy | WebRTC signaling stays protected through SDP and ICE controls preventing network topology leakage | [ADVANCED_FEATURES#WebRTC Leak Protection](ADVANCED_FEATURES.md#webrtc-leak-protection) |
 | User agent coherence | Browser brand and version parity prevents UA string from revealing platform differences | [CLI_FLAGS#Profile Configuration Override Flags](CLI_FLAGS.md#profile-configuration-override-flags) |
-| Header to API parity | Client Hints headers DPR, device-memory, and UA-CH align with JavaScript reported values preventing header based identification | [ADVANCED_FEATURES#Browser & OS Fingerprinting](ADVANCED_FEATURES.md#browser--os-fingerprinting) |
+| Header to API parity | Client Hints headers DPR, device-memory, and UA-CH align with JavaScript reported values preventing header based identification | [ADVANCED_FEATURES#Browser & OS Fingerprinting](ADVANCED_FEATURES.md#browser-os-fingerprinting) |
 | Execution mode parity | GPU, WebGPU, and media signals remain identical whether running headless or in GUI mode | [ADVANCED_FEATURES#Headless & Incognito Compatibility](ADVANCED_FEATURES.md#headless-incognito-compatibility) |
 | DNS privacy | Use local DNS solver (ENT Tier1) for private resolution that avoids DNS leaks and provider restrictions, or use SOCKS5H to keep DNS within proxy tunnels | [CLI_FLAGS#Enhanced Proxy Configuration](CLI_FLAGS.md#enhanced-proxy-configuration) |
 | Public IP discovery | Customizable IP lookup backend for geo derivation via `--bot-ip-service` (supports comma-separated endpoints; BotBrowser races them and uses the fastest successful response) | [CLI_FLAGS#Enhanced Proxy Configuration](CLI_FLAGS.md#enhanced-proxy-configuration) |
@@ -259,12 +264,11 @@ Our fingerprint protection validation examines how standardized browser fingerpr
 
 **Profile Management:**
 - Demo profiles available in [profiles/](profiles/) directory
-- Premium privacy profiles: Contact [botbrowser@bk.ru](mailto:botbrowser@bk.ru)
 
 ### Support Channels
 
 <table>
-  <tr><td>Email</td><td>Technical questions, source code access</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
+  <tr><td>Email</td><td>Technical questions, source code access</td><td><a href="mailto:support@botbrowser.io">support@botbrowser.io</a></td></tr>
   <tr><td>Telegram</td><td>Community support, quick questions</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
 </table>
 
@@ -275,7 +279,7 @@ For advanced users who want to build BotBrowser from source:
 1. **Requirements:** Linux build environment, Chromium build tools
 2. **Source Access:** Available to qualified researchers and institutions
 
-Contact [botbrowser@bk.ru](mailto:botbrowser@bk.ru) for source code access and compilation instructions.
+See the step-by-step build guide in [build/README.md](build/README.md).
 
 ### Debugging & FAQs
 
@@ -292,6 +296,6 @@ Contact [botbrowser@bk.ru](mailto:botbrowser@bk.ru) for source code access and c
 
 - Review the detailed [Responsible Use Guidelines](RESPONSIBLE_USE.md) and [Legal Disclaimer](DISCLAIMER.md) before requesting binaries or premium profiles.
 - Maintain written authorization for every environment you test, and record the synthetic data sets you rely on.
-- Contact the maintainers at [botbrowser@bk.ru](mailto:botbrowser@bk.ru) if you observe suspicious activity or need to report an abuse incident.
+- Contact the maintainers at [support@botbrowser.io](mailto:support@botbrowser.io) if you observe suspicious activity or need to report an abuse incident.
 
 **[Legal Disclaimer & Terms of Use](https://github.com/botswin/BotBrowser/blob/main/DISCLAIMER.md) • [Responsible Use Guidelines](https://github.com/botswin/BotBrowser/blob/main/RESPONSIBLE_USE.md)**. BotBrowser is for authorized fingerprint protection and privacy research only.

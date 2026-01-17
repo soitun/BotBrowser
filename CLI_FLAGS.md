@@ -409,7 +409,7 @@ Placeholders like `{platform-version}` and `{model}` get replaced from flags or 
 ---
 
 ## Related Documentation
-📎 Quick links to supporting materials.
+Quick links to supporting materials.
 
 - [Profile Configuration Guide](profiles/PROFILE_CONFIGS.md) - Configure browser behavior via profiles
 - [Main README](README.md) - General usage and standard Chromium flags
@@ -434,8 +434,6 @@ Realistic browsing: `--bot-bookmarks` adds authenticity.
 Proxy authentication: embed credentials directly in the proxy URL.
 
 ---
-
-> Need help? Check our [Issues](https://github.com/botswin/BotBrowser/issues) or contact support at [botbrowser@bk.ru](mailto:botbrowser@bk.ru)
 
 > Note: This document covers BotBrowser-specific flags only. For standard Chromium flags (like `--headless`, `--no-sandbox`, `--user-data-dir`, etc.), refer to the [Chromium command line documentation](https://peter.sh/experiments/chromium-command-line-switches/).
 

@@ -2,7 +2,7 @@
 
 Automated validation framework for preventing fingerprint collection and cross-platform tracking prevention. Browser fingerprinting is recognized as a privacy threat by [W3C, major browser vendors, and EU regulators](../FINGERPRINT_PRIVACY.md).
 
-Demonstrates controlled fingerprint protection validation using [Playwright](https://playwright.dev/docs/writing-tests) for academic and privacy research purposes. Operate these scripts in accordance with the project [Legal Disclaimer](../DISCLAIMER.md) and [Responsible Use Guidelines](../RESPONSIBLE_USE.md). If you observe any misuse, contact [botbrowser@bk.ru](mailto:botbrowser@bk.ru) so we can investigate and support affected services.
+Demonstrates controlled fingerprint protection validation using [Playwright](https://playwright.dev/docs/writing-tests) for academic and privacy research purposes. Operate these scripts in accordance with the project [Legal Disclaimer](../DISCLAIMER.md) and [Responsible Use Guidelines](../RESPONSIBLE_USE.md). If you observe any misuse, contact [support@botbrowser.io](mailto:support@botbrowser.io) so we can investigate and support affected services.
 
 ## Research Environment Setup
 

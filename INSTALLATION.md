@@ -186,24 +186,6 @@ ls -la ./profiles/*.enc
 chrome.exe --bot-profile="C:\\absolute\\path\\to\\profile.enc" --headless --dump-dom https://httpbin.org/user-agent
 ```
 
----
-
-## Advanced Installation Options
-
-### Custom Build Installation
-
-For advanced users building from source:
-
-#### Requirements
-- Linux build environment
-- Chromium build tools and dependencies
-- 16GB+ RAM for compilation
-- 100GB+ disk space
-
-#### Build Process
-1. Contact [botbrowser@bk.ru](mailto:botbrowser@bk.ru) for source access
-2. Follow the build instructions in [build/README.md](build/)
-3. Compile with custom modifications if needed
 
 ---
 
@@ -252,7 +234,7 @@ If you encounter installation issues:
 ### Contact Information
 
 <table>
-  <tr><td>Email</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
+  <tr><td>Email</td><td><a href="mailto:support@botbrowser.io">support@botbrowser.io</a></td></tr>
   <tr><td>Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
 </table>
 

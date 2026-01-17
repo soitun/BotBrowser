@@ -221,7 +221,7 @@ Consistent behavior across modes with comprehensive simulation.
 - Maintains fingerprint protection in incognito mode
 - Consistent fingerprint between normal and incognito modes
 - Maintains privacy features while ensuring protection
-- For CLI launch guidance, see README “Quick Start” and [`INSTALLATION.md`](INSTALLATION.md#headless)
+- For CLI launch guidance, see README “Quick Start” and [`INSTALLATION.md`](INSTALLATION.md)
 
 <a id="webrtc-leak-protection"></a>
 ### WebRTC Leak Protection
@@ -630,16 +630,6 @@ Advanced features are engineered for minimal performance impact:
 - Optimized rendering pipeline
 - Efficient cross-worker communication
 
----
-
-## Advanced Feature Support
-
-For technical questions about advanced features, implementation details, or custom requirements:
-
-<table>
-  <tr><td>Email</td><td><a href="mailto:botbrowser@bk.ru">botbrowser@bk.ru</a></td></tr>
-  <tr><td>Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
-</table>
 
 ---
 
@@ -649,6 +639,18 @@ For technical questions about advanced features, implementation details, or cust
 Ensure your privacy defenses work consistently across platforms and networks. Run a controller instance and multiple clients to verify that all instances maintain identical privacy protection against tracking, protecting you across Windows, macOS, Linux, and remote deployment environments.
 
 **For complete documentation including setup, CLI flags, CDP examples, and troubleshooting, see the [Mirror documentation](tools/mirror/).**
+
+---
+
+## Advanced Feature Support
+
+For technical questions about advanced features, implementation details, or custom requirements:
+
+<table>
+  <tr><td>Email</td><td><a href="mailto:support@botbrowser.io">support@botbrowser.io</a></td></tr>
+  <tr><td>Telegram</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
+</table>
+
 
 ---
 

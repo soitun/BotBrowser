@@ -390,7 +390,7 @@ Detection System Tests (200+ scenarios)
 
 ### Academic Collaboration
 
-**Research Questions:** [botbrowser@bk.ru](mailto:botbrowser@bk.ru)
+**Research Questions:** [support@botbrowser.io](mailto:support@botbrowser.io)
 
 **Technical Support:** [@botbrowser_support](https://t.me/botbrowser_support)
 
