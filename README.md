@@ -1,9 +1,4 @@
-<h1 align="center" style="display:flex;align-items:center;justify-content:center;gap:8px;">
-  <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#0b63f6 0%,#1d9bf0 100%);border-radius:8px;line-height:0;">
-    <img src="docs/assets/logo-option-24.svg" alt="BotBrowser logo" width="30" height="30" style="filter:invert(1);" />
-  </span>
-  BotBrowser
-</h1>
+<h1 align="center"><img src="docs/assets/logo-option-24.svg" alt="BotBrowser logo" width="32" height="32" /> BotBrowser</h1>
 
 <h4 align="center">Advanced Privacy Browser Core with Unified Fingerprint Defense 🚀</h4>
 
