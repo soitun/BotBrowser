@@ -7,47 +7,61 @@ BotBrowserConsole is the desktop companion to **[BotBrowser](https://github.com/
 ## Key Features
 
 ### Profile Management
+
 - Create browser profiles for different accounts and use cases
 - Choose from a library of fingerprint configuration files
 - Clone existing profiles for faster setup and protection
 - Import/export profiles for seamless team collaboration
 
 ### Network & Privacy
+
 - Per-profile proxies for secure, privacy-respecting testing
 - Optional fingerprint noise to evaluate cross-platform protection
 
 ### Advanced Operations
+
 - Launch multiple isolated browsers with complete data separation
 - Optionally pre-warm sessions for controlled experiments
 - Organize profiles and settings into groups
 
 ### Developer Features
+
 - API support for custom workflows and authorized research
 
 ## Development Setup
 
 ### Prerequisites
-Install Neutralino CLI globally:
-```bash
-npm i -g @neutralinojs/neu
-```
+
+1. **Node.js 24+** - Required for Angular 21
+    - Using nvm (recommended):
+        ```bash
+        nvm use
+        ```
+    - Or install Node.js v24.13.0+ from [nodejs.org](https://nodejs.org/)
+
+2. **Neutralino CLI** - Install globally:
+    ```bash
+    npm i -g @neutralinojs/neu
+    ```
 
 ### Installation Steps
 
 1. Install dependencies
-   ```bash
-   npm ci
-   ```
+
+    ```bash
+    npm ci
+    ```
 
 2. Build the application
-   ```bash
-   npm run build
-   ```
+
+    ```bash
+    npm run build
+    ```
 
 3. Run the application
-   ```bash
-   npm run app
-   ```
+    ```bash
+    npm run app
+    ```
 
 ## Getting Started
 
@@ -60,12 +74,11 @@ Quick Start
 
 ## Technical Stack
 
-| Component | Technology | Description |
-|-----------|------------|-------------|
-| **Frontend Framework** | [Angular 19](https://angular.dev) | Comprehensive solution with built-in tools for routing, state management, and dependency injection |
-| **UI Components** | [Angular Material](https://material.angular.io) | Modern, responsive, and accessible UI component library |
-| **Application Runtime** | [Neutralino.js](https://neutralino.js.org) | Lightweight framework leveraging native WebView for efficient resource usage |
-
+| Component               | Technology                                         | Description                                                                                        |
+| ----------------------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **Frontend Framework**  | [Angular 21](https://angular.dev)                  | Comprehensive solution with built-in tools for routing, state management, and dependency injection |
+| **UI Components**       | [Angular Material 21](https://material.angular.io) | Modern, responsive, and accessible UI component library                                            |
+| **Application Runtime** | [Neutralino.js 6.4](https://neutralino.js.org)     | Lightweight framework leveraging native WebView for efficient resource usage                       |
 
 ---
 

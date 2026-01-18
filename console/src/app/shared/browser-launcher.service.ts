@@ -13,7 +13,7 @@ import { BrowserProfileService } from './browser-profile.service';
 export interface RunningInfo {
     browserProfileId: string;
     status: BrowserProfileStatus;
-    spawnProcessInfo?: Neutralino.os.SpawnedProcess;
+    spawnProcessInfo?: Neutralino.SpawnedProcess;
     resolver?: any;
 }
 
@@ -100,8 +100,8 @@ export class BrowserLauncherService {
         let botProfileObject: any | undefined;
         try {
             botProfileObject = JSON.parse(browserProfile.botProfileInfo.content ?? '');
-        } catch (err) {
-            console.error('Error parsing bot profile content: ', err);
+        } catch (error) {
+            console.error('Error parsing bot profile content: ', error);
         }
 
         if (!botProfileObject) {
@@ -115,7 +115,10 @@ export class BrowserLauncherService {
         const botProfileContent = JSON.stringify(botProfileObject);
         const botProfilesBasePath = await Neutralino.filesystem.getJoinedPath(sysTempPath, AppName, 'bot-profiles');
         await createDirectoryIfNotExists(botProfilesBasePath);
-        const botProfilePath = await Neutralino.filesystem.getJoinedPath(botProfilesBasePath, `${browserProfile.id}.json`);
+        const botProfilePath = await Neutralino.filesystem.getJoinedPath(
+            botProfilesBasePath,
+            `${browserProfile.id}.json`
+        );
         await Neutralino.filesystem.writeFile(botProfilePath, botProfileContent);
 
         // Save browser profile
@@ -124,13 +127,23 @@ export class BrowserLauncherService {
 
         const browserProfilePath = await this.#browserProfileService.getBrowserProfilePath(browserProfile);
         const userDataDirPath = await Neutralino.filesystem.getJoinedPath(browserProfilePath, 'user-data-dir');
-        const diskCacheDirPath = await Neutralino.filesystem.getJoinedPath(sysTempPath, AppName, 'disk-cache-dir', browserProfile.id);
+        const diskCacheDirPath = await Neutralino.filesystem.getJoinedPath(
+            sysTempPath,
+            AppName,
+            'disk-cache-dir',
+            browserProfile.id
+        );
 
         let execPath: string;
         if (browserProfile.binaryPath) {
             if (osType.includes('Darwin')) {
                 if (browserProfile.binaryPath.endsWith('.app')) {
-                    execPath = await Neutralino.filesystem.getJoinedPath(browserProfile.binaryPath, 'Contents', 'MacOS', 'Chromium');
+                    execPath = await Neutralino.filesystem.getJoinedPath(
+                        browserProfile.binaryPath,
+                        'Contents',
+                        'MacOS',
+                        'Chromium'
+                    );
                 } else {
                     execPath = browserProfile.binaryPath;
                 }

@@ -12,21 +12,34 @@
         <!-- edit profile -->
         <button mat-button (click)="editSelectedProfile()" [disabled]="selection.selected.length != 1">
             <mat-icon>edit</mat-icon>
-            Edit Profile
+            Edit
         </button>
 
         <!-- import profile -->
         <button mat-button (click)="importProfile()">
             <mat-icon>download</mat-icon>
-            Import Profile
+            Import
         </button>
 
         <!-- delete profile  -->
         <button mat-button (click)="deleteProfiles()" [disabled]="selection.selected.length == 0">
             <mat-icon>delete</mat-icon>
-            Delete Profiles
+            Delete
         </button>
-         <!-- Export CSV -->
+
+        <!-- start selected profiles -->
+        <button mat-button (click)="startSelectedProfiles()" [disabled]="!hasIdleProfiles()">
+            <mat-icon>play_arrow</mat-icon>
+            Start
+        </button>
+
+        <!-- stop selected profiles -->
+        <button mat-button (click)="stopSelectedProfiles()" [disabled]="!hasRunningProfiles()">
+            <mat-icon>stop</mat-icon>
+            Stop
+        </button>
+
+        <!-- Export CSV -->
         <button mat-button (click)="exportToCSV()">
             <mat-icon>file_download</mat-icon>
             Export CSV

@@ -394,4 +394,52 @@ export class AppComponent implements AfterViewInit {
     async stopBrowserProfile(browserProfile: BrowserProfile): Promise<void> {
         await this.browserLauncherService.stop(browserProfile);
     }
+
+    hasIdleProfiles(): boolean {
+        return this.selection.selected.some(
+            (profile) => this.browserLauncherService.getRunningStatus(profile) === BrowserProfileStatus.Idle
+        );
+    }
+
+    hasRunningProfiles(): boolean {
+        return this.selection.selected.some(
+            (profile) => this.browserLauncherService.getRunningStatus(profile) === BrowserProfileStatus.Running
+        );
+    }
+
+    async startSelectedProfiles(): Promise<void> {
+        const idleProfiles = this.selection.selected.filter(
+            (profile) => this.browserLauncherService.getRunningStatus(profile) === BrowserProfileStatus.Idle
+        );
+
+        if (idleProfiles.length === 0) {
+            return;
+        }
+
+        for (const profile of idleProfiles) {
+            try {
+                await this.browserLauncherService.run(profile);
+            } catch (error) {
+                console.error(`Failed to start profile ${profile.basicInfo.profileName}:`, error);
+            }
+        }
+    }
+
+    async stopSelectedProfiles(): Promise<void> {
+        const runningProfiles = this.selection.selected.filter(
+            (profile) => this.browserLauncherService.getRunningStatus(profile) === BrowserProfileStatus.Running
+        );
+
+        if (runningProfiles.length === 0) {
+            return;
+        }
+
+        for (const profile of runningProfiles) {
+            try {
+                await this.browserLauncherService.stop(profile);
+            } catch (error) {
+                console.error(`Failed to stop profile ${profile.basicInfo.profileName}:`, error);
+            }
+        }
+    }
 }

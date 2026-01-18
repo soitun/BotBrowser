@@ -43,7 +43,12 @@ export class BrowserProfileService {
     async getBrowserProfileDiskCacheDirPath(browserProfile: string | BrowserProfile) {
         const browserProfileId = typeof browserProfile === 'string' ? browserProfile : browserProfile.id;
         const sysTempPath = await Neutralino.os.getPath('temp');
-        const result = await Neutralino.filesystem.getJoinedPath(sysTempPath, AppName, 'disk-cache-dir', browserProfileId);
+        const result = await Neutralino.filesystem.getJoinedPath(
+            sysTempPath,
+            AppName,
+            'disk-cache-dir',
+            browserProfileId
+        );
         return result;
     }
 
@@ -65,7 +70,9 @@ export class BrowserProfileService {
                     if (entry.type == 'FILE') return;
 
                     try {
-                        const content = await Neutralino.filesystem.readFile(await Neutralino.filesystem.getJoinedPath(entry.path, kProfileConfigFileName));
+                        const content = await Neutralino.filesystem.readFile(
+                            await Neutralino.filesystem.getJoinedPath(entry.path, kProfileConfigFileName)
+                        );
                         return JSON.parse(content);
                     } catch {}
                 })
