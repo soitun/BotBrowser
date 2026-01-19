@@ -67,7 +67,8 @@ const client = await page.createCDPSession();
 // Set per-context fingerprint flags
 // Load a different profile and customize locale settings
 await client.send('BotBrowser.setBrowserContextFlags', {
-  flags: [
+  browserContextId: context._contextId,
+  botbrowserFlags: [
     '--bot-profile=/path/to/android-profile.enc',
     '--bot-config-timezone=Asia/Tokyo',
     '--bot-config-languages=ja-JP,en-US',
@@ -108,7 +109,8 @@ const ctx1 = await browser.createBrowserContext();
 const page1 = await ctx1.newPage();
 const client1 = await page1.createCDPSession();
 await client1.send('BotBrowser.setBrowserContextFlags', {
-  flags: [
+  browserContextId: ctx1._contextId,
+  botbrowserFlags: [
     '--bot-profile=/path/to/windows-profile.enc',
     '--bot-config-timezone=America/Chicago',
     '--bot-config-languages=en-US'
@@ -120,7 +122,8 @@ const ctx2 = await browser.createBrowserContext();
 const page2 = await ctx2.newPage();
 const client2 = await page2.createCDPSession();
 await client2.send('BotBrowser.setBrowserContextFlags', {
-  flags: [
+  browserContextId: ctx2._contextId,
+  botbrowserFlags: [
     '--bot-profile=/path/to/macos-profile.enc',
     '--bot-config-timezone=Europe/London',
     '--bot-config-languages=en-GB'
@@ -146,7 +149,8 @@ const ctx1 = await browser.createBrowserContext({
 const page1 = await ctx1.newPage();
 const client1 = await page1.createCDPSession();
 await client1.send('BotBrowser.setBrowserContextFlags', {
-  flags: [
+  browserContextId: ctx1._contextId,
+  botbrowserFlags: [
     '--bot-profile=/path/to/profile.enc',
     '--proxy-ip=203.0.113.1'
   ]
@@ -159,7 +163,8 @@ const ctx2 = await browser.createBrowserContext({
 const page2 = await ctx2.newPage();
 const client2 = await page2.createCDPSession();
 await client2.send('BotBrowser.setBrowserContextFlags', {
-  flags: [
+  browserContextId: ctx2._contextId,
+  botbrowserFlags: [
     '--bot-profile=/path/to/profile.enc',
     '--proxy-ip=198.51.100.1'
   ]
