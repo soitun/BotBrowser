@@ -48,11 +48,11 @@ All engineering focuses on privacy research, cross-platform tracking-resistance 
   </tr>
   <tr>
     <td width="50%"><strong>Advanced Programmatic Control</strong> offers <a href="examples/">Playwright/Puppeteer integration</a> with CDP leak blocking so privacy tooling leaves no telemetry residue</td>
-    <td width="50%"><strong>Network Stack Parity</strong> with <a href="ADVANCED_FEATURES.md#network-fingerprint-control">Full-Proxy QUIC/STUN</a> (UDP over SOCKS5, ENT Tier3 feature) delivers Chromium-level tunneling so geo metadata does not leak and privacy labs maintain clean transport parity</td>
+    <td width="50%"><strong>Network Stack Parity</strong> with <a href="ADVANCED_FEATURES.md#network-fingerprint-control">Full-Proxy QUIC/STUN</a> (UDP over SOCKS5) delivers Chromium-level tunneling so geo metadata does not leak and privacy labs maintain clean transport parity</td>
   </tr>
   <tr>
-    <td width="50%"><strong>Distributed Privacy Consistency</strong> lets you verify privacy protection across multiple browser instances simultaneously <a href="tools/mirror/">with Mirror</a>, validating privacy posture in parallel (ENT Tier3 feature)</td>
-    <td width="50%"><strong>Execution Environment Isolation</strong> provides clean contexts that prevent framework artifacts and external libraries from exposing privacy leaks through side channels</td>
+    <td width="50%"><strong>Distributed Privacy Consistency</strong> lets you verify privacy protection across multiple browser instances simultaneously <a href="tools/mirror/">with Mirror</a>, validating privacy posture in parallel</td>
+    <td width="50%"><strong>Per-Context Fingerprint</strong> enables <a href="PER_CONTEXT_FINGERPRINT.md">independent fingerprint bundles per BrowserContext</a> without spawning new processes, with millisecond-level switching and reduced memory overhead</td>
   </tr>
 </table>
 
@@ -116,8 +116,8 @@ Examples: [Playwright](examples/playwright/) • [Puppeteer](examples/puppeteer/
 > **Professional-grade privacy technology** built on multi-layer fingerprint protection, network-stack control, and hardening.
 
 - **Multi Layer Noise**: Canvas, WebGL, WebGPU, text, and AudioContext surfaces share deterministic, cross-worker noise with low-level Skia and HarfBuzz tuning so observers cannot correlate runs
-- **Execution Environment Isolation**: Clean execution contexts prevent framework artifacts from exposing privacy leaks, framework-less `--bot-script`, and console suppression (ENT Tier1) maintain protected fingerprints across all execution modes
-- **Configurable Stack**: 50+ CLI overrides, per-context proxies (ENT Tier1) with auto geo, and session tooling (cookies, bookmarks, title, history) make privacy scripting flexible
+- **Per-Context Fingerprint**: Independent fingerprint per BrowserContext without new processes, [millisecond-level switching](PER_CONTEXT_FINGERPRINT.md) (ENT Tier3); clean execution contexts and console suppression (ENT Tier1) maintain isolation
+- **Configurable Stack**: 50+ CLI overrides, per-context proxies (ENT Tier1) with auto geo, session tooling (cookies, bookmarks, title, history), and [plaintext storage access](examples/storage-access/) (ENT Tier1) make privacy scripting flexible
 - **Typography Fidelity**: DOM text renders from embedded Windows and macOS font packs (Android fonts require PRO) so host fonts never leak during cross-OS simulation
 - **Client Hints Lockstep**: DPR, device-memory, and UA-CH headers match JavaScript-visible values; custom User-Agent with full userAgentData control (ENT Tier3)
 - **Headless ↔ GUI Parity**: Identical GPU, WebGPU, and media signals across browser modes so privacy regression tests remain stable

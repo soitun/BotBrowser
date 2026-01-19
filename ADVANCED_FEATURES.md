@@ -642,6 +642,15 @@ Ensure your privacy defenses work consistently across platforms and networks. Ru
 
 ---
 
+<a id="per-context-fingerprint"></a>
+## Per-Context Fingerprint (ENT Tier3)
+
+Assign independent fingerprint bundles per BrowserContext without spawning new browser processes. Each context can have its own profile, timezone, locale, noise seeds, and all other fingerprint parameters. Workers automatically inherit the parent context fingerprint.
+
+**For complete documentation including CDP examples, supported flags, and use cases, see [PER_CONTEXT_FINGERPRINT.md](PER_CONTEXT_FINGERPRINT.md).**
+
+---
+
 ## Advanced Feature Support
 
 For technical questions about advanced features, implementation details, or custom requirements:
@@ -662,6 +671,7 @@ For technical questions about advanced features, implementation details, or cust
 - **[Profile Configuration](profiles/PROFILE_CONFIGS.md)** - Advanced profile customization
 - **[Validation Results](VALIDATION.md)** - Research and testing data
 - **[Mirror](tools/mirror/)** - Distributed privacy consistency verification tool
+- **[Per-Context Fingerprint](PER_CONTEXT_FINGERPRINT.md)** - Independent fingerprint per BrowserContext
 - **[CanvasLab](tools/canvaslab/)** - Canvas forensics and tracking analysis tool (recording available broadly; deterministic replay tooling forthcoming)
 - **[Examples](examples/)** - Automation code samples
 

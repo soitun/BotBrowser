@@ -185,9 +185,9 @@ For complete CLI flags documentation, see [CLI Flags Reference](../CLI_FLAGS.md)
 ### Tiered capabilities (subscription-gated):
 
 - **PRO** — Android profile support, augmented history (`injectRandomHistory`), always-active tabs (`alwaysActive`).
-- **ENT Tier1** — Ubuntu/Linux binary, WebRTC ICE presets (`webrtcICE`), console message suppression (`disableConsoleMessage`), geo overrides (`locale`, `timezone`, `languages`, `location`), proxy IP (`--proxy-ip`), cookies (`--bot-cookies`).
+- **ENT Tier1** — Ubuntu/Linux binary, WebRTC ICE presets (`webrtcICE`), console message suppression (`disableConsoleMessage`), geo overrides (`locale`, `timezone`, `languages`, `location`), proxy IP (`--proxy-ip`), cookies (`--bot-cookies`), [plaintext storage access](../examples/storage-access/) for direct SQLite/LevelDB reading.
 - **ENT Tier2** — Browser brand/UA overrides (`browserBrand`, `uaFullVersion`, `brandFullVersion`), deterministic noise seed (`--bot-noise-seed`), runtime timing scaler (`--bot-time-scale`).
-- **ENT Tier3** — UDP-over-SOCKS5 tunneling for QUIC/STUN, custom User-Agent with full userAgentData control (`platform`, `platformVersion`, `model`, `architecture`, `bitness`, `mobile`), WebView brand support, Mirror for distributed fingerprint validation.
+- **ENT Tier3** — UDP-over-SOCKS5 tunneling for QUIC/STUN, custom User-Agent with full userAgentData control (`platform`, `platformVersion`, `model`, `architecture`, `bitness`, `mobile`), WebView brand support, Mirror for distributed fingerprint validation, [Per-Context Fingerprint](../PER_CONTEXT_FINGERPRINT.md) for independent fingerprint bundles per BrowserContext.
 - See [CLI_FLAGS](CLI_FLAGS.md) and [PROFILE_CONFIGS](PROFILE_CONFIGS.md) for full flag coverage and usage examples.
 
 ---

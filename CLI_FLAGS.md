@@ -412,6 +412,7 @@ Placeholders like `{platform-version}` and `{model}` get replaced from flags or 
 Quick links to supporting materials.
 
 - [Profile Configuration Guide](profiles/PROFILE_CONFIGS.md) - Configure browser behavior via profiles
+- [Per-Context Fingerprint](PER_CONTEXT_FINGERPRINT.md) - Independent fingerprint per BrowserContext
 - [Main README](README.md) - General usage and standard Chromium flags
 - [Examples](examples/) - Playwright and Puppeteer integration examples
 - [Docker Deployment](docker/README.md) - Container deployment guides

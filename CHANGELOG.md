@@ -3,6 +3,14 @@
 > **Research scope:** Entries in this changelog describe features evaluated in authorized labs and defensive benchmarking programs. Follow the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md). We work with security vendors to investigate any misuse, so report concerns to [support@botbrowser.io](mailto:support@botbrowser.io).
 
 
+## [2026-01-19]
+### Major
+- **Per-Context Fingerprint (ENT Tier3)**: Assign independent fingerprint bundles per BrowserContext without spawning new browser processes. Configure via CDP (`BotBrowser.setBrowserContextFlags` or `Target.createBrowserContext` with `botbrowserFlags`). All `--bot-*` flags are supported per-context, including `--bot-profile` to load entirely different profiles. Workers (Dedicated, Shared, Service) automatically inherit the parent context fingerprint. See [PER_CONTEXT_FINGERPRINT.md](PER_CONTEXT_FINGERPRINT.md) for usage.
+
+### New
+- **Plaintext Storage Access (ENT Tier1)**: Browser storage (cookies, passwords, credit cards) is now accessible in plaintext for direct SQLite reading. This enables session extraction, cross-machine profile migration, and debugging workflows without decryption barriers. Passwords and credit cards auto-save without confirmation prompts. See [examples/storage-access/](examples/storage-access/) for usage.
+
+
 ## [2026-01-16]
 ### Major
 - **Chromium Core → 144.0.7559.76**: Updated the engine to the latest Chrome 144 stable (144.0.7559.76). This keeps Web Platform behavior, rendering consistency, and security patches aligned with upstream Chrome.
