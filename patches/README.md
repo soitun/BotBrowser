@@ -6,7 +6,7 @@ For Fingerprint Protection and Privacy Research.
 
 BotBrowser includes proprietary enhancements built on top of Chromium, developed in-house for fingerprint protection and privacy research.
 
-Only the GUI ([BotBrowserConsole](https://github.com/botswin/BotBrowser/tree/main/console)) is open source.
+Only the GUI ([BotBrowserLauncher](https://github.com/botswin/BotBrowser/tree/main/launcher)) is open source.
 The patches here are select examples published to illustrate techniques for fingerprint protection and privacy research without exposing the full engine.
 
 ⚠️ Usage policy: These examples are for fingerprint protection, privacy research, and authorized analysis only. Use in compliance with institutional policies and applicable laws.

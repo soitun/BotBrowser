@@ -183,9 +183,9 @@ This reference maps privacy protection goals to BotBrowser implementation detail
 
 ---
 
-## BotBrowserConsole (GUI Tool)
+## BotBrowserLauncher (GUI Tool)
 
-Prefer a GUI launcher? See [console/README.md](console) for BotBrowserConsole usage, multi-instance management, and privacy profile selection.
+Prefer a GUI launcher? See [launcher/README.md](launcher) for BotBrowserLauncher usage, multi-instance management, and privacy profile selection.
 
 ---
 
