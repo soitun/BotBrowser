@@ -506,7 +506,7 @@ Complete network behavior and media-processing capabilities.
 |-----------|-------------|
 | **Proxy** | Authentication embedding, credential management, geo-detection |
 | **WebRTC** | SDP manipulation, ICE candidate control, media stream simulation |
-| **HTTP Headers** | Google-specific headers, Chrome behavior patterns, request timing |
+| **HTTP Headers** | Google-specific headers (ENT Tier2), Chrome behavior patterns, request timing |
 | **Media Devices** | AudioContext simulation, speech synthesis, device enumeration |
 | **Codecs** | Extended media types, WebCodecs APIs, hardware acceleration simulation |
 | **Widevine DRM** | Persistent license support, platform-appropriate license negotiation, EME capability fingerprinting prevention |

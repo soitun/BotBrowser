@@ -737,7 +737,7 @@ Refined per-OS rendering differences (fonts, CSS, anti-aliasing, text sizing) so
   `configs.languages` now supports `auto` to set browser languages based on proxy IP's country and timezone.
   *Automatically syncs Accept-Language and navigator.languages with location.*
 
-- **Google Header Simulation**
+- **Google Header Simulation (ENT Tier2)**
   Automatically includes [X-Browser-Validation](https://news.ycombinator.com/item?id=44527739) and related headers for google domains, emulating Chrome's behavior for Google compatibility testing.
   *Mimics Chrome's network validation for seamless protected analysis.*
 
