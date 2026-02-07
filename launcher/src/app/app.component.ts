@@ -21,6 +21,7 @@ import { CloneBrowserProfileComponent } from './clone-browser-profile.component'
 import { AppName } from './const';
 import { BrowserProfileStatus, type BrowserProfile } from './data/browser-profile';
 import { EditBrowserProfileComponent } from './edit-browser-profile.component';
+import { QuickProxyChangeComponent } from './quick-proxy-change.component';
 import { KernelManagementComponent } from './kernel-management/kernel-management.component';
 import { ProxyManagementComponent } from './proxy-management/proxy-management.component';
 import { BrowserLauncherService } from './shared/browser-launcher.service';
@@ -69,7 +70,7 @@ export class AppComponent implements AfterViewInit {
     readonly formatDateTime = formatDateTime;
     readonly formatProxyDisplay = formatProxyDisplay;
     readonly BrowserProfileStatus = BrowserProfileStatus;
-    readonly displayedColumns = ['select', 'name', 'group', 'proxy', 'status', 'lastUsedAt'];
+    readonly displayedColumns = ['select', 'status', 'name', 'group', 'proxy', 'lastUsedAt'];
     readonly dataSource = new MatTableDataSource<BrowserProfile>([]);
     readonly selection = new SelectionModel<BrowserProfile>(true, []);
 
@@ -100,7 +101,10 @@ export class AppComponent implements AfterViewInit {
 
     newProfile(): void {
         this.#dialog
-            .open(EditBrowserProfileComponent)
+            .open(EditBrowserProfileComponent, {
+                width: '860px',
+                maxWidth: '95vw',
+            })
             .afterClosed()
             .subscribe((result) => {
                 if (!result) return;
@@ -111,6 +115,22 @@ export class AppComponent implements AfterViewInit {
     editProfile(browserProfile: BrowserProfile): void {
         this.#dialog
             .open(EditBrowserProfileComponent, {
+                width: '860px',
+                maxWidth: '95vw',
+                data: browserProfile,
+            })
+            .afterClosed()
+            .subscribe((result) => {
+                if (!result) return;
+                this.refreshProfiles().catch(console.error);
+            });
+    }
+
+    changeProxy(browserProfile: BrowserProfile): void {
+        this.#dialog
+            .open(QuickProxyChangeComponent, {
+                width: '560px',
+                maxWidth: '95vw',
                 data: browserProfile,
             })
             .afterClosed()

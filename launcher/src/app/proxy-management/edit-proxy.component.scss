@@ -1,50 +1,9 @@
 mat-dialog-content {
     min-width: 450px;
 
-    .quick-parse-section {
-        margin-bottom: 24px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-
-        mat-form-field {
-            width: 100%;
-        }
-
-        .parse-status {
-            margin-top: 8px;
-            font-size: 12px;
-            line-height: 1.4;
-        }
-
-        .parse-error {
-            color: #f44336;
-        }
-
-        .parse-success {
-            color: #4caf50;
-        }
-    }
-
     form {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-
         mat-form-field {
             width: 100%;
-        }
-
-        .host-port-row {
-            display: flex;
-            gap: 16px;
-
-            .host-field {
-                flex: 3;
-            }
-
-            .port-field {
-                flex: 1;
-            }
         }
     }
 }

@@ -16,3 +16,13 @@ mat-toolbar {
 .empty-state {
     @include shared.empty-state;
 }
+
+.proxy-name-link {
+    color: #1976d2;
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+        color: #1565c0;
+    }
+}

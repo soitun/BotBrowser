@@ -1,66 +1,19 @@
 <h2 mat-dialog-title>{{ isEdit ? 'Edit' : 'New' }} Proxy</h2>
 
 <mat-dialog-content>
-    @if (!isEdit) {
-        <div class="quick-parse-section">
-            <mat-form-field appearance="outline">
-                <mat-label>Quick Parse</mat-label>
-                <input
-                    matInput
-                    placeholder="Paste proxy string (e.g., http://user:pass@host:port)"
-                    [(ngModel)]="quickParseInput"
-                    (input)="onQuickParseInput()"
-                />
-                <mat-hint>Formats: scheme://user:pass&#64;host:port, host:port:user:pwd, etc.</mat-hint>
-            </mat-form-field>
-            <div class="parse-status">
-                @if (parseError) {
-                    <span class="parse-error">{{ parseError }}</span>
-                }
-                @if (parseSuccess) {
-                    <span class="parse-success">✓ Parsed successfully</span>
-                }
-            </div>
-        </div>
-    }
-
-    <form [formGroup]="formGroup">
+    <form [formGroup]="nameFormGroup">
         <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
             <input matInput formControlName="name" placeholder="My Proxy" />
         </mat-form-field>
-
-        <mat-form-field appearance="outline">
-            <mat-label>Type</mat-label>
-            <mat-select formControlName="type">
-                @for (type of proxyTypes; track type) {
-                    <mat-option [value]="type">{{ type }}</mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
-
-        <div class="host-port-row">
-            <mat-form-field appearance="outline" class="host-field">
-                <mat-label>Host</mat-label>
-                <input matInput formControlName="host" placeholder="proxy.example.com" />
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="port-field">
-                <mat-label>Port</mat-label>
-                <input matInput formControlName="port" type="number" placeholder="8080" />
-            </mat-form-field>
-        </div>
-
-        <mat-form-field appearance="outline">
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="username" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-            <mat-label>Password</mat-label>
-            <input matInput formControlName="password" type="password" />
-        </mat-form-field>
     </form>
+
+    <app-proxy-input
+        [value]="proxyValue"
+        [showQuickParse]="!isEdit"
+        [showCheckButton]="true"
+        (valueChange)="onProxyValueChange($event)"
+    />
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

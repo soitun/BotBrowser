@@ -10,7 +10,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatTabsModule } from '@angular/material/tabs';
 import * as Neutralino from '@neutralinojs/lib';
 import { compact } from 'lodash-es';
 import { BehaviorSubject, combineLatest, map, startWith } from 'rxjs';
@@ -44,7 +43,9 @@ import { AlertDialogComponent } from './shared/alert-dialog.component';
 import { BrowserLauncherService } from './shared/browser-launcher.service';
 import { BrowserProfileService } from './shared/browser-profile.service';
 import { ConfirmDialogComponent } from './shared/confirm-dialog.component';
-import { ProxyParserService } from './shared/proxy-parser.service';
+import type { ProxyCheckResult } from './shared/proxy-check.service';
+import { ProxyInputComponent } from './shared/proxy-input.component';
+import { ProxyParserService, type ParsedProxy } from './shared/proxy-parser.service';
 import { ProxyService } from './shared/proxy.service';
 
 @Component({
@@ -63,8 +64,8 @@ import { ProxyService } from './shared/proxy.service';
         MatSelectModule,
         MatExpansionModule,
         MatSlideToggleModule,
-        MatTabsModule,
         AsyncPipe,
+        ProxyInputComponent,
     ],
     templateUrl: './edit-browser-profile.component.html',
     styleUrl: './edit-browser-profile.component.scss',
@@ -122,13 +123,10 @@ export class EditBrowserProfileComponent implements OnInit {
         binaryPath: this.#injectedData?.binaryPath || '',
     });
 
-    readonly proxyInfoGroup = this.#formBuilder.group<{
-        proxyServer?: string;
-        selectedProxyId?: string;
-    }>({
-        proxyServer: this.#injectedData?.proxyServer,
-        selectedProxyId: '',
-    });
+    proxyValue: ParsedProxy | null = this.#injectedData?.proxyServer
+        ? this.#proxyParser.parse(this.#injectedData.proxyServer)
+        : null;
+    selectedProxyId = '';
 
     // Behavior toggles - defaults:
     // DisableDebugger=true, DisableConsoleMessage=true, AlwaysActive=true
@@ -208,7 +206,6 @@ export class EditBrowserProfileComponent implements OnInit {
     isEdit = false;
     basicInfo: BotProfileBasicInfo | null = null;
     proxies: Proxy[] = [];
-    proxyParseError = '';
 
     constructor() {
         if (this.#injectedData) {
@@ -240,37 +237,22 @@ export class EditBrowserProfileComponent implements OnInit {
         }
         const proxy = this.proxies.find((p) => p.id === proxyId);
         if (proxy) {
-            const proxyUrl = this.#buildProxyUrl(proxy);
-            this.proxyInfoGroup.get('proxyServer')?.setValue(proxyUrl);
+            this.proxyValue = {
+                type: proxy.type,
+                host: proxy.host,
+                port: proxy.port,
+                username: proxy.username,
+                password: proxy.password,
+            };
         }
     }
 
-    onProxyServerInput(): void {
-        this.proxyParseError = '';
-        const input = this.proxyInfoGroup.get('proxyServer')?.value;
-        if (!input?.trim()) {
-            return;
-        }
-
-        const result = this.#proxyParser.parse(input);
-        if (result) {
-            // Convert to standard URL format
-            const standardUrl = this.#proxyParser.toUrl(result);
-            if (standardUrl !== input) {
-                this.proxyInfoGroup.get('proxyServer')?.setValue(standardUrl, { emitEvent: false });
-            }
-        } else if (input.includes(':')) {
-            this.proxyParseError = 'Could not parse proxy format';
-        }
+    onProxyValueChange(value: ParsedProxy | null): void {
+        this.proxyValue = value;
     }
 
-    #buildProxyUrl(proxy: Proxy): string {
-        let url = `${proxy.type}://`;
-        if (proxy.username && proxy.password) {
-            url += `${encodeURIComponent(proxy.username)}:${encodeURIComponent(proxy.password)}@`;
-        }
-        url += `${proxy.host}:${proxy.port}`;
-        return url;
+    onIpCheckResult(result: ProxyCheckResult): void {
+        this.proxyConfigGroup.patchValue({ proxyIp: result.ip });
     }
 
     async chooseFile(): Promise<void> {
@@ -423,7 +405,7 @@ export class EditBrowserProfileComponent implements OnInit {
             basicInfo: this.basicInfoFormGroup.value,
             botProfileInfo: this.botProfileInfoGroup.value,
             binaryPath: this.advancedGroup.value.binaryPath || undefined,
-            proxyServer: this.proxyInfoGroup.value.proxyServer || undefined,
+            proxyServer: this.proxyValue ? this.#proxyParser.toUrl(this.proxyValue) : undefined,
             createdAt: this.#injectedData?.createdAt || Date.now(),
             lastUsedAt: this.#injectedData?.lastUsedAt,
             updatedAt: Date.now(),

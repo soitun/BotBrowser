@@ -1,498 +1,454 @@
 <h2 mat-dialog-title>{{ isEdit ? 'Edit' : 'Create' }} Browser Profile</h2>
 <mat-dialog-content class="mat-typography">
-    <mat-tab-group>
-        <!-- Basic Info Tab -->
-        <mat-tab label="Basic Info">
-            <div class="tab-content">
-                <form [formGroup]="basicInfoFormGroup">
-                    <div class="form-row">
-                        <mat-form-field class="flex-2">
-                            <mat-label>Name</mat-label>
-                            <input matInput placeholder="Profile name" formControlName="profileName" required />
-                            @if (
-                                basicInfoFormGroup.get('profileName')?.invalid &&
-                                basicInfoFormGroup.get('profileName')?.touched
-                            ) {
-                                <mat-error>Profile name is required.</mat-error>
-                            }
-                        </mat-form-field>
-
-                        <mat-form-field class="flex-1">
-                            <mat-label>Group</mat-label>
-                            <input
-                                matInput
-                                placeholder="Select or type"
-                                formControlName="groupName"
-                                [matAutocomplete]="groupNameAuto"
-                                #groupNameTrigger="matAutocompleteTrigger"
-                                (focus)="groupNameTrigger.openPanel()"
-                            />
-                            <mat-autocomplete #groupNameAuto="matAutocomplete">
-                                @for (groupName of filteredGroupNames | async; track groupName) {
-                                    <mat-option [value]="groupName">{{ groupName }}</mat-option>
-                                }
-                            </mat-autocomplete>
-                        </mat-form-field>
-                    </div>
-
-                    <mat-form-field>
-                        <mat-label>Description</mat-label>
-                        <textarea matInput formControlName="description" placeholder="Type a description"></textarea>
-                    </mat-form-field>
-                </form>
-
-                <!-- Bot Profile -->
-                <div class="section-title">Bot Profile</div>
-                @if (basicInfo) {
-                    <div class="profile-info">
-                        <p><strong>Version:</strong> {{ basicInfo.version }}</p>
-                        <p><strong>User Agent:</strong> {{ basicInfo.userAgent }}</p>
-                        <p><strong>Unmasked Vendor:</strong> {{ basicInfo.unmaskedVendor }}</p>
-                        <p><strong>Unmasked Renderer:</strong> {{ basicInfo.unmaskedRenderer }}</p>
-                    </div>
-                }
-                @if (!botProfileInfoGroup.value.content) {
-                    <mat-error>Bot Profile is required.</mat-error>
-                }
-                <button mat-stroked-button (click)="chooseFile()">
-                    {{ isEdit ? 'Replace Bot Profile' : 'Choose Bot Profile' }}
-                </button>
-
-                <!-- Advanced Settings -->
-                <mat-expansion-panel class="margin-top">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>Advanced Settings</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <form [formGroup]="advancedGroup">
-                        <mat-form-field>
-                            <mat-label>Custom Executable Path</mat-label>
-                            <input matInput placeholder="Path to chrome.exe or Chromium.app" formControlName="binaryPath" />
-                            <mat-hint>Override automatic kernel selection with your own executable</mat-hint>
-                        </mat-form-field>
-                        <button mat-stroked-button type="button" (click)="chooseExecutable()" class="margin-top">
-                            Browse...
-                        </button>
-                    </form>
-                </mat-expansion-panel>
-            </div>
-        </mat-tab>
-
-        <!-- Proxy Tab -->
-        <mat-tab label="Proxy">
-            <div class="tab-content">
-                <form [formGroup]="proxyInfoGroup">
-                    @if (proxies.length > 0) {
-                        <mat-form-field>
-                            <mat-label>Select existing proxy</mat-label>
-                            <mat-select
-                                formControlName="selectedProxyId"
-                                (selectionChange)="onProxySelected($event.value)"
-                            >
-                                <mat-option value="">-- None --</mat-option>
-                                @for (proxy of proxies; track proxy.id) {
-                                    <mat-option [value]="proxy.id"
-                                        >{{ proxy.name }} ({{ proxy.type }}://{{ proxy.host }}:{{
-                                            proxy.port
-                                        }})</mat-option
-                                    >
-                                }
-                            </mat-select>
-                        </mat-form-field>
+    <!-- Basic Info -->
+    <div class="section">
+        <div class="section-header">Basic Info</div>
+        <form [formGroup]="basicInfoFormGroup">
+            <div class="form-row">
+                <mat-form-field class="flex-2">
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Profile name" formControlName="profileName" required />
+                    @if (
+                        basicInfoFormGroup.get('profileName')?.invalid && basicInfoFormGroup.get('profileName')?.touched
+                    ) {
+                        <mat-error>Profile name is required.</mat-error>
                     }
+                </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-label>Proxy server URL</mat-label>
-                        <input
-                            matInput
-                            placeholder="http://user:pass@host:port or host:port:user:pwd"
-                            formControlName="proxyServer"
-                            (input)="onProxyServerInput()"
-                        />
-                        <mat-hint
-                            >Auto-parses various formats: scheme://user:pass@host:port, host:port:user:pwd,
-                            etc.</mat-hint
+                <mat-form-field class="flex-1">
+                    <mat-label>Group</mat-label>
+                    <input
+                        matInput
+                        placeholder="Select or type"
+                        formControlName="groupName"
+                        [matAutocomplete]="groupNameAuto"
+                        #groupNameTrigger="matAutocompleteTrigger"
+                        (focus)="groupNameTrigger.openPanel()"
+                    />
+                    <mat-autocomplete #groupNameAuto="matAutocomplete">
+                        @for (groupName of filteredGroupNames | async; track groupName) {
+                            <mat-option [value]="groupName">{{ groupName }}</mat-option>
+                        }
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+
+            <mat-form-field>
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description" placeholder="Type a description"></textarea>
+            </mat-form-field>
+        </form>
+
+        <div class="section-title">Bot Profile</div>
+        @if (basicInfo) {
+            <div class="profile-info">
+                <p><strong>Version:</strong> {{ basicInfo.version }}</p>
+                <p><strong>User Agent:</strong> {{ basicInfo.userAgent }}</p>
+                <p><strong>Unmasked Vendor:</strong> {{ basicInfo.unmaskedVendor }}</p>
+                <p><strong>Unmasked Renderer:</strong> {{ basicInfo.unmaskedRenderer }}</p>
+            </div>
+        }
+        @if (!botProfileInfoGroup.value.content) {
+            <mat-error>Bot Profile is required.</mat-error>
+        }
+        <button mat-stroked-button (click)="chooseFile()">
+            {{ isEdit ? 'Replace Bot Profile' : 'Choose Bot Profile' }}
+        </button>
+    </div>
+
+    <!-- Proxy -->
+    <div class="section">
+        <div class="section-header">Proxy</div>
+        @if (proxies.length > 0) {
+            <mat-form-field>
+                <mat-label>Select existing proxy</mat-label>
+                <mat-select [(value)]="selectedProxyId" (selectionChange)="onProxySelected($event.value)">
+                    <mat-option value="">-- None --</mat-option>
+                    @for (proxy of proxies; track proxy.id) {
+                        <mat-option [value]="proxy.id"
+                            >{{ proxy.name }} ({{ proxy.type }}://{{ proxy.host }}:{{ proxy.port }})</mat-option
                         >
-                    </mat-form-field>
-                    @if (proxyParseError) {
-                        <p class="warning-text">{{ proxyParseError }}</p>
                     }
-                </form>
+                </mat-select>
+            </mat-form-field>
+        }
 
-                <div class="section-title">Advanced Proxy Config</div>
-                <form [formGroup]="proxyConfigGroup">
-                    <div class="form-row">
-                        <mat-form-field class="flex-1">
-                            <mat-label>Proxy IP (for detection)</mat-label>
-                            <input matInput placeholder="Exit IP" formControlName="proxyIp" />
-                        </mat-form-field>
+        <app-proxy-input
+            [value]="proxyValue"
+            [showQuickParse]="true"
+            [showCheckButton]="true"
+            (valueChange)="onProxyValueChange($event)"
+            (ipCheckResult)="onIpCheckResult($event)"
+        />
 
-                        <mat-form-field class="flex-1">
-                            <mat-label>IP Service URL</mat-label>
-                            <input
-                                matInput
-                                placeholder="https://api.ipify.org?format=json"
-                                formControlName="botIpService"
-                            />
-                        </mat-form-field>
-                    </div>
-                </form>
+        <div class="section-title">Advanced Proxy Config</div>
+        <form [formGroup]="proxyConfigGroup">
+            <div class="form-row">
+                <mat-form-field class="flex-1">
+                    <mat-label>Proxy IP (for detection)</mat-label>
+                    <input matInput placeholder="Exit IP" formControlName="proxyIp" />
+                </mat-form-field>
+
+                <mat-form-field class="flex-1">
+                    <mat-label>IP Service URL</mat-label>
+                    <input matInput placeholder="https://api.ipify.org?format=json" formControlName="botIpService" />
+                </mat-form-field>
             </div>
-        </mat-tab>
+        </form>
+    </div>
 
-        <!-- Identity Tab (merged Identity + User Agent) -->
-        <mat-tab label="Identity">
-            <div class="tab-content">
-                <div class="section-title">Browser Identity</div>
-                <form [formGroup]="identityLocaleGroup">
-                    <div class="form-row">
-                        <mat-form-field class="flex-1">
-                            <mat-label>Browser Brand</mat-label>
-                            <mat-select formControlName="botConfigBrowserBrand">
-                                @for (brand of browserBrands; track brand) {
-                                    <mat-option [value]="brand">{{ brand }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
+    <!-- Identity & Locale -->
+    <div class="section">
+        <div class="section-header">Identity & Locale</div>
+        <div class="section-title">Browser Identity</div>
+        <form [formGroup]="identityLocaleGroup">
+            <div class="form-row">
+                <mat-form-field class="flex-1">
+                    <mat-label>Browser Brand</mat-label>
+                    <mat-select formControlName="botConfigBrowserBrand">
+                        @for (brand of browserBrands; track brand) {
+                            <mat-option [value]="brand">{{ brand }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
 
-                        <mat-form-field class="flex-1">
-                            <mat-label>Brand Version</mat-label>
-                            <input matInput placeholder="e.g., 120.0.0.0" formControlName="botConfigBrandFullVersion" />
-                        </mat-form-field>
+                <mat-form-field class="flex-1">
+                    <mat-label>Brand Version</mat-label>
+                    <input matInput placeholder="e.g., 120.0.0.0" formControlName="botConfigBrandFullVersion" />
+                </mat-form-field>
 
-                        <mat-form-field class="flex-1">
-                            <mat-label>UA Version</mat-label>
-                            <input
-                                matInput
-                                placeholder="e.g., 120.0.6099.130"
-                                formControlName="botConfigUaFullVersion"
-                            />
-                        </mat-form-field>
-                    </div>
-                </form>
-
-                <div class="section-title">Locale & Region</div>
-                <form [formGroup]="identityLocaleGroup">
-                    <div class="form-row">
-                        <mat-form-field class="flex-1">
-                            <mat-label>Languages</mat-label>
-                            <input matInput placeholder="auto or en-US,en" formControlName="botConfigLanguages" />
-                        </mat-form-field>
-
-                        <mat-form-field class="flex-1">
-                            <mat-label>Locale</mat-label>
-                            <input matInput placeholder="auto or en-US" formControlName="botConfigLocale" />
-                        </mat-form-field>
-                    </div>
-
-                    <div class="form-row">
-                        <mat-form-field class="flex-1">
-                            <mat-label>Timezone</mat-label>
-                            <input
-                                matInput
-                                placeholder="auto or America/New_York"
-                                formControlName="botConfigTimezone"
-                            />
-                        </mat-form-field>
-
-                        <mat-form-field class="flex-1">
-                            <mat-label>Location</mat-label>
-                            <input matInput placeholder="auto or lat,lng" formControlName="botConfigLocation" />
-                        </mat-form-field>
-                    </div>
-                    <mat-hint class="section-hint">Leave empty or "auto" to derive from IP address</mat-hint>
-                </form>
-
-                <div class="section-title">Custom User-Agent Override</div>
-                <form [formGroup]="customUserAgentGroup">
-                    <mat-form-field>
-                        <mat-label>Custom User Agent</mat-label>
-                        <textarea
-                            matInput
-                            rows="2"
-                            placeholder="Full User-Agent string (leave empty to use profile default)"
-                            formControlName="userAgent"
-                        ></textarea>
-                    </mat-form-field>
-
-                    <div class="form-row">
-                        <mat-form-field class="flex-1">
-                            <mat-label>Platform</mat-label>
-                            <mat-select formControlName="botConfigPlatform">
-                                <mat-option value="">-- Default --</mat-option>
-                                @for (platform of platforms; track platform) {
-                                    <mat-option [value]="platform">{{ platform }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field class="flex-1">
-                            <mat-label>Platform Version</mat-label>
-                            <input matInput placeholder="e.g., 10.0.0" formControlName="botConfigPlatformVersion" />
-                        </mat-form-field>
-
-                        <mat-form-field class="flex-1">
-                            <mat-label>Device Model</mat-label>
-                            <input matInput placeholder="e.g., Pixel 5" formControlName="botConfigModel" />
-                        </mat-form-field>
-                    </div>
-
-                    <div class="form-row">
-                        <mat-form-field class="flex-1">
-                            <mat-label>Architecture</mat-label>
-                            <mat-select formControlName="botConfigArchitecture">
-                                <mat-option value="">-- Default --</mat-option>
-                                @for (arch of architectures; track arch) {
-                                    <mat-option [value]="arch">{{ arch }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field class="flex-1">
-                            <mat-label>Bitness</mat-label>
-                            <mat-select formControlName="botConfigBitness">
-                                <mat-option value="">-- Default --</mat-option>
-                                @for (bit of bitnesses; track bit) {
-                                    <mat-option [value]="bit">{{ bit }}-bit</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
-
-                        <div class="flex-1 toggle-in-row">
-                            <mat-slide-toggle formControlName="botConfigMobile"> Mobile Mode </mat-slide-toggle>
-                        </div>
-                    </div>
-                </form>
+                <mat-form-field class="flex-1">
+                    <mat-label>UA Version</mat-label>
+                    <input matInput placeholder="e.g., 120.0.6099.130" formControlName="botConfigUaFullVersion" />
+                </mat-form-field>
             </div>
-        </mat-tab>
+        </form>
 
-        <!-- Display Tab -->
-        <mat-tab label="Display">
-            <div class="tab-content">
-                <form [formGroup]="displayInputGroup">
-                    <div class="form-row">
-                        <mat-form-field class="flex-1">
-                            <mat-label>Window Size</mat-label>
-                            <mat-select formControlName="botConfigWindow">
-                                @for (opt of profileRealOptions; track opt) {
-                                    <mat-option [value]="opt">{{ opt }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
+        <div class="section-title">Locale & Region</div>
+        <form [formGroup]="identityLocaleGroup">
+            <div class="form-row">
+                <mat-form-field class="flex-1">
+                    <mat-label>Languages</mat-label>
+                    <input matInput placeholder="auto or en-US,en" formControlName="botConfigLanguages" />
+                </mat-form-field>
 
-                        <mat-form-field class="flex-1">
-                            <mat-label>Screen Size</mat-label>
-                            <mat-select formControlName="botConfigScreen">
-                                @for (opt of profileRealOptions; track opt) {
-                                    <mat-option [value]="opt">{{ opt }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <mat-hint class="section-hint"
-                        >profile = use bot profile values, real = use actual system values</mat-hint
-                    >
-
-                    <div class="form-row margin-top">
-                        <mat-form-field class="flex-1">
-                            <mat-label>Keyboard Layout</mat-label>
-                            <mat-select formControlName="botConfigKeyboard">
-                                @for (opt of profileRealOptions; track opt) {
-                                    <mat-option [value]="opt">{{ opt }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field class="flex-1">
-                            <mat-label>Fonts</mat-label>
-                            <mat-select formControlName="botConfigFonts">
-                                @for (opt of fontOptions; track opt) {
-                                    <mat-option [value]="opt">{{ opt }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field class="flex-1">
-                            <mat-label>Color Scheme</mat-label>
-                            <mat-select formControlName="botConfigColorScheme">
-                                @for (scheme of colorSchemes; track scheme) {
-                                    <mat-option [value]="scheme">{{ scheme }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <mat-slide-toggle formControlName="botConfigDisableDeviceScaleFactor" class="standalone-toggle">
-                        Disable Device Scale Factor
-                        <span class="toggle-hint">Disable device scale factor override (default: off)</span>
-                    </mat-slide-toggle>
-                </form>
+                <mat-form-field class="flex-1">
+                    <mat-label>Locale</mat-label>
+                    <input matInput placeholder="auto or en-US" formControlName="botConfigLocale" />
+                </mat-form-field>
             </div>
-        </mat-tab>
 
-        <!-- Fingerprint Tab (merged Noise + Rendering) -->
-        <mat-tab label="Fingerprint">
-            <div class="tab-content">
-                <div class="section-title">Noise Settings</div>
-                <form [formGroup]="noiseGroup" class="toggle-grid">
-                    <mat-slide-toggle formControlName="botConfigNoiseCanvas">
-                        Canvas Noise
-                        <span class="toggle-hint">(default: on)</span>
-                    </mat-slide-toggle>
+            <div class="form-row">
+                <mat-form-field class="flex-1">
+                    <mat-label>Timezone</mat-label>
+                    <input matInput placeholder="auto or America/New_York" formControlName="botConfigTimezone" />
+                </mat-form-field>
 
-                    <mat-slide-toggle formControlName="botConfigNoiseWebglImage">
-                        WebGL Image Noise
-                        <span class="toggle-hint">(default: on)</span>
-                    </mat-slide-toggle>
-
-                    <mat-slide-toggle formControlName="botConfigNoiseAudioContext">
-                        Audio Context Noise
-                        <span class="toggle-hint">(default: on)</span>
-                    </mat-slide-toggle>
-
-                    <mat-slide-toggle formControlName="botConfigNoiseTextRects">
-                        Text Rects Noise
-                        <span class="toggle-hint">(default: on)</span>
-                    </mat-slide-toggle>
-
-                    <mat-slide-toggle formControlName="botConfigNoiseClientRects">
-                        Client Rects Noise
-                        <span class="toggle-hint">(default: off)</span>
-                    </mat-slide-toggle>
-                </form>
-
-                <form [formGroup]="noiseGroup">
-                    <div class="form-row margin-top">
-                        <mat-form-field class="flex-1">
-                            <mat-label>Noise Seed</mat-label>
-                            <input
-                                matInput
-                                type="number"
-                                step="0.01"
-                                placeholder="1.0 - 1.2"
-                                formControlName="botNoiseSeed"
-                            />
-                            <mat-hint>Float for deterministic RNG</mat-hint>
-                        </mat-form-field>
-
-                        <mat-form-field class="flex-1">
-                            <mat-label>Time Scale</mat-label>
-                            <input
-                                matInput
-                                type="number"
-                                step="0.01"
-                                placeholder="0.80 - 0.99"
-                                formControlName="botTimeScale"
-                            />
-                            <mat-hint>Scale performance.now()</mat-hint>
-                        </mat-form-field>
-                    </div>
-                </form>
-
-                <div class="section-title">Rendering & Media</div>
-                <form [formGroup]="renderingMediaGroup">
-                    <div class="form-row">
-                        <mat-form-field class="flex-1">
-                            <mat-label>WebGL</mat-label>
-                            <mat-select formControlName="botConfigWebgl">
-                                @for (opt of profileRealDisabledOptions; track opt) {
-                                    <mat-option [value]="opt">{{ opt }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field class="flex-1">
-                            <mat-label>WebGPU</mat-label>
-                            <mat-select formControlName="botConfigWebgpu">
-                                @for (opt of profileRealDisabledOptions; track opt) {
-                                    <mat-option [value]="opt">{{ opt }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field class="flex-1">
-                            <mat-label>WebRTC</mat-label>
-                            <mat-select formControlName="botConfigWebrtc">
-                                @for (opt of profileRealDisabledOptions; track opt) {
-                                    <mat-option [value]="opt">{{ opt }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <div class="form-row">
-                        <mat-form-field class="flex-1">
-                            <mat-label>Speech Voices</mat-label>
-                            <mat-select formControlName="botConfigSpeechVoices">
-                                @for (opt of profileRealOptions; track opt) {
-                                    <mat-option [value]="opt">{{ opt }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field class="flex-1">
-                            <mat-label>Media Devices</mat-label>
-                            <mat-select formControlName="botConfigMediaDevices">
-                                @for (opt of profileRealOptions; track opt) {
-                                    <mat-option [value]="opt">{{ opt }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field class="flex-1">
-                            <mat-label>Media Types</mat-label>
-                            <mat-select formControlName="botConfigMediaTypes">
-                                @for (opt of mediaTypesOptions; track opt) {
-                                    <mat-option [value]="opt">{{ opt }}</mat-option>
-                                }
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <mat-form-field>
-                        <mat-label>WebRTC ICE Candidates</mat-label>
-                        <input matInput placeholder="Custom ICE candidates" formControlName="botWebrtcIce" />
-                    </mat-form-field>
-                </form>
+                <mat-form-field class="flex-1">
+                    <mat-label>Location</mat-label>
+                    <input matInput placeholder="auto or lat,lng" formControlName="botConfigLocation" />
+                </mat-form-field>
             </div>
-        </mat-tab>
+            <mat-hint class="section-hint">Leave empty or "auto" to derive from IP address</mat-hint>
+        </form>
 
-        <!-- Behavior Tab -->
-        <mat-tab label="Behavior">
-            <div class="tab-content">
-                <form [formGroup]="behaviorGroup" class="toggle-grid">
-                    <mat-slide-toggle formControlName="botAlwaysActive">
-                        Always Active
-                        <span class="toggle-hint">Keep browser active (default: on)</span>
-                    </mat-slide-toggle>
+        <div class="section-title">Custom User-Agent Override</div>
+        <form [formGroup]="customUserAgentGroup">
+            <mat-form-field>
+                <mat-label>Custom User Agent</mat-label>
+                <textarea
+                    matInput
+                    rows="2"
+                    placeholder="Full User-Agent string (leave empty to use profile default)"
+                    formControlName="userAgent"
+                ></textarea>
+            </mat-form-field>
 
-                    <mat-slide-toggle formControlName="botDisableDebugger">
-                        Disable Debugger
-                        <span class="toggle-hint">Ignore debugger statements (default: on)</span>
-                    </mat-slide-toggle>
+            <div class="form-row">
+                <mat-form-field class="flex-1">
+                    <mat-label>Platform</mat-label>
+                    <mat-select formControlName="botConfigPlatform">
+                        <mat-option value="">-- Default --</mat-option>
+                        @for (platform of platforms; track platform) {
+                            <mat-option [value]="platform">{{ platform }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
 
-                    <mat-slide-toggle formControlName="botDisableConsoleMessage">
-                        Disable Console Messages
-                        <span class="toggle-hint">Suppress console output (default: on)</span>
-                    </mat-slide-toggle>
+                <mat-form-field class="flex-1">
+                    <mat-label>Platform Version</mat-label>
+                    <input matInput placeholder="e.g., 10.0.0" formControlName="botConfigPlatformVersion" />
+                </mat-form-field>
 
-                    <mat-slide-toggle formControlName="botLocalDns">
-                        Local DNS Resolution
-                        <span class="toggle-hint">Use local DNS (default: off)</span>
-                    </mat-slide-toggle>
-
-                    <mat-slide-toggle formControlName="botMobileForceTouch">
-                        Force Touch (Mobile)
-                        <span class="toggle-hint">Force touch events (default: off)</span>
-                    </mat-slide-toggle>
-
-                    <mat-slide-toggle formControlName="botInjectRandomHistory">
-                        Inject Random History
-                        <span class="toggle-hint">Add random history (default: off)</span>
-                    </mat-slide-toggle>
-                </form>
+                <mat-form-field class="flex-1">
+                    <mat-label>Device Model</mat-label>
+                    <input matInput placeholder="e.g., Pixel 5" formControlName="botConfigModel" />
+                </mat-form-field>
             </div>
-        </mat-tab>
-    </mat-tab-group>
+
+            <div class="form-row">
+                <mat-form-field class="flex-1">
+                    <mat-label>Architecture</mat-label>
+                    <mat-select formControlName="botConfigArchitecture">
+                        <mat-option value="">-- Default --</mat-option>
+                        @for (arch of architectures; track arch) {
+                            <mat-option [value]="arch">{{ arch }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="flex-1">
+                    <mat-label>Bitness</mat-label>
+                    <mat-select formControlName="botConfigBitness">
+                        <mat-option value="">-- Default --</mat-option>
+                        @for (bit of bitnesses; track bit) {
+                            <mat-option [value]="bit">{{ bit }}-bit</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <div class="flex-1 toggle-in-row">
+                    <mat-slide-toggle formControlName="botConfigMobile"> Mobile Mode </mat-slide-toggle>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Display & Input -->
+    <div class="section">
+        <div class="section-header">Display & Input</div>
+        <form [formGroup]="displayInputGroup">
+            <div class="form-row">
+                <mat-form-field class="flex-1">
+                    <mat-label>Window Size</mat-label>
+                    <mat-select formControlName="botConfigWindow">
+                        @for (opt of profileRealOptions; track opt) {
+                            <mat-option [value]="opt">{{ opt }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="flex-1">
+                    <mat-label>Screen Size</mat-label>
+                    <mat-select formControlName="botConfigScreen">
+                        @for (opt of profileRealOptions; track opt) {
+                            <mat-option [value]="opt">{{ opt }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <mat-hint class="section-hint">profile = use bot profile values, real = use actual system values</mat-hint>
+
+            <div class="form-row margin-top">
+                <mat-form-field class="flex-1">
+                    <mat-label>Keyboard Layout</mat-label>
+                    <mat-select formControlName="botConfigKeyboard">
+                        @for (opt of profileRealOptions; track opt) {
+                            <mat-option [value]="opt">{{ opt }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="flex-1">
+                    <mat-label>Fonts</mat-label>
+                    <mat-select formControlName="botConfigFonts">
+                        @for (opt of fontOptions; track opt) {
+                            <mat-option [value]="opt">{{ opt }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="flex-1">
+                    <mat-label>Color Scheme</mat-label>
+                    <mat-select formControlName="botConfigColorScheme">
+                        @for (scheme of colorSchemes; track scheme) {
+                            <mat-option [value]="scheme">{{ scheme }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <mat-slide-toggle formControlName="botConfigDisableDeviceScaleFactor" class="standalone-toggle">
+                Disable Device Scale Factor
+                <span class="toggle-hint">Disable device scale factor override (default: off)</span>
+            </mat-slide-toggle>
+        </form>
+    </div>
+
+    <!-- Fingerprint -->
+    <div class="section">
+        <div class="section-header">Fingerprint</div>
+        <div class="section-title">Noise Settings</div>
+        <form [formGroup]="noiseGroup" class="toggle-grid">
+            <mat-slide-toggle formControlName="botConfigNoiseCanvas">
+                Canvas Noise
+                <span class="toggle-hint">(default: on)</span>
+            </mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="botConfigNoiseWebglImage">
+                WebGL Image Noise
+                <span class="toggle-hint">(default: on)</span>
+            </mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="botConfigNoiseAudioContext">
+                Audio Context Noise
+                <span class="toggle-hint">(default: on)</span>
+            </mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="botConfigNoiseTextRects">
+                Text Rects Noise
+                <span class="toggle-hint">(default: on)</span>
+            </mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="botConfigNoiseClientRects">
+                Client Rects Noise
+                <span class="toggle-hint">(default: off)</span>
+            </mat-slide-toggle>
+        </form>
+
+        <form [formGroup]="noiseGroup">
+            <div class="form-row margin-top">
+                <mat-form-field class="flex-1">
+                    <mat-label>Noise Seed</mat-label>
+                    <input matInput type="number" step="0.01" placeholder="1.0 - 1.2" formControlName="botNoiseSeed" />
+                    <mat-hint>Float for deterministic RNG</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="flex-1">
+                    <mat-label>Time Scale</mat-label>
+                    <input
+                        matInput
+                        type="number"
+                        step="0.01"
+                        placeholder="0.80 - 0.99"
+                        formControlName="botTimeScale"
+                    />
+                    <mat-hint>Scale performance.now()</mat-hint>
+                </mat-form-field>
+            </div>
+        </form>
+
+        <div class="section-title">Rendering & Media</div>
+        <form [formGroup]="renderingMediaGroup">
+            <div class="form-row">
+                <mat-form-field class="flex-1">
+                    <mat-label>WebGL</mat-label>
+                    <mat-select formControlName="botConfigWebgl">
+                        @for (opt of profileRealDisabledOptions; track opt) {
+                            <mat-option [value]="opt">{{ opt }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="flex-1">
+                    <mat-label>WebGPU</mat-label>
+                    <mat-select formControlName="botConfigWebgpu">
+                        @for (opt of profileRealDisabledOptions; track opt) {
+                            <mat-option [value]="opt">{{ opt }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="flex-1">
+                    <mat-label>WebRTC</mat-label>
+                    <mat-select formControlName="botConfigWebrtc">
+                        @for (opt of profileRealDisabledOptions; track opt) {
+                            <mat-option [value]="opt">{{ opt }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field class="flex-1">
+                    <mat-label>Speech Voices</mat-label>
+                    <mat-select formControlName="botConfigSpeechVoices">
+                        @for (opt of profileRealOptions; track opt) {
+                            <mat-option [value]="opt">{{ opt }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="flex-1">
+                    <mat-label>Media Devices</mat-label>
+                    <mat-select formControlName="botConfigMediaDevices">
+                        @for (opt of profileRealOptions; track opt) {
+                            <mat-option [value]="opt">{{ opt }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="flex-1">
+                    <mat-label>Media Types</mat-label>
+                    <mat-select formControlName="botConfigMediaTypes">
+                        @for (opt of mediaTypesOptions; track opt) {
+                            <mat-option [value]="opt">{{ opt }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <mat-form-field>
+                <mat-label>WebRTC ICE Candidates</mat-label>
+                <input matInput placeholder="Custom ICE candidates" formControlName="botWebrtcIce" />
+            </mat-form-field>
+        </form>
+    </div>
+
+    <!-- Behavior -->
+    <div class="section">
+        <div class="section-header">Behavior</div>
+        <form [formGroup]="behaviorGroup" class="toggle-grid">
+            <mat-slide-toggle formControlName="botAlwaysActive">
+                Always Active
+                <span class="toggle-hint">Keep browser active (default: on)</span>
+            </mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="botDisableDebugger">
+                Disable Debugger
+                <span class="toggle-hint">Ignore debugger statements (default: on)</span>
+            </mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="botDisableConsoleMessage">
+                Disable Console Messages
+                <span class="toggle-hint">Suppress console output (default: on)</span>
+            </mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="botLocalDns">
+                Local DNS Resolution
+                <span class="toggle-hint">Use local DNS (default: off)</span>
+            </mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="botMobileForceTouch">
+                Force Touch (Mobile)
+                <span class="toggle-hint">Force touch events (default: off)</span>
+            </mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="botInjectRandomHistory">
+                Inject Random History
+                <span class="toggle-hint">Add random history (default: off)</span>
+            </mat-slide-toggle>
+        </form>
+    </div>
+
+    <!-- Advanced Settings -->
+    <div class="section">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Advanced Settings</mat-panel-title>
+            </mat-expansion-panel-header>
+            <form [formGroup]="advancedGroup">
+                <mat-form-field>
+                    <mat-label>Custom Executable Path</mat-label>
+                    <input matInput placeholder="Path to chrome.exe or Chromium.app" formControlName="binaryPath" />
+                    <mat-hint>Override automatic kernel selection with your own executable</mat-hint>
+                </mat-form-field>
+                <button mat-stroked-button type="button" (click)="chooseExecutable()" class="margin-top">
+                    Browse...
+                </button>
+            </form>
+        </mat-expansion-panel>
+    </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>

@@ -11,20 +11,22 @@ Neutralino.events.on('ready', () => {
     if (NL_OS !== 'Darwin') return;
 
     // Show native Edit menu
-    Neutralino.window.setMainMenu([
-        {
-            text: 'Edit',
-            menuItems: [
-                { id: 'undo', text: 'Undo', action: 'undo:', shortcut: 'z' },
-                { id: 'redo', text: 'Redo', action: 'redo:', shortcut: 'Z' },
-                { id: 'sep1', text: '-' },
-                { id: 'cut', text: 'Cut', action: 'cut:', shortcut: 'x' },
-                { id: 'copy', text: 'Copy', action: 'copy:', shortcut: 'c' },
-                { id: 'paste', text: 'Paste', action: 'paste:', shortcut: 'v' },
-                { id: 'selectAll', text: 'Select All', action: 'selectAll:', shortcut: 'a' },
-            ],
-        },
-    ]).catch((err: unknown) => console.warn('setMainMenu failed:', err));
+    Neutralino.window
+        .setMainMenu([
+            {
+                text: 'Edit',
+                menuItems: [
+                    { id: 'undo', text: 'Undo', action: 'undo:', shortcut: 'z' },
+                    { id: 'redo', text: 'Redo', action: 'redo:', shortcut: 'Z' },
+                    { id: 'sep1', text: '-' },
+                    { id: 'cut', text: 'Cut', action: 'cut:', shortcut: 'x' },
+                    { id: 'copy', text: 'Copy', action: 'copy:', shortcut: 'c' },
+                    { id: 'paste', text: 'Paste', action: 'paste:', shortcut: 'v' },
+                    { id: 'selectAll', text: 'Select All', action: 'selectAll:', shortcut: 'a' },
+                ],
+            },
+        ])
+        .catch((err: unknown) => console.warn('setMainMenu failed:', err));
 
     // JS fallback for Cmd+C/X/V (in case native menu shortcuts don't reach the webview)
     document.addEventListener('keydown', async (e) => {
@@ -48,7 +50,9 @@ Neutralino.events.on('ready', () => {
                         el.dispatchEvent(new Event('input', { bubbles: true }));
                     }
                 }
-            } catch { /* clipboard unavailable */ }
+            } catch {
+                /* clipboard unavailable */
+            }
         } else if (e.key === 'v') {
             // Paste
             const el = document.activeElement as HTMLInputElement | HTMLTextAreaElement;
@@ -61,7 +65,9 @@ Neutralino.events.on('ready', () => {
                 el.value = el.value.slice(0, start) + text + el.value.slice(end);
                 el.selectionStart = el.selectionEnd = start + text.length;
                 el.dispatchEvent(new Event('input', { bubbles: true }));
-            } catch { /* clipboard unavailable */ }
+            } catch {
+                /* clipboard unavailable */
+            }
         }
     });
 });

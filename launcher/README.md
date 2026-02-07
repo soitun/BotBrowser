@@ -6,10 +6,10 @@ Desktop GUI for **[BotBrowser](https://github.com/botswin/BotBrowser)**. Manage 
 
 ## Platform Support
 
-| Platform | Architecture |
-|----------|--------------|
-| Windows  | x86_64       |
-| macOS    | ARM64, x86_64 |
+| Platform               | Architecture  |
+| ---------------------- | ------------- |
+| Windows                | x86_64        |
+| macOS                  | ARM64, x86_64 |
 | Linux (Ubuntu, Debian) | x86_64, ARM64 |
 
 ## Features
@@ -23,7 +23,10 @@ Download and manage BotBrowser kernels directly from the GUI. The launcher fetch
 - Add, edit, and delete proxy configurations
 - Bulk import proxies from text (one per line)
 - Supports HTTP, HTTPS, SOCKS4, SOCKS5 protocols
-- Per-profile proxy assignment
+- Quick-parse proxy strings (e.g., `socks5://user:pass@host:port`)
+- **Check IP** — verify proxy exit IP, location, ISP, and datacenter detection via ip-api.com
+- Quick proxy change from profile list without opening full editor
+- Per-profile proxy assignment with auto-fill of detected exit IP
 
 ### Profile Management
 
@@ -40,19 +43,22 @@ Download and manage BotBrowser kernels directly from the GUI. The launcher fetch
 
 ## Quick Setup
 
-One-line install scripts that download Node.js, fetch the source, build, and run:
+One-line install scripts that download Node.js, fetch the source, build, and create shortcuts (Desktop + Applications/Start Menu):
 
 **Windows (PowerShell):**
+
 ```powershell
 irm https://raw.githubusercontent.com/botswin/BotBrowser/main/launcher/scripts/setup.ps1 | iex
 ```
 
 **macOS:**
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/botswin/BotBrowser/main/launcher/scripts/setup-macos.sh | bash
 ```
 
 **Ubuntu/Debian:**
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/botswin/BotBrowser/main/launcher/scripts/setup-ubuntu.sh | bash
 ```
@@ -71,7 +77,6 @@ npm run build
 npm run app
 ```
 
-
 ## Usage
 
 1. Go to **Kernels** and download a BotBrowser kernel for your platform
@@ -81,11 +86,11 @@ npm run app
 
 ## Technical Stack
 
-| Component | Technology |
-|-----------|------------|
-| Frontend  | [Angular 21](https://angular.dev) |
+| Component | Technology                                         |
+| --------- | -------------------------------------------------- |
+| Frontend  | [Angular 21](https://angular.dev)                  |
 | UI        | [Angular Material 21](https://material.angular.io) |
-| Runtime   | [Neutralino.js 6.4](https://neutralino.js.org) |
+| Runtime   | [Neutralino.js 6.5](https://neutralino.js.org)     |
 
 ---
 

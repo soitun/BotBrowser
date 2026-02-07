@@ -9,31 +9,40 @@ REPO_ZIP_URL="https://github.com/botswin/BotBrowser/archive/refs/heads/main.zip"
 INSTALL_DIR="$HOME/.botbrowser"
 NODE_DIR="$INSTALL_DIR/node"
 REPO_DIR="$INSTALL_DIR/BotBrowser"
-
-echo "=== BotBrowser Launcher Setup ==="
+DIST_DIR="$REPO_DIR/launcher/dist/BotBrowserLauncher"
+ICON_PATH="$REPO_DIR/launcher/public/logo.svg"
+DESKTOP_FILE="$HOME/Desktop/BotBrowser-Launcher.desktop"
+APPS_DESKTOP_FILE="$HOME/.local/share/applications/BotBrowser-Launcher.desktop"
 
 # Detect architecture
 ARCH=$(uname -m)
 if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
     NODE_URL="https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-arm64.tar.xz"
     NODE_EXTRACTED="node-v${NODE_VERSION}-linux-arm64"
+    EXE_NAME="BotBrowserLauncher-linux_arm64"
 else
     NODE_URL="https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz"
     NODE_EXTRACTED="node-v${NODE_VERSION}-linux-x64"
+    EXE_NAME="BotBrowserLauncher-linux_x64"
 fi
 
-# Install required tools
-if ! command -v unzip &> /dev/null || ! command -v curl &> /dev/null || ! command -v xz &> /dev/null; then
+EXE_PATH="$DIST_DIR/$EXE_NAME"
+
+install_dependencies() {
+    if command -v unzip &> /dev/null && command -v curl &> /dev/null && command -v xz &> /dev/null; then
+        return
+    fi
     echo "Installing required tools..."
     sudo apt-get update
     sudo apt-get install -y curl unzip xz-utils
-fi
+}
 
-# Create install directory
-mkdir -p "$INSTALL_DIR"
+install_nodejs() {
+    if [ -f "$NODE_DIR/bin/node" ]; then
+        echo "Node.js already installed."
+        return
+    fi
 
-# Download and extract Node.js
-if [ ! -f "$NODE_DIR/bin/node" ]; then
     echo "Downloading Node.js v${NODE_VERSION} for ${ARCH}..."
     curl -fsSL "$NODE_URL" -o /tmp/node.tar.xz
 
@@ -42,36 +51,102 @@ if [ ! -f "$NODE_DIR/bin/node" ]; then
     mv "$INSTALL_DIR/$NODE_EXTRACTED" "$NODE_DIR"
     rm /tmp/node.tar.xz
     echo "Node.js installed."
+}
+
+install_repository() {
+    if [ -d "$REPO_DIR" ]; then
+        rm -rf "$REPO_DIR"
+    fi
+    echo "Downloading repository..."
+    curl -fsSL "$REPO_ZIP_URL" -o /tmp/botbrowser.zip
+
+    echo "Extracting repository..."
+    unzip -q /tmp/botbrowser.zip -d "$INSTALL_DIR"
+    mv "$INSTALL_DIR/BotBrowser-main" "$REPO_DIR"
+    rm /tmp/botbrowser.zip
+}
+
+build_application() {
+    export PATH="$NODE_DIR/bin:$PATH"
+    echo "Node.js version: $("$NODE_DIR/bin/node" --version)"
+
+    cd "$REPO_DIR/launcher"
+
+    echo "Installing dependencies..."
+    "$NODE_DIR/bin/npm" ci
+
+    echo "Building application..."
+    "$NODE_DIR/bin/npm" run build
+}
+
+create_desktop_shortcut() {
+    echo "Creating desktop shortcut..."
+
+    # Create .desktop file content
+    DESKTOP_CONTENT="[Desktop Entry]
+Name=BotBrowser Launcher
+Comment=BotBrowser Profile Manager
+Exec=$EXE_PATH
+Icon=$ICON_PATH
+Terminal=false
+Type=Application
+Categories=Utility;Network;"
+
+    # Create desktop shortcut
+    mkdir -p "$(dirname "$DESKTOP_FILE")"
+    echo "$DESKTOP_CONTENT" > "$DESKTOP_FILE"
+    chmod +x "$DESKTOP_FILE"
+
+    # Also add to application menu
+    mkdir -p "$(dirname "$APPS_DESKTOP_FILE")"
+    echo "$DESKTOP_CONTENT" > "$APPS_DESKTOP_FILE"
+
+    # Trust the desktop file (GNOME)
+    if command -v gio &> /dev/null; then
+        gio set "$DESKTOP_FILE" metadata::trusted true 2>/dev/null || true
+    fi
+
+    echo "Desktop shortcut created: $DESKTOP_FILE"
+}
+
+launch_application() {
+    echo "Starting BotBrowser Launcher..."
+    cd "$DIST_DIR"
+    "./$EXE_NAME" &
+    disown
+}
+
+# === Main ===
+
+echo "=== BotBrowser Launcher Setup ==="
+
+# Create install directory
+mkdir -p "$INSTALL_DIR"
+
+# Install system dependencies
+install_dependencies
+
+# Check if already installed
+if [ -f "$EXE_PATH" ]; then
+    echo "BotBrowser Launcher is already installed."
+    read -p "Update to latest version? (y = update, n = launch existing) [n]: " choice
+    choice=${choice:-n}
+
+    if [ "$choice" = "y" ] || [ "$choice" = "Y" ]; then
+        echo "Updating..."
+        install_nodejs
+        install_repository
+        build_application
+        create_desktop_shortcut
+        launch_application
+    else
+        launch_application
+    fi
 else
-    echo "Node.js already installed."
+    echo "First time setup..."
+    install_nodejs
+    install_repository
+    build_application
+    create_desktop_shortcut
+    launch_application
 fi
-
-# Set PATH for this session
-export PATH="$NODE_DIR/bin:$PATH"
-
-# Verify Node.js
-echo "Node.js version: $("$NODE_DIR/bin/node" --version)"
-
-# Download repository
-if [ -d "$REPO_DIR" ]; then
-    rm -rf "$REPO_DIR"
-fi
-echo "Downloading repository..."
-curl -fsSL "$REPO_ZIP_URL" -o /tmp/botbrowser.zip
-
-echo "Extracting repository..."
-unzip -q /tmp/botbrowser.zip -d "$INSTALL_DIR"
-mv "$INSTALL_DIR/BotBrowser-main" "$REPO_DIR"
-rm /tmp/botbrowser.zip
-
-# Build and run
-cd "$REPO_DIR/launcher"
-
-echo "Installing dependencies..."
-"$NODE_DIR/bin/npm" ci
-
-echo "Building application..."
-"$NODE_DIR/bin/npm" run build
-
-echo "Starting application..."
-"$NODE_DIR/bin/npm" run app

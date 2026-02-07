@@ -421,9 +421,7 @@ export class BrowserLauncherService {
 
         // If no known name found, try to find the first executable in Contents/MacOS
         try {
-            const result = await Neutralino.os.execCommand(
-                `ls "${appPath}/Contents/MacOS" 2>/dev/null | head -1`
-            );
+            const result = await Neutralino.os.execCommand(`ls "${appPath}/Contents/MacOS" 2>/dev/null | head -1`);
             const mainExec = result.stdOut.trim();
             if (mainExec) {
                 return await Neutralino.filesystem.getJoinedPath(appPath, 'Contents', 'MacOS', mainExec);

@@ -149,7 +149,12 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
                                 <td mat-cell *matCellDef="let element">
                                     <div class="flex-container">
-                                        <span class="content">{{ element.basicInfo.profileName }}</span>
+                                        <a
+                                            class="content profile-name-link"
+                                            app-stop-propagation
+                                            (click)="editProfile(element)"
+                                            >{{ element.basicInfo.profileName }}</a
+                                        >
                                         <button mat-icon-button [matMenuTriggerFor]="menu" app-stop-propagation>
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
@@ -161,6 +166,10 @@
                                                 <button mat-menu-item (click)="editProfile(element)">
                                                     <mat-icon>edit</mat-icon>
                                                     <span>Edit</span>
+                                                </button>
+                                                <button mat-menu-item (click)="changeProxy(element)">
+                                                    <mat-icon>swap_horiz</mat-icon>
+                                                    <span>Change Proxy</span>
                                                 </button>
                                                 <button mat-menu-item (click)="deleteProfile(element)">
                                                     <mat-icon>delete</mat-icon>
@@ -209,7 +218,9 @@
                             <ng-container matColumnDef="proxy">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Proxy</th>
                                 <td mat-cell *matCellDef="let element">
-                                    {{ formatProxyDisplay(element.proxyServer) }}
+                                    <a class="proxy-link" app-stop-propagation (click)="changeProxy(element)">{{
+                                        formatProxyDisplay(element.proxyServer) || 'Set proxy'
+                                    }}</a>
                                 </td>
                             </ng-container>
 

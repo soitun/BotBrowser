@@ -974,12 +974,7 @@ export class KernelService {
                 // Verify the executable inside .app exists
                 const possibleExecNames = ['Chromium', 'chrome', 'Google Chrome', 'BotBrowser'];
                 for (const execName of possibleExecNames) {
-                    const execPath = await Neutralino.filesystem.getJoinedPath(
-                        appPath,
-                        'Contents',
-                        'MacOS',
-                        execName
-                    );
+                    const execPath = await Neutralino.filesystem.getJoinedPath(appPath, 'Contents', 'MacOS', execName);
                     try {
                         await Neutralino.filesystem.getStats(execPath);
                         // Ensure it has execute permission
@@ -996,12 +991,7 @@ export class KernelService {
                 );
                 const mainExec = macosResult.stdOut.trim();
                 if (mainExec) {
-                    const execPath = await Neutralino.filesystem.getJoinedPath(
-                        appPath,
-                        'Contents',
-                        'MacOS',
-                        mainExec
-                    );
+                    const execPath = await Neutralino.filesystem.getJoinedPath(appPath, 'Contents', 'MacOS', mainExec);
                     await Neutralino.os.execCommand(`chmod +x "${execPath}"`);
                     return appPath;
                 }
@@ -1026,12 +1016,8 @@ export class KernelService {
                 }
             }
             // List directory contents for debugging
-            const dirContents = await Neutralino.os.execCommand(
-                `find "${installDir}" -type f 2>/dev/null | head -20`
-            );
-            throw new Error(
-                `Could not find executable in installed kernel. Found files: ${dirContents.stdOut.trim()}`
-            );
+            const dirContents = await Neutralino.os.execCommand(`find "${installDir}" -type f 2>/dev/null | head -20`);
+            throw new Error(`Could not find executable in installed kernel. Found files: ${dirContents.stdOut.trim()}`);
         }
     }
 
