@@ -1,6 +1,6 @@
 #!/bin/bash
 # BotBrowser Launcher Setup Script for macOS
-# Run: curl -fsSL https://raw.githubusercontent.com/botswin/BotBrowser/main/launcher/scripts/setup-macos.sh | bash
+# Run: curl -fsSL https://raw.githubusercontent.com/botswin/BotBrowser/main/launcher/scripts/setup-macos.sh -o /tmp/setup.sh && bash /tmp/setup.sh
 
 set -e
 
@@ -208,7 +208,7 @@ mkdir -p "$INSTALL_DIR"
 # Check if already installed
 if [ -f "$EXE_PATH" ]; then
     echo "BotBrowser Launcher is already installed."
-    read -p "Update to latest version? (y = update, n = launch existing) [n]: " choice
+    read -p "Update to latest version? (y = update, n = launch existing) [n]: " choice < /dev/tty
     choice=${choice:-n}
 
     if [ "$choice" = "y" ] || [ "$choice" = "Y" ]; then

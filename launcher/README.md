@@ -48,19 +48,19 @@ One-line install scripts that download Node.js, fetch the source, build, and cre
 **Windows (PowerShell):**
 
 ```powershell
-irm https://raw.githubusercontent.com/botswin/BotBrowser/main/launcher/scripts/setup.ps1 | iex
+irm https://raw.githubusercontent.com/botswin/BotBrowser/main/launcher/scripts/setup.ps1 -OutFile $env:TEMP\setup.ps1; powershell -ExecutionPolicy Bypass -File $env:TEMP\setup.ps1
 ```
 
 **macOS:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/botswin/BotBrowser/main/launcher/scripts/setup-macos.sh | bash
+curl -fsSL https://raw.githubusercontent.com/botswin/BotBrowser/main/launcher/scripts/setup-macos.sh -o /tmp/setup.sh && bash /tmp/setup.sh
 ```
 
 **Ubuntu/Debian:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/botswin/BotBrowser/main/launcher/scripts/setup-ubuntu.sh | bash
+curl -fsSL https://raw.githubusercontent.com/botswin/BotBrowser/main/launcher/scripts/setup-ubuntu.sh -o /tmp/setup.sh && bash /tmp/setup.sh
 ```
 
 ## Manual Setup

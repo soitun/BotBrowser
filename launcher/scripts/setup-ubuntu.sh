@@ -1,6 +1,6 @@
 #!/bin/bash
 # BotBrowser Launcher Setup Script for Ubuntu/Debian
-# Run: curl -fsSL https://raw.githubusercontent.com/botswin/BotBrowser/main/launcher/scripts/setup-ubuntu.sh | bash
+# Run: curl -fsSL https://raw.githubusercontent.com/botswin/BotBrowser/main/launcher/scripts/setup-ubuntu.sh -o /tmp/setup.sh && bash /tmp/setup.sh
 
 set -e
 
@@ -129,7 +129,7 @@ install_dependencies
 # Check if already installed
 if [ -f "$EXE_PATH" ]; then
     echo "BotBrowser Launcher is already installed."
-    read -p "Update to latest version? (y = update, n = launch existing) [n]: " choice
+    read -p "Update to latest version? (y = update, n = launch existing) [n]: " choice < /dev/tty
     choice=${choice:-n}
 
     if [ "$choice" = "y" ] || [ "$choice" = "Y" ]; then
