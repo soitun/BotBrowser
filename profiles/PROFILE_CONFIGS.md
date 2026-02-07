@@ -148,8 +148,8 @@ These fields work together with `--user-agent` CLI flag. BotBrowser auto-generat
 
 | Field    | Description                                                                                              | Default     |
 | -------- | -------------------------------------------------------------------------------------------------------- | ----------- |
-| `window` | `profile` = use profile's dimensions;`real` = use system window size;object = custom dims.           | `profile` |
-| `screen` | `profile` = use profile's screen metrics;`real` = use system screen metrics;object = custom metrics. | `profile` |
+| `window` | `profile` = use profile's dimensions; `real` = use system window size; object = custom dims. Headless and Android profiles default to `profile`; desktop headful defaults to `real`. | `profile` / `real` |
+| `screen` | `profile` = use profile's screen metrics; `real` = use system screen metrics; object = custom metrics. Headless and Android profiles default to `profile`; desktop headful defaults to `real`. | `profile` / `real` |
 
 ### Engine & Device Simulation
 

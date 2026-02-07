@@ -247,10 +247,42 @@ Inject custom HTTP request headers into all outgoing requests.
 --bot-custom-headers='{"X-Custom-Header":"value","X-Another":"value2"}'
 ```
 
+**JavaScript Usage:**
+
+Do NOT wrap the JSON value in extra quotes; the shell-style single quotes shown above are for Bash only. In JavaScript they become literal characters inside the flag value:
+
+```javascript
+// Wrong - single quotes become part of the value
+args.push(`--bot-custom-headers='${JSON.stringify(customHeaders)}'`);
+
+// Correct
+args.push("--bot-custom-headers=" + JSON.stringify(customHeaders));
+```
+
 **Configuration Methods:**
 - CLI flag: `--bot-custom-headers='{"Header":"value"}'`
 - Profile JSON: `configs.customHeaders`
-- CDP: `BotBrowser.setCustomHeaders`
+- CDP: `BotBrowser.setCustomHeaders` (see below)
+
+**CDP Usage:**
+
+The `BotBrowser.setCustomHeaders` command must be sent to the **browser-level** CDP session, not a page-level session. Sending it to a page target will return `ProtocolError: 'BotBrowser.setCustomHeaders' wasn't found`.
+
+Puppeteer:
+```javascript
+const cdpSession = await browser.target().createCDPSession();
+await cdpSession.send('BotBrowser.setCustomHeaders', {
+  headers: { 'x-requested-with': 'com.facebook.katana' }
+});
+```
+
+Playwright:
+```javascript
+const cdpSession = await browser.newBrowserCDPSession();
+await cdpSession.send('BotBrowser.setCustomHeaders', {
+  headers: { 'x-requested-with': 'com.facebook.katana' }
+});
+```
 
 **Notes:**
 - Headers are added to all HTTP/HTTPS requests
@@ -304,15 +336,18 @@ BotBrowser auto-generates matching `navigator.userAgentData` (brands, fullVersio
 
 **Display & Input**
 - `--bot-config-window=<value>`: Window dimensions with multiple formats:
-  - `profile` - Use profile's window settings (default)
-  - `real` - Use actual system window dimensions
+  - `profile` - Use profile's window settings (default for headless and Android profiles)
+  - `real` - Use actual system window dimensions (default for desktop headful)
   - `WxH` - Direct size specification (e.g., `1920x1080`), sets innerWidth/innerHeight with outerWidth/outerHeight auto-derived from profile borders
   - `JSON` - Full customization (e.g., `'{"innerWidth":1920,"innerHeight":1080,"devicePixelRatio":2}'`)
 - `--bot-config-screen=<value>`: Screen properties with multiple formats:
-  - `profile` - Use profile's screen settings (default)
-  - `real` - Use actual system screen dimensions
+  - `profile` - Use profile's screen settings (default for headless and Android profiles)
+  - `real` - Use actual system screen dimensions (default for desktop headful)
   - `WxH` - Direct size specification (e.g., `2560x1440`), sets width/height with availWidth/availHeight auto-derived from profile
   - `JSON` - Full customization (e.g., `'{"width":2560,"height":1440,"availWidth":2560,"availHeight":1400}'`)
+
+> **Headful note:** Desktop profiles default to `real` in headful mode, meaning the browser uses the actual system window and screen dimensions. To apply profile-defined dimensions in headful, set both `--bot-config-window=profile` and `--bot-config-screen=profile` explicitly.
+
 - `--bot-config-keyboard=profile`: Keyboard settings: profile (emulated), real (system keyboard)
 - `--bot-config-fonts=profile`: Font settings: profile (embedded), expand (profile + fallback), real (system fonts)
 - `--bot-config-color-scheme=light`: Color scheme: light, dark
