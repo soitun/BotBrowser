@@ -117,7 +117,7 @@ Examples: [Playwright](examples/playwright/) • [Puppeteer](examples/puppeteer/
 
 - **Multi Layer Noise**: Canvas, WebGL, WebGPU, text, and AudioContext surfaces share deterministic, cross-worker noise with low-level Skia and HarfBuzz tuning so observers cannot correlate runs
 - **Per-Context Fingerprint**: Independent fingerprint per BrowserContext without new processes, [millisecond-level switching](PER_CONTEXT_FINGERPRINT.md) (ENT Tier3); clean execution contexts and console suppression (ENT Tier1) maintain isolation
-- **Configurable Stack**: 50+ CLI overrides, per-context proxies (ENT Tier1) with auto geo, session tooling (cookies, bookmarks, title, history), and [plaintext storage access](examples/storage-access/) (ENT Tier1) make privacy scripting flexible
+- **Configurable Stack**: 50+ CLI overrides, per-context proxies (ENT Tier1) with auto geo, session tooling (cookies, bookmarks, title, history), and [plaintext storage access](examples/storage-access/) (PRO) make privacy scripting flexible
 - **Typography Fidelity**: DOM text renders from embedded Windows and macOS font packs (Android fonts require PRO) so host fonts never leak during cross-OS simulation
 - **Client Hints Lockstep**: DPR, device-memory, and UA-CH headers match JavaScript-visible values; custom User-Agent with full userAgentData control (ENT Tier3)
 - **Headless ↔ GUI Parity**: Identical GPU, WebGPU, and media signals across browser modes so privacy regression tests remain stable

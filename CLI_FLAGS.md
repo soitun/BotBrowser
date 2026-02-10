@@ -177,7 +177,7 @@ Sets custom browser window title and taskbar/dock icon label.
 - Displays as a label next to the Refresh button
 - Useful for managing multiple instances
 
-### `--bot-cookies` (ENT Tier1)
+### `--bot-cookies` (PRO)
 Session restoration and cookie management.
 
 Accepts cookie data as either inline JSON or from a file.

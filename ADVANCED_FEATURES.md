@@ -82,7 +82,7 @@ Maintains protected window state to prevent focus-based tracking even when the h
 
 Consistent behavior across execution modes.
 
-**GPU Simulation in Headless Mode:**
+**GPU Simulation in Headless Mode (ENT Tier2):**
 - Full GPU context simulation without physical GPU
 - WebGL and WebGPU rendering consistency
 - Hardware-accelerated video decoding simulation
