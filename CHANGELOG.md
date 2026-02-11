@@ -3,6 +3,28 @@
 > **Research scope:** Entries in this changelog describe features evaluated in authorized labs and defensive benchmarking programs. Follow the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md). We work with security vendors to investigate any misuse, so report concerns to [support@botbrowser.io](mailto:support@botbrowser.io).
 
 
+## [2026-02-11]
+### Major
+- **Chromium Core → 145.0.7632.46**: Updated the engine to Chrome 145 stable (145.0.7632.46). This keeps Web Platform behavior, rendering consistency, and security patches aligned with upstream Chrome.
+
+### New
+- **GPU Cross-Platform Consistency**: GPU-related API outputs now correctly match the target platform profile across all host operating systems, with full per-context support.
+
+- **FPS Control (`--bot-fps`)**: Added `--bot-fps` flag to control frame rate behavior. Supports `profile` (use profile data), `real` (use native frame rate), or a specific number (e.g., `--bot-fps=60`).
+
+- **Request Header Integrity**: Authentic request header generation for Google-associated domains, with validation seeds precisely aligned to each Chrome minor version.
+
+### Improvements
+- **Text Metrics Cross-Platform Precision**: Text measurement precision characteristics now match the target platform's native behavior, ensuring consistent results across all host operating systems.
+
+### Fixes
+- **Cross-Origin Iframe Click Handling**: Fixed an issue where click events could miss their target in cross-origin iframes when using `--bot-config-window=profile`.
+
+- **Custom Headers CORS Compatibility**: `--bot-custom-headers` no longer triggers CORS preflight for cross-origin requests, matching expected browser behavior.
+
+- **Windows Installer Widevine Packaging**: Fixed Widevine DRM component missing from Windows installation packages. Linux and macOS packages were unaffected.
+
+
 ## [2026-02-06]
 ### Major
 - **Chromium Core → 144.0.7559.111**: Updated the engine to Chrome 144 stable (144.0.7559.111). This keeps Web Platform behavior, rendering consistency, and security patches aligned with upstream Chrome.

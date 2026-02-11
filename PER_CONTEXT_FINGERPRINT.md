@@ -277,7 +277,7 @@ Most `--bot-*` flags from [CLI_FLAGS.md](CLI_FLAGS.md) work with per-context con
 |----------|---------------|
 | Profile | `--bot-profile` (load a completely different profile per context) |
 | Noise Seed | `--bot-noise-seed` for deterministic fingerprint variance |
-| Timing | `--bot-time-scale` for performance timing control |
+| Timing | `--bot-time-scale` for performance timing control, `--bot-fps` for frame rate control |
 | WebRTC | `--bot-webrtc-ice` for ICE endpoint control |
 | Window | `--bot-always-active` to maintain active window state |
 | Session | `--bot-inject-random-history` for session authenticity |

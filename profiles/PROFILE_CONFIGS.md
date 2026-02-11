@@ -176,6 +176,7 @@ These fields work together with `--user-agent` CLI flag. BotBrowser auto-generat
 
 | Field | Description | Default |
 | ----- | ----------- | ------- |
+| `fps` (ENT Tier2 feature) | Control frame rate behavior: `profile` (use profile data, default when capable), `real` (use native frame rate), or a number (e.g., `60`). | `profile` |
 | `timeScale` (ENT Tier2 feature) | Fractional scalar applied to `performance.now()` deltas to emulate lower CPU load and shorten observable intervals. Valid range `0 < value < 1`. | `1.0` |
 | `noiseSeed` (ENT Tier2 feature) | Floating seed (1.0–1.2) that deterministically shapes the noise applied to Canvas 2D/WebGL/WebGPU images, text metrics, HarfBuzz layout, ClientRects, and offline audio hashes so you can assign reproducible yet distinct fingerprints per tenant. | `auto` |
 
@@ -287,7 +288,10 @@ These fields work together with `--user-agent` CLI flag. BotBrowser auto-generat
     // customHeaders (PRO): inject custom HTTP headers into all outgoing requests
     "customHeaders": {
       "X-Custom-Header": "value"
-    }
+    },
+
+    // fps (ENT Tier2): frame rate control: "profile", "real", or a number (e.g., 60)
+    "fps": "profile"
   }
 }
 
