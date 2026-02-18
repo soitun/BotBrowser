@@ -269,6 +269,8 @@ await Promise.all([
 
 You can now configure proxy directly in `botbrowserFlags` without using `createBrowserContext({ proxyServer })`. This provides unified configuration for proxy and other per-context settings in a single call.
 
+> **Tip:** Need to switch proxies at runtime without restarting a context? See [Dynamic Proxy Switching (ENT Tier2)](ADVANCED_FEATURES.md#dynamic-proxy-switching) in Advanced Features.
+
 ## Supported Flags
 
 Most `--bot-*` flags from [CLI_FLAGS.md](CLI_FLAGS.md) work with per-context configuration. Browser-level exceptions are noted in [Important Notes](#important-notes).
@@ -276,14 +278,14 @@ Most `--bot-*` flags from [CLI_FLAGS.md](CLI_FLAGS.md) work with per-context con
 | Category | Example Flags |
 |----------|---------------|
 | Profile | `--bot-profile` (load a completely different profile per context) |
-| Noise Seed | `--bot-noise-seed` for deterministic fingerprint variance |
-| Timing | `--bot-time-scale` for performance timing control, `--bot-fps` for frame rate control |
-| WebRTC | `--bot-webrtc-ice` for ICE endpoint control |
-| Window | `--bot-always-active` to maintain active window state |
+| Noise Seed | [`--bot-noise-seed`](CLI_FLAGS.md#behavior--protection-toggles) for deterministic fingerprint variance |
+| Timing | [`--bot-time-scale`](CLI_FLAGS.md#behavior--protection-toggles) for performance timing control, [`--bot-fps`](CLI_FLAGS.md#behavior--protection-toggles) for frame rate control |
+| WebRTC | [`--bot-webrtc-ice`](ADVANCED_FEATURES.md#webrtc-leak-protection) for ICE endpoint control |
+| Window | [`--bot-always-active`](ADVANCED_FEATURES.md#active-window-emulation) to maintain active window state |
 | Session | `--bot-inject-random-history` for session authenticity |
-| Proxy | `--proxy-server` (configure proxy per-context via `botbrowserFlags`), `--proxy-ip` to skip IP lookups |
-| HTTP | `--bot-custom-headers` for custom HTTP request headers per context |
-| Config | `--bot-config-platform`, `--bot-config-timezone`, `--bot-config-noise-canvas`, etc. |
+| Proxy | [`--proxy-server`](CLI_FLAGS.md#enhanced-proxy-configuration) (configure proxy per-context via `botbrowserFlags`), `--proxy-ip` to skip IP lookups |
+| HTTP | [`--bot-custom-headers`](CLI_FLAGS.md#--bot-custom-headers-pro) for custom HTTP request headers per context |
+| Config | [`--bot-config-platform`, `--bot-config-timezone`, `--bot-config-noise-canvas`, etc.](CLI_FLAGS.md#profile-configuration-override-flags) |
 
 See [CLI_FLAGS.md](CLI_FLAGS.md) for the complete flag reference.
 
@@ -306,9 +308,9 @@ See [CLI_FLAGS.md](CLI_FLAGS.md) for the complete flag reference.
 
 ## Important Notes
 
-⚠️ Per-context proxy configuration must be set before navigation. The proxy cannot be changed after the first network request in a context.
+⚠️ Per-context proxy via `botbrowserFlags` or `createBrowserContext` must be set before navigation. To switch proxies at runtime, use `BotBrowser.setBrowserContextProxy` (ENT Tier2). See [Dynamic Proxy Switching](ADVANCED_FEATURES.md#dynamic-proxy-switching).
 
-⚠️ Some network-layer settings (`--bot-local-dns`, UDP proxy support) apply at the browser level and cannot be configured per-context.
+⚠️ Some network-layer settings ([`--bot-local-dns`](CLI_FLAGS.md#--bot-local-dns-ent-tier1), UDP proxy support) apply at the browser level and cannot be configured per-context.
 
 ⚠️ Each context can load a completely different profile (`--bot-profile`), or use `--bot-config-*` flags to override specific settings from the browser's base profile.
 

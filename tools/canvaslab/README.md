@@ -49,7 +49,7 @@ CanvasLab records every Canvas and WebGL API call so you can see exactly what tr
 
 ## Quick Start: Recording Tracking Attempts
 
-**Step 1: Start recording**
+**Step 1: Start recording** (see [`--bot-canvas-record-file`](../../CLI_FLAGS.md#--bot-canvas-record-file))
 ```bash
 chromium \
   --bot-profile=/absolute/path/to/profile.enc \

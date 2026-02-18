@@ -102,28 +102,28 @@ await page.goto('https://abrahamjuliot.github.io/creepjs/');
 
 **Notes:**
 - Use `--user-data-dir` with a unique temporary folder to avoid conflicts with running Chromium instances
-- Prefer `--proxy-server` or per-context proxies (ENT Tier1); auto timezone/locale detection applies in both cases
+- Prefer `--proxy-server` or [per-context proxies](PER_CONTEXT_FINGERPRINT.md) (ENT Tier1); auto timezone/locale detection applies in both cases
 - Avoid framework-specific proxy/auth options (e.g., `page.authenticate()`), which disable BotBrowser's geo-detection and may leak location information
 
 Examples: [Playwright](examples/playwright/) • [Puppeteer](examples/puppeteer/)
 
 **More options:**
-- Framework-less approach: [`--bot-script` + CDP](examples/bot-script/) (privileged context, earlier hook, fewer artifacts)
+- Framework-less approach: [`--bot-script`](CLI_FLAGS.md#--bot-script) + [CDP](examples/bot-script/) (privileged context, earlier hook, fewer artifacts)
 - Docker: [docker/README.md](docker/)
 - Full flags: [CLI_FLAGS.md](CLI_FLAGS.md)
 
 ## Advanced Capabilities
 > **Professional-grade privacy technology** built on multi-layer fingerprint protection, network-stack control, and hardening.
 
-- **Multi Layer Noise**: Canvas, WebGL, WebGPU, text, and AudioContext surfaces share deterministic, cross-worker noise with low-level Skia and HarfBuzz tuning so observers cannot correlate runs
-- **Per-Context Fingerprint**: Independent fingerprint per BrowserContext without new processes, [millisecond-level switching](PER_CONTEXT_FINGERPRINT.md) (ENT Tier3); clean execution contexts and console suppression (ENT Tier1) maintain isolation
-- **Configurable Stack**: 50+ CLI overrides, per-context proxies (ENT Tier1) with auto geo, session tooling (cookies, bookmarks, title, history), and [plaintext storage access](examples/storage-access/) (PRO) make privacy scripting flexible
-- **Typography Fidelity**: DOM text renders from embedded Windows and macOS font packs (Android fonts require PRO) so host fonts never leak during cross-OS simulation
-- **Client Hints Lockstep**: DPR, device-memory, and UA-CH headers match JavaScript-visible values; custom User-Agent with full userAgentData control (ENT Tier3)
-- **Headless ↔ GUI Parity**: Identical GPU, WebGPU, and media signals across browser modes so privacy regression tests remain stable
+- **[Multi Layer Noise](ADVANCED_FEATURES.md#multi-layer-fingerprint-noise)**: Canvas, WebGL, WebGPU, text, and AudioContext surfaces share deterministic, cross-worker noise with low-level Skia and HarfBuzz tuning so observers cannot correlate runs
+- **[Per-Context Fingerprint](PER_CONTEXT_FINGERPRINT.md)**: Independent fingerprint per BrowserContext without new processes, millisecond-level switching (ENT Tier3); clean execution contexts and console suppression (ENT Tier1) maintain isolation
+- **Configurable Stack**: 50+ CLI overrides, [per-context proxies](PER_CONTEXT_FINGERPRINT.md) (ENT Tier1) with auto geo, session tooling (cookies, bookmarks, title, history), and [plaintext storage access](examples/storage-access/) (PRO) make privacy scripting flexible
+- **[Typography Fidelity](ADVANCED_FEATURES.md#cross-platform-font-engine)**: DOM text renders from embedded Windows and macOS font packs (Android fonts require PRO) so host fonts never leak during cross-OS simulation
+- **[Client Hints Lockstep](ADVANCED_FEATURES.md#browser-os-fingerprinting)**: DPR, device-memory, and UA-CH headers match JavaScript-visible values; custom User-Agent with full userAgentData control (ENT Tier3)
+- **[Headless ↔ GUI Parity](ADVANCED_FEATURES.md#headless-incognito-compatibility)**: Identical GPU, WebGPU, and media signals across browser modes so privacy regression tests remain stable
 - **Performance Controls (ENT Tier2)**: Precision FPS, timing controls, and noise seeds for reproducible privacy benchmarks
-- **Focus & Session Control**: Always-active tabs, configurable ICE presets, and expanded media reporting keep privacy sessions believable
-- **Network Enhancements**: per-context proxies (ENT Tier1) and optional local DNS solver (ENT Tier1), UDP-over-SOCKS5 (ENT Tier3), and SOCKS5H protocol support for tunnel-based resolution
+- **Focus & Session Control**: [Always-active tabs](ADVANCED_FEATURES.md#active-window-emulation), [configurable ICE presets](ADVANCED_FEATURES.md#webrtc-leak-protection), and expanded media reporting keep privacy sessions believable
+- **[Network Enhancements](ADVANCED_FEATURES.md#network-fingerprint-control)**: [per-context proxies](PER_CONTEXT_FINGERPRINT.md) (ENT Tier1), [dynamic proxy switching](ADVANCED_FEATURES.md#dynamic-proxy-switching) at runtime (ENT Tier2), [port protection](ADVANCED_FEATURES.md#port-protection) for local services (PRO), optional [local DNS solver](CLI_FLAGS.md#--bot-local-dns-ent-tier1) (ENT Tier1), [UDP-over-SOCKS5](CLI_FLAGS.md#udp-over-socks5-ent-tier3) (ENT Tier3), and SOCKS5H protocol support for tunnel-based resolution
 
 <details>
 <summary><strong>Fingerprint Protection Implementation: Privacy Controls → Technical Design → Validation</strong></summary>
@@ -193,7 +193,7 @@ Prefer a GUI launcher? See [launcher/README.md](launcher) for BotBrowserLauncher
 
 Ensure your privacy protection works effectively across platforms and networks. Run a controller instance and multiple client instances to verify that all instances maintain identical privacy defenses, protecting you from tracking across Windows, macOS, Linux, and remote environments.
 
-Launch with CLI flags: `--bot-mirror-controller-endpoint=127.0.0.1:9990` on the controller, `--bot-mirror-client-endpoint=127.0.0.1:9990` on each client. Runtime activation via CDP is also supported for programmatic control.
+Launch with CLI flags: [`--bot-mirror-controller-endpoint`](CLI_FLAGS.md#mirror-distributed-privacy-consistency)`=127.0.0.1:9990` on the controller, [`--bot-mirror-client-endpoint`](CLI_FLAGS.md#mirror-distributed-privacy-consistency)`=127.0.0.1:9990` on each client. Runtime activation via CDP is also supported for programmatic control.
 
 See [Mirror documentation](tools/mirror/) for detailed setup, testing procedures, and troubleshooting.
 

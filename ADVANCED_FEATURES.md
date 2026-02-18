@@ -8,7 +8,7 @@ Technical architecture and implementation details behind BotBrowser's fingerprin
 
 ## Capabilities Index
 
-[navigator.webdriver removal](#chrome-behavior-emulation), [main-world isolation](#playwright-puppeteer-integration), [JS hook isolation](#playwright-puppeteer-integration), [Canvas noise](#multi-layer-fingerprint-noise), [WebGL/WebGPU param control](#multi-layer-fingerprint-noise), [Skia anti-alias](#cross-platform-font-engine), [HarfBuzz shaping](#cross-platform-font-engine), [MediaDevices protection](#complete-fingerprint-control), [font list authenticity](#cross-platform-font-engine), [UA congruence](#browser-os-fingerprinting), [custom User-Agent (ENT Tier3)](CLI_FLAGS.md#profile-configuration-override-flags), [per-context proxy (ENT Tier1) geo](CLI_FLAGS.md#enhanced-proxy-configuration), [DNS-through-proxy](#network-fingerprint-control), [active window emulation](#active-window-emulation), [HTTP headers/HTTP2/HTTP3](#chrome-behavior-emulation), [headless parity](#headless-incognito-compatibility), [WebRTC SDP/ICE control](#webrtc-leak-protection), [TLS fingerprint (JA3/JARM)](#network-fingerprint-control), [distributed privacy consistency](#mirror-distributed-privacy-consistency)
+[navigator.webdriver removal](#chrome-behavior-emulation), [main-world isolation](#playwright-puppeteer-integration), [JS hook isolation](#playwright-puppeteer-integration), [Canvas noise](#multi-layer-fingerprint-noise), [WebGL/WebGPU param control](#multi-layer-fingerprint-noise), [Skia anti-alias](#cross-platform-font-engine), [HarfBuzz shaping](#cross-platform-font-engine), [MediaDevices protection](#complete-fingerprint-control), [font list authenticity](#cross-platform-font-engine), [UA congruence](#browser-os-fingerprinting), [custom User-Agent (ENT Tier3)](CLI_FLAGS.md#profile-configuration-override-flags), [per-context proxy (ENT Tier1) geo](CLI_FLAGS.md#enhanced-proxy-configuration), [DNS-through-proxy](#network-fingerprint-control), [active window emulation](#active-window-emulation), [HTTP headers/HTTP2/HTTP3](#chrome-behavior-emulation), [headless parity](#headless-incognito-compatibility), [WebRTC SDP/ICE control](#webrtc-leak-protection), [TLS fingerprint (JA3/JARM)](#network-fingerprint-control), [port protection (PRO)](#port-protection), [dynamic proxy switching (ENT Tier2)](#dynamic-proxy-switching), [distributed privacy consistency](#mirror-distributed-privacy-consistency), [CDP quick reference](#cdp-quick-reference)
 
 ---
 
@@ -18,7 +18,7 @@ BotBrowser offers three configuration interfaces with a clear priority order:
 
 1. **CLI `--bot-config-*` flags** (highest priority) — [CLI Flags Reference](CLI_FLAGS.md)
 2. **Profile `configs` JSON** (medium priority) — [Profile Configuration Guide](profiles/PROFILE_CONFIGS.md)
-3. **CDP commands** (runtime, per-context) — [Per-Context Fingerprint](PER_CONTEXT_FINGERPRINT.md)
+3. **CDP commands** (runtime, per-context) — [Per-Context Fingerprint](PER_CONTEXT_FINGERPRINT.md) | [CDP Quick Reference](#cdp-quick-reference)
 
 Smart auto-configuration: timezone, locale, and languages derive from your proxy IP. Override only when your scenario requires it.
 
@@ -36,15 +36,57 @@ Smart auto-configuration: timezone, locale, and languages derive from your proxy
 - **TLS Fingerprints (JA3/JARM/ALPN):** Roadmap: cipher/extension ordering and ALPN tuning under evaluation.
 
 **Stack differentiators:**
-- Per-context proxies with proxy-based geo detection (timezone/locale/language) across contexts and sessions
+- [Per-context proxies](PER_CONTEXT_FINGERPRINT.md) with proxy-based geo detection (timezone/locale/language) across contexts and sessions
 - DNS-through-proxy plus credentialed proxy URLs keep browser-level geo signals protected
 - UDP-over-SOCKS5 tunnel (ENT Tier3) for QUIC/STUN so ICE presets are only needed when UDP is unavailable
-- Optional ICE control via `--bot-webrtc-ice` (ENT Tier1) when the proxy lacks UDP support
+- Optional ICE control via [`--bot-webrtc-ice`](CLI_FLAGS.md#behavior--protection-toggles) (ENT Tier1) when the proxy lacks UDP support
 - Chromium-level implementation: tunneling lives inside the network stack, no external proxy-chain hijacking
 
 > Note: Many privacy-oriented browsers disable QUIC or skip UDP entirely. BotBrowser implements UDP-over-SOCKS5 directly inside Chromium's network stack so QUIC/STUN stay proxied and consistent with TCP traffic.
 
 For proxy configuration syntax and examples, see [CLI Flags: Enhanced Proxy Configuration](CLI_FLAGS.md#enhanced-proxy-configuration).
+
+<a id="port-protection"></a>
+### Port Protection (PRO)
+
+Protect local service ports (VNC, RDP, development servers, etc.) from being scanned by remote pages. Prevents detection of which services are running on localhost.
+
+Covers 30 commonly-probed ports across:
+- IPv4 loopback (`127.0.0.0/8`)
+- IPv6 loopback (`::1`)
+- `localhost` hostname
+
+Enable via CLI (`--bot-port-protection`) or profile JSON (`configs.portProtection`). See [CLI Flags](CLI_FLAGS.md#--bot-port-protection-pro) for details.
+
+<a id="dynamic-proxy-switching"></a>
+### Dynamic Per-Context Proxy Switching (ENT Tier2)
+
+Switch proxy servers for a specific BrowserContext at runtime without restarting the context. Use the CDP command `BotBrowser.setBrowserContextProxy` to change proxies on the fly. Supports multiple switches per context, with automatic timezone and language adaptation after each switch.
+
+```javascript
+const ctx = await browser.createBrowserContext();
+const page = await ctx.newPage();
+const client = await page.createCDPSession();
+
+// Set initial proxy - US endpoint
+await client.send('BotBrowser.setBrowserContextProxy', {
+  browserContextId: ctx._contextId,
+  proxyServer: 'socks5://user:pass@us-proxy.example.com:1080',
+  proxyIp: '203.0.113.1'  // optional: skip IP lookup for faster geo detection
+});
+await page.goto('https://example.com');
+
+// Switch to UK proxy at runtime - no context restart needed
+await client.send('BotBrowser.setBrowserContextProxy', {
+  browserContextId: ctx._contextId,
+  proxyServer: 'socks5h://user:pass@uk-proxy.example.com:1080'
+});
+await page.goto('https://example.co.uk');
+```
+
+**Supported protocols:** `socks5://`, `socks5h://`, `http://`, `https://`, all with embedded authentication (`user:pass@host:port`).
+
+**Optional parameter:** `proxyIp` provides the proxy's exit IP to skip automatic IP detection, resulting in faster geo-based timezone and language adaptation.
 
 ---
 
@@ -60,7 +102,7 @@ Deterministic noise generation prevents fingerprint collection while maintaining
 - **WebGPU**: Deterministic noise applied to WebGPU canvases by default so GPU-only probes inherit the same reproducible noise characteristics
 - **AudioContext**: Inaudible noise calibration (Chromium 141+) with cross-worker consistency
 - **ClientRects/TextRects**: Realistic font measurement variance with cross-worker consistency
-- **Deterministic noise seeds (ENT Tier2)**: Reproducible yet distinct noise fields per tenant; each seed shapes Canvas 2D, WebGL, WebGPU imagery, text metrics, HarfBuzz layout, ClientRects, and offline audio hashes
+- **Deterministic noise seeds (ENT Tier2)**: Reproducible yet distinct noise fields per tenant; each seed shapes Canvas 2D, WebGL, WebGPU imagery, text metrics, HarfBuzz layout, ClientRects, and offline audio hashes. See [`--bot-noise-seed`](CLI_FLAGS.md#behavior--protection-toggles)
 
 Protection model:
 - Stable noise algorithms maintain session consistency while varying across different sessions
@@ -74,7 +116,7 @@ For noise configuration flags, see [CLI Flags: Rendering, Noise & Media/RTC](CLI
 
 Maintains protected window state to prevent focus-based tracking even when the host window is unfocused.
 
-- `--bot-always-active` (PRO, default true) maintains protected `blur` and `visibilitychange` event patterns, keeping `document.hidden=false`
+- [`--bot-always-active`](CLI_FLAGS.md#behavior--protection-toggles) (PRO, default true) maintains protected `blur` and `visibilitychange` event patterns, keeping `document.hidden=false`
 - Protects against window-focus-based tracking heuristics that monitor caret blinking, FocusManager events, or inactive viewport throttling
 
 <a id="headless-incognito-compatibility"></a>
@@ -105,8 +147,8 @@ Complete WebRTC fingerprint protection and network privacy.
 - MediaStream API protection across execution contexts
 - RTCPeerConnection behavior standardization
 - Network topology protection through controlled signal patterns
-- ICE server presets and custom lists via `--bot-webrtc-ice` (ENT Tier1) to standardize STUN and TURN endpoints observed by page JavaScript
-- Combined with UDP-over-SOCKS5 (ENT Tier3) for Chromium-level QUIC and STUN tunneling
+- ICE server presets and custom lists via [`--bot-webrtc-ice`](CLI_FLAGS.md#behavior--protection-toggles) (ENT Tier1) to standardize STUN and TURN endpoints observed by page JavaScript
+- Combined with [UDP-over-SOCKS5](CLI_FLAGS.md#udp-over-socks5-ent-tier3) (ENT Tier3) for Chromium-level QUIC and STUN tunneling
 
 <a id="chrome-behavior-emulation"></a>
 ### Chrome Behavior Emulation
@@ -216,14 +258,14 @@ Comprehensive hardware emulation and fingerprint management.
 - Emulate target refresh rates (60Hz, 120Hz, 144Hz, etc.)
 - Simulate high-FPS macOS behavior on Ubuntu hosts (Ubuntu requires ENT Tier1)
 - Authentic vsync and frame timing patterns
-- Runtime timing scaling via `--bot-time-scale` to compress `performance.now()` deltas
+- Runtime timing scaling via [`--bot-time-scale`](CLI_FLAGS.md#behavior--protection-toggles) to compress `performance.now()` deltas
 
 ### Performance Fingerprint Controls
 
 - Realistic memory allocation patterns and garbage collection timing
 - IndexedDB, localStorage, and Cache API response timing
 - JavaScript execution timing and WebAssembly performance simulation
-- Deterministic noise seeds via `--bot-noise-seed` (ENT Tier2) to stabilize noise distributions across sessions
+- Deterministic noise seeds via [`--bot-noise-seed`](CLI_FLAGS.md#behavior--protection-toggles) (ENT Tier2) to stabilize noise distributions across sessions
 
 ### Extended Media Types & WebCodecs APIs
 
@@ -334,7 +376,7 @@ Comprehensive hardware emulation and fingerprint management.
 
 ## Integration with Automation Frameworks
 
-### Framework-Less Automation (`--bot-script`)
+### Framework-Less Automation ([`--bot-script`](CLI_FLAGS.md#--bot-script))
 
 Execute JavaScript with privileged `chrome.debugger` access, with no framework dependencies.
 
@@ -371,6 +413,30 @@ Verify that privacy protection works consistently across platforms and networks.
 Assign independent fingerprint bundles per BrowserContext without spawning new browser processes. Each context can have its own profile, timezone, locale, noise seeds, and all other fingerprint parameters. Workers automatically inherit the parent context fingerprint.
 
 **[Complete Per-Context Fingerprint documentation](PER_CONTEXT_FINGERPRINT.md)** including CDP examples, supported flags, and use cases.
+
+---
+
+<a id="cdp-quick-reference"></a>
+## CDP Quick Reference
+
+All commands live under the `BotBrowser` CDP domain. Send them through a CDP session (`page.createCDPSession()` or `browser.target().createCDPSession()` depending on the command scope).
+
+| Command | Scope | Tier | Description | Documentation |
+|---------|-------|------|-------------|---------------|
+| `SetBrowserContextFlags` | page | ENT Tier3 | Assign independent fingerprint flags to a BrowserContext | [Per-Context Fingerprint](PER_CONTEXT_FINGERPRINT.md) |
+| `SetBrowserContextProxy` | page | ENT Tier2 | Switch proxy for a BrowserContext at runtime | [Dynamic Proxy Switching](#dynamic-proxy-switching) |
+| `ClearBrowserContextProxy` | page | ENT Tier2 | Remove proxy override from a BrowserContext | [Dynamic Proxy Switching](#dynamic-proxy-switching) |
+| `SetCustomHeaders` | browser | PRO | Replace all custom HTTP request headers | [CLI Flags](CLI_FLAGS.md#--bot-custom-headers-pro) |
+| `GetCustomHeaders` | browser | PRO | Retrieve current custom headers | [CLI Flags](CLI_FLAGS.md#--bot-custom-headers-pro) |
+| `AddCustomHeader` | browser | PRO | Add or update a single custom header | [CLI Flags](CLI_FLAGS.md#--bot-custom-headers-pro) |
+| `RemoveCustomHeader` | browser | PRO | Remove a single custom header | [CLI Flags](CLI_FLAGS.md#--bot-custom-headers-pro) |
+| `ClearCustomHeaders` | browser | PRO | Remove all custom headers | [CLI Flags](CLI_FLAGS.md#--bot-custom-headers-pro) |
+| `StartMirrorController` | browser | ENT Tier3 | Start this instance as a Mirror controller | [Mirror](tools/mirror/) |
+| `StartMirrorClient` | browser | ENT Tier3 | Connect this instance as a Mirror client | [Mirror](tools/mirror/) |
+| `StopMirror` | browser | ENT Tier3 | Stop Mirror controller or client role | [Mirror](tools/mirror/) |
+| `GetMirrorStatus` | browser | ENT Tier3 | Query current Mirror connection status | [Mirror](tools/mirror/) |
+
+> **Scope**: `browser` = send to browser-level CDP session; `page` = send to page-level CDP session.
 
 ---
 

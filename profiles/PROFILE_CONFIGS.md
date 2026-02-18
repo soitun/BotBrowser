@@ -82,23 +82,24 @@ All configurations are embedded in the `configs` field inside your profile JSON 
 
 | Field                           | Description                                                                               | Default     |
 | ------------------------------- | ----------------------------------------------------------------------------------------- | ----------- |
-| `languages`                     | HTTP `Accept-Language` header values and `navigator.languages`. `auto` = IP-based       | `auto`    |
-| `locale`                        | Browser locale (e.g., en-US, fr-FR, de-DE). `auto` = derived from proxy IP and language settings | `auto`    |
+| `languages`                     | HTTP `Accept-Language` header values and `navigator.languages`. `auto` = IP-based (default). Custom values (ENT Tier1). | `auto`    |
+| `locale`                        | Browser locale (e.g., en-US, fr-FR, de-DE). `auto` = derived from IP/language (default). Custom values (ENT Tier1). | `auto`    |
 | `uaFullVersion` (ENT Tier2)   | Overrides the full browser version returned by `navigator.userAgentData.fullVersion`; must match the Chromium major version (e.g. for major version 138, the full version must start with "138."). | `""`        |
 | `colorScheme`                   | Preferred color scheme: light or dark.                                            | `light`   |
 | `disableDeviceScaleFactorOnGUI` | If `true`, ignore device scale factor for GUI elements (disable DPI-based UI scaling).    | `false`     |
 | `disableConsoleMessage` (ENT Tier1)        | Suppresses console message forwarding into page contexts and CDP logs to prevent CDP log noise from leaking. | `true`     |
-| `timezone`                      | `auto` = IP-based; `real` = system timezone; any other string = custom timezone name. | `auto`    |
-| `location`                      | `auto` = IP-based; `real` = system (GPS); object = custom coordinates (`lat`, `lon`). | `auto`    |
+| `timezone`                      | `auto` = IP-based (default); `real` = system timezone; custom timezone name (ENT Tier1). | `auto`    |
+| `location`                      | `auto` = IP-based (default); `real` = system GPS; custom coordinates (ENT Tier1). | `auto`    |
 | `browserBrand` (ENT Tier2, webview requires ENT Tier3)    | Override for `navigator.userAgentData.brands` and related UA fields. Supports chromium, chrome, edge, brave, opera, webview. | `chrome`    |
 | `brandFullVersion` (ENT Tier2)| Optional brand-specific full version string for UA-CH tuples (Edge/Opera cadences). | `""`    |
 | `injectRandomHistory` (PRO feature) | Optionally adds synthetic navigation history for fingerprint protection in browser state testing. | `false`    |
 | `disableDebugger`               | Prevents unintended interruptions from JavaScript debugger statements during fingerprint protection workflows. | `true`     |
 | `keyboard`                      | Choose keyboard fingerprint source: `profile` (emulated from profile) or `real` (use system keyboard). | `profile` |
 | `mediaTypes`                    | Media types behavior: `expand` (prefer local decoders), `profile` (profile-defined list), `real` (native system). | `expand` |
-| `alwaysActive` (PRO feature)    | Keep windows/tabs in an active state to suppress `blur`/`visibilitychange` events and `document.hidden=true`. | `true` |
-| `webrtcICE` (ENT Tier1)       | ICE server preset (`google`) or custom list via `custom:stun:host:port,turn:host:port`. | `google` |
+| `alwaysActive` (PRO feature)    | Keep windows/tabs in an [active state](../ADVANCED_FEATURES.md#active-window-emulation) to suppress `blur`/`visibilitychange` events and `document.hidden=true`. | `true` |
+| `webrtcICE` (ENT Tier1)       | ICE server preset (`google`) or custom list via `custom:stun:host:port,turn:host:port`. See [WebRTC Leak Protection](../ADVANCED_FEATURES.md#webrtc-leak-protection). | `google` |
 | `mobileForceTouch`              | Force touch events on/off when simulating mobile devices (`true`, `false`).          | `false`    |
+| `portProtection` (PRO)         | Protect local service ports (VNC, RDP, etc.) from being scanned. Prevents remote pages from detecting which services are running on localhost. See [Port Protection](../ADVANCED_FEATURES.md#port-protection). Also available via CLI [`--bot-port-protection`](../CLI_FLAGS.md#--bot-port-protection-pro). | `false`    |
 
 ### Custom User-Agent (ENT Tier3)
 
@@ -136,13 +137,13 @@ These fields work together with `--user-agent` CLI flag. BotBrowser auto-generat
 
 ⚠️ **Proxy configurations are intended for authorized networks only. They must not be used for unauthorized data collection or abuse.**
 
-> **UDP-over-SOCKS5:** ENT Tier3 support detects when a SOCKS5 upstream offers UDP associate and natively tunnels QUIC/STUN through it. No additional flag is required; simply provide a SOCKS5 proxy that advertises UDP support.
+> **[UDP-over-SOCKS5](../CLI_FLAGS.md#udp-over-socks5-ent-tier3):** ENT Tier3 support detects when a SOCKS5 upstream offers UDP associate and natively tunnels QUIC/STUN through it. No additional flag is required; simply provide a SOCKS5 proxy that advertises UDP support.
 
 ### HTTP Request Settings
 
 | Field            | Description                               | Default |
 | ---------------- | ----------------------------------------- | ------- |
-| `customHeaders` (PRO) | Inject custom HTTP request headers into all outgoing requests. Object with header name-value pairs (e.g., `{"X-Custom":"value"}`). | `{}`    |
+| `customHeaders` (PRO) | Inject custom HTTP request headers into all outgoing requests. Object with header name-value pairs (e.g., `{"X-Custom":"value"}`). See [`--bot-custom-headers`](../CLI_FLAGS.md#--bot-custom-headers-pro). | `{}`    |
 
 ### Window & Screen Settings
 
@@ -284,6 +285,9 @@ These fields work together with `--user-agent` CLI flag. BotBrowser auto-generat
 
     // mobileForceTouch: Force touch events on/off when simulating mobile devices
     "mobileForceTouch": false,
+
+    // portProtection (PRO): Protect local service ports (VNC, RDP, etc.) from being scanned
+    "portProtection": false,
 
     // customHeaders (PRO): inject custom HTTP headers into all outgoing requests
     "customHeaders": {
