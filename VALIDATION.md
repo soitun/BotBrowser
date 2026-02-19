@@ -412,12 +412,12 @@ Detection System Tests (200+ scenarios)
 
 ## Related Documentation
 
-- **[Main README](README.md)** - Project overview and quick start
-- **[Installation Guide](INSTALLATION.md)** - Detailed setup instructions
-- **[Advanced Features](ADVANCED_FEATURES.md)** - Comprehensive technical capabilities
-- **[CLI Flags Reference](CLI_FLAGS.md)** - Complete command-line options
-- **[Profile Configuration](profiles/PROFILE_CONFIGS.md)** - Advanced profile customization
-- **[Test Suite Documentation](tests/README.md)** - Automated testing framework details
+- [Main README](README.md) - Project overview and quick start
+- [Installation Guide](INSTALLATION.md) - Detailed setup instructions
+- [Advanced Features](ADVANCED_FEATURES.md) - Comprehensive technical capabilities
+- [CLI Flags Reference](CLI_FLAGS.md) - Complete command-line options
+- [Profile Configuration](profiles/PROFILE_CONFIGS.md) - Advanced profile customization
+- [Test Suite Documentation](tests/README.md) - Automated testing framework details
 
 ---
 

@@ -8,9 +8,9 @@
 - **Chromium Core → 145.0.7632.76**: Updated to Chrome 145 stable. This ensures Web Platform consistency, rendering accuracy, and security patches stay aligned with upstream Chrome.
 
 ### New
-- **[Per-Context Proxy Switching](ADVANCED_FEATURES.md#dynamic-proxy-switching) (ENT Tier2)**: Dynamically switch proxy servers per BrowserContext at runtime without restarting contexts via CDP `BotBrowser.setBrowserContextProxy()`. Supports SOCKS5, SOCKS5h, HTTP, HTTPS protocols with authentication. Automatically adapts timezone and language based on proxy location.
+- **Per-Context Proxy Switching** (ENT Tier2): Dynamically [switch proxy servers per BrowserContext](ADVANCED_FEATURES.md#dynamic-proxy-switching) at runtime without restarting contexts via CDP `BotBrowser.setBrowserContextProxy()`. Supports SOCKS5, SOCKS5h, HTTP, HTTPS protocols with authentication. Automatically adapts timezone and language based on proxy location.
 
-- **[Port Protection](ADVANCED_FEATURES.md#port-protection) (PRO)**: Protect local service ports (VNC, RDP, development servers, etc.) from being scanned by remote pages. Covers 30 commonly-probed ports across IPv4 (`127.0.0.0/8`), IPv6 (`::1`), and `localhost`. Enable via `--bot-port-protection` or profile JSON (`configs.portProtection`).
+- **Port Protection** (PRO): Protect [local service ports](ADVANCED_FEATURES.md#port-protection) (VNC, RDP, development servers, etc.) from being scanned by remote pages. Covers 30 commonly-probed ports across IPv4 (`127.0.0.0/8`), IPv6 (`::1`), and `localhost`. Enable via `--bot-port-protection` or profile JSON (`configs.portProtection`).
 
 ### Improvements
 - **CSS Media Feature Consistency**: CSS media queries now authentically reflect the profile's display characteristics, ensuring consistency between CSS-level and JavaScript-level reporting.

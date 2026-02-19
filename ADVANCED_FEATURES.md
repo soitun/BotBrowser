@@ -442,15 +442,15 @@ All commands live under the `BotBrowser` CDP domain. Send them through a CDP ses
 
 ## Related Documentation
 
-- **[CLI Flags Reference](CLI_FLAGS.md)** — Complete command-line options and usage examples
-- **[Profile Configuration](profiles/PROFILE_CONFIGS.md)** — Profile JSON field reference
-- **[Installation Guide](INSTALLATION.md)** — Platform-specific setup
-- **[Per-Context Fingerprint](PER_CONTEXT_FINGERPRINT.md)** — Independent fingerprint per BrowserContext
-- **[Validation Results](VALIDATION.md)** — Research and testing data
-- **[Mirror](tools/mirror/)** — Distributed privacy consistency verification
-- **[CanvasLab](tools/canvaslab/)** — Canvas forensics and tracking analysis tool
-- **[Examples](examples/)** — Playwright, Puppeteer, bot-script integration
-- **[Main README](README.md)** — Project overview and quick start
+- [CLI Flags Reference](CLI_FLAGS.md) - Complete command-line options and usage examples
+- [Profile Configuration](profiles/PROFILE_CONFIGS.md) - Profile JSON field reference
+- [Installation Guide](INSTALLATION.md) - Platform-specific setup
+- [Per-Context Fingerprint](PER_CONTEXT_FINGERPRINT.md) - Independent fingerprint per BrowserContext
+- [Validation Results](VALIDATION.md) - Research and testing data
+- [Mirror](tools/mirror/) - Distributed privacy consistency verification
+- [CanvasLab](tools/canvaslab/) - Canvas forensics and tracking analysis tool
+- [Examples](examples/) - Playwright, Puppeteer, bot-script integration
+- [Main README](README.md) - Project overview and quick start
 
 ---
 

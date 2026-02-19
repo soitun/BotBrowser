@@ -280,11 +280,11 @@ When reporting installation problems, please include:
 
 ## Related Documentation
 
-- **[Main README](README.md)** - Project overview and quick start
-- **[CLI Flags Reference](CLI_FLAGS.md)** - Complete command-line options
-- **[Profile Configuration](profiles/PROFILE_CONFIGS.md)** - Advanced profile customization
-- **[Docker Guide](docker/README.md)** - Containerized deployment
-- **[Advanced Features](ADVANCED_FEATURES.md)** - Detailed feature documentation
+- [Main README](README.md) - Project overview and quick start
+- [CLI Flags Reference](CLI_FLAGS.md) - Complete command-line options
+- [Profile Configuration](profiles/PROFILE_CONFIGS.md) - Advanced profile customization
+- [Docker Guide](docker/README.md) - Containerized deployment
+- [Advanced Features](ADVANCED_FEATURES.md) - Detailed feature documentation
 
 ---
 
