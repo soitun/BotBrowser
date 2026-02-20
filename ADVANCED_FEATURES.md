@@ -76,17 +76,22 @@ await client.send('BotBrowser.setBrowserContextProxy', {
 });
 await page.goto('https://example.com');
 
-// Switch to UK proxy at runtime - no context restart needed
+// Switch to UK proxy with bypass rules
 await client.send('BotBrowser.setBrowserContextProxy', {
   browserContextId: ctx._contextId,
-  proxyServer: 'socks5h://user:pass@uk-proxy.example.com:1080'
+  proxyServer: 'socks5h://user:pass@uk-proxy.example.com:1080',
+  proxyBypassList: 'localhost;127.0.0.1',                  // standard bypass list
+  proxyBypassRgx: 'cdn\\.example\\.com|/static/'          // regex bypass (RE2 syntax)
 });
 await page.goto('https://example.co.uk');
 ```
 
 **Supported protocols:** `socks5://`, `socks5h://`, `http://`, `https://`, all with embedded authentication (`user:pass@host:port`).
 
-**Optional parameter:** `proxyIp` provides the proxy's exit IP to skip automatic IP detection, resulting in faster geo-based timezone and language adaptation.
+**Optional parameters:**
+- `proxyIp` — provides the proxy's exit IP to skip automatic IP detection, resulting in faster geo-based timezone and language adaptation.
+- `proxyBypassList` — semicolon-separated list of hosts/patterns that should bypass the proxy (e.g., `localhost;*.internal.com`).
+- `proxyBypassRgx` — regex pattern (RE2 syntax) for URLs that should bypass the proxy. Supports `|` for multiple patterns (e.g., `cdn\.example\.com|/api/health`).
 
 ---
 
