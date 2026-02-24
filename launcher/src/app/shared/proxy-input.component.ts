@@ -82,7 +82,7 @@ import { ProxyParserService, type ParsedProxy } from './proxy-parser.service';
 
             <mat-form-field>
                 <mat-label>Password</mat-label>
-                <input matInput formControlName="password" type="password" (input)="onFormChange()" />
+                <input matInput formControlName="password" (input)="onFormChange()" />
             </mat-form-field>
         </form>
 

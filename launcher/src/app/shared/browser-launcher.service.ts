@@ -228,6 +228,7 @@ export class BrowserLauncherService {
         if (opts?.behavior?.botAlwaysActive) args.push('--bot-always-active');
         if (opts?.behavior?.botInjectRandomHistory) args.push('--bot-inject-random-history');
         if (opts?.behavior?.botDisableConsoleMessage) args.push('--bot-disable-console-message');
+        if (opts?.behavior?.botPortProtection) args.push('--bot-port-protection');
 
         // Identity & Locale
         if (opts?.identityLocale?.botConfigBrowserBrand) {

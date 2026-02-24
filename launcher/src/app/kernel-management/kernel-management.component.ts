@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, type OnInit } from '@angular/core';
+import { Component, effect, inject, type OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -38,6 +38,13 @@ export class KernelManagementComponent implements OnInit {
     loading = false;
     loadingReleases = false;
     error: string | null = null;
+
+    constructor() {
+        effect(() => {
+            this.#kernelService.installedKernelsVersion();
+            this.refresh();
+        });
+    }
 
     // Check if a specific release is being downloaded
     isDownloading(tagName: string): boolean {

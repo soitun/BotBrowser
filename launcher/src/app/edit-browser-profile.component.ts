@@ -137,6 +137,7 @@ export class EditBrowserProfileComponent implements OnInit {
         botAlwaysActive: this.#injectedData?.launchOptions?.behavior?.botAlwaysActive ?? true,
         botInjectRandomHistory: this.#injectedData?.launchOptions?.behavior?.botInjectRandomHistory,
         botDisableConsoleMessage: this.#injectedData?.launchOptions?.behavior?.botDisableConsoleMessage ?? true,
+        botPortProtection: this.#injectedData?.launchOptions?.behavior?.botPortProtection,
     });
 
     // Identity & Locale - default: browserBrand=chrome

@@ -34,6 +34,7 @@ export class KernelService {
     // Support multiple concurrent downloads - use tagName as key
     readonly downloadProgresses = signal<DownloadProgress[]>([]);
     readonly isAutoUpdating = signal(false);
+    readonly installedKernelsVersion = signal(0);
 
     #installedKernels: InstalledKernel[] = [];
     #currentPlatform: KernelPlatform = 'win_x86_64';
@@ -65,6 +66,9 @@ export class KernelService {
 
             // Auto-update installed kernels to newer releases
             await this.#autoUpdateKernels();
+
+            // Clean up again after auto-update to remove old versions replaced by new downloads
+            await this.#cleanupOldKernels();
 
             // Auto-download the latest release if no kernels installed
             await this.#autoDownloadLatest();
@@ -1056,5 +1060,6 @@ export class KernelService {
 
         const filePath = await Neutralino.filesystem.getJoinedPath(appDir, KERNELS_FILE);
         await Neutralino.filesystem.writeFile(filePath, JSON.stringify(this.#installedKernels, null, 2));
+        this.installedKernelsVersion.update((v) => v + 1);
     }
 }

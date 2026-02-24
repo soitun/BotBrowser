@@ -75,6 +75,7 @@ export interface BehaviorToggles {
     botAlwaysActive?: boolean;
     botInjectRandomHistory?: boolean;
     botDisableConsoleMessage?: boolean;
+    botPortProtection?: boolean;
 }
 
 // Identity & Locale config
