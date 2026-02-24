@@ -453,7 +453,7 @@ All commands live under the `BotBrowser` CDP domain. Send them through a CDP ses
 - [Per-Context Fingerprint](PER_CONTEXT_FINGERPRINT.md) - Independent fingerprint per BrowserContext
 - [Validation Results](VALIDATION.md) - Research and testing data
 - [Mirror](tools/mirror/) - Distributed privacy consistency verification
-- [CanvasLab](tools/canvaslab/) - Canvas forensics and tracking analysis tool
+- [CanvasLab](tools/canvaslab/) - Canvas 2D / WebGL / WebGL2 forensics and tracking analysis tool
 - [Examples](examples/) - Playwright, Puppeteer, bot-script integration
 - [Main README](README.md) - Project overview and quick start
 

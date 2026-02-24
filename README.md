@@ -161,7 +161,7 @@ Examples: [Playwright](examples/playwright/) • [Puppeteer](examples/puppeteer/
 | Console message suppression | [Behavior Toggles](CLI_FLAGS.md#behavior--protection-toggles) |
 | Headless / GUI parity | [Headless Compatibility](ADVANCED_FEATURES.md#headless-incognito-compatibility) |
 | Mirror: distributed privacy consistency | [Mirror Documentation](tools/mirror/) |
-| CanvasLab: Canvas 2D API recorder | [--bot-canvas-record-file](CLI_FLAGS.md#--bot-canvas-record-file) |
+| CanvasLab: Canvas 2D / WebGL / WebGL2 recorder | [--bot-canvas-record-file](CLI_FLAGS.md#--bot-canvas-record-file) |
 
 ### Session & Behavior
 

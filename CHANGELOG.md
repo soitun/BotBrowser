@@ -3,6 +3,24 @@
 > **Research scope:** Entries in this changelog describe features evaluated in authorized labs and defensive benchmarking programs. Follow the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md). We work with security vendors to investigate any misuse, so report concerns to [support@botbrowser.io](mailto:support@botbrowser.io).
 
 
+## [2026-02-23]
+### Major
+- **Chromium Core → 145.0.7632.110**: Updated to Chrome 145 stable (145.0.7632.110). Web Platform consistency, rendering accuracy, and security patches stay aligned with upstream Chrome.
+
+### New
+- **CanvasLab WebGL/WebGL2 Recording**: CanvasLab now records WebGL and WebGL2 API calls in addition to Canvas 2D, enabling complete analysis of graphics-based fingerprint collection across all canvas contexts.
+
+- **Profile Compression**: Optimized fingerprint profile format to reduce file size by 25-30% without affecting privacy protection. Reduces disk I/O and speeds up profile loading, especially beneficial for large-scale deployments.
+
+### Improvements
+- **Per-Context Proxy Routing Completeness**: `botbrowserFlags` now supports the full proxy parameter set (`--proxy-server`, `--proxy-ip`, `--proxy-bypass-list`, `--proxy-bypass-rgx`) across both `Target.createBrowserContext` and `BotBrowser.setBrowserContextFlags` CDP paths.
+
+### Fixes
+- **SpeechSynthesis Voice Consistency**: `speechSynthesis.getVoices()` now returns profile-defined voices on headless Linux hosts and Docker containers, matching the target platform's voice list regardless of host TTS availability.
+
+- **Cross-Platform Renderer Stability**: Resolved a rare renderer crash when loading certain pages with cross-platform profile configurations on macOS.
+
+
 ## [2026-02-18]
 ### Major
 - **Chromium Core → 145.0.7632.76**: Updated to Chrome 145 stable. This ensures Web Platform consistency, rendering accuracy, and security patches stay aligned with upstream Chrome.

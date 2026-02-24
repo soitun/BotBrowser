@@ -146,7 +146,221 @@
       return ` // @ ${location}${func}`;
     }
 
-    function codeLineForEvent(e) {
+    // ---------- WebGL enum reverse-lookup (built from a real WebGL context + extensions) ----------
+    const GL_ENUM_MAP = (() => {
+      try {
+        const c = document.createElement('canvas');
+        const gl = c.getContext('webgl2') || c.getContext('webgl');
+        if (!gl) return {};
+        const map = {};
+        let proto = gl;
+        while (proto && proto !== Object.prototype) {
+          for (const key of Object.getOwnPropertyNames(proto)) {
+            try {
+              if (typeof proto[key] === 'number' && /^[A-Z][A-Z0-9_]+$/.test(key)) {
+                if (!map[proto[key]]) map[proto[key]] = key;
+              }
+            } catch {}
+          }
+          proto = Object.getPrototypeOf(proto);
+        }
+        // Scan extension objects for additional enum constants (e.g. UNMASKED_VENDOR_WEBGL)
+        const exts = gl.getSupportedExtensions() || [];
+        for (const name of exts) {
+          try {
+            const ext = gl.getExtension(name);
+            if (!ext) continue;
+            for (const key of Object.getOwnPropertyNames(ext)) {
+              try {
+                if (typeof ext[key] === 'number' && /^[A-Z][A-Z0-9_]+$/.test(key)) {
+                  if (!map[ext[key]]) map[ext[key]] = key;
+                }
+              } catch {}
+            }
+          } catch {}
+        }
+        // Static fallback for extension enums that may be unavailable in the viewer's browser
+        // (e.g. WEBGL_debug_renderer_info removed in Chrome 113+)
+        const extFallback = {
+          34047: 'MAX_TEXTURE_MAX_ANISOTROPY_EXT',
+          37445: 'UNMASKED_VENDOR_WEBGL', 37446: 'UNMASKED_RENDERER_WEBGL',
+          36063: 'MIN_EXT', 32775: 'MAX_EXT',
+          35723: 'FRAGMENT_SHADER_DERIVATIVE_HINT_OES',
+          34852: 'MAX_DRAW_BUFFERS_WEBGL', 36049: 'MAX_COLOR_ATTACHMENTS_WEBGL',
+          33776: 'COMPRESSED_RGB_S3TC_DXT1_EXT', 33777: 'COMPRESSED_RGBA_S3TC_DXT1_EXT',
+          33778: 'COMPRESSED_RGBA_S3TC_DXT3_EXT', 33779: 'COMPRESSED_RGBA_S3TC_DXT5_EXT',
+          36492: 'COMPRESSED_RGB_PVRTC_4BPPV1_IMG', 36493: 'COMPRESSED_RGB_PVRTC_2BPPV1_IMG',
+          35986: 'COMPRESSED_RGB_ETC1_WEBGL',
+        };
+        for (const [val, name] of Object.entries(extFallback)) {
+          if (!map[Number(val)]) map[Number(val)] = name;
+        }
+        return map;
+      } catch { return {}; }
+    })();
+
+    // Arg keys that hold GL enum values (not object IDs or dimensions)
+    const GL_ENUM_ARGS = new Set([
+      'target', 'usage', 'mode', 'type', 'format', 'internalformat',
+      'pname', 'cap', 'sfactor', 'dfactor', 'func', 'fail', 'zfail', 'zpass',
+      'eq', 'face', 'attachment', 'shadertype', 'shaderType', 'precisionType',
+      'modeRGB', 'modeAlpha', 'srcRGB', 'srcAlpha', 'dstRGB', 'dstAlpha',
+      'readbuffer', 'drawbuffer', 'filter', 'hint', 'param', 'renderbuffertarget', 'textarget',
+      'condition', 'flags', 'status', 'bufferMode', 'parami', 'paramf',
+    ]);
+
+    // WebGL method signatures: ordered param keys. Args not listed are metadata (shown as comments).
+    const GL_METHOD_PARAMS = {
+      // Lifecycle - no input params, return object IDs
+      createBuffer: [], createTexture: [], createProgram: [], createFramebuffer: [],
+      createRenderbuffer: [], createVertexArray: [], createSampler: [],
+      createTransformFeedback: [], createQuery: [],
+      createShader: ['type'],
+      // Binding
+      bindBuffer: ['target', 'buffer'], bindTexture: ['target', 'texture'],
+      bindFramebuffer: ['target', 'framebuffer'], bindRenderbuffer: ['target', 'renderbuffer'],
+      bindVertexArray: ['vao'],
+      // Shader
+      shaderSource: ['shader', 'source'], compileShader: ['shader'],
+      attachShader: ['program', 'shader'], detachShader: ['program', 'shader'],
+      linkProgram: ['program'], validateProgram: ['program'], useProgram: ['program'],
+      deleteShader: ['shader'], deleteProgram: ['program'],
+      // Buffer
+      bufferData: ['target', 'size', 'usage'], bufferSubData: ['target', 'offset'],
+      // Vertex
+      enableVertexAttribArray: ['index'], disableVertexAttribArray: ['index'],
+      vertexAttribPointer: ['index', 'size', 'type', 'normalized', 'stride', 'offset'],
+      vertexAttrib1f: ['index', 'x'], vertexAttrib2f: ['index', 'x', 'y'],
+      vertexAttrib3f: ['index', 'x', 'y', 'z'], vertexAttrib4f: ['index', 'x', 'y', 'z', 'w'],
+      // Draw
+      drawArrays: ['mode', 'first', 'count'],
+      drawElements: ['mode', 'count', 'type', 'offset'],
+      drawArraysInstanced: ['mode', 'first', 'count', 'instanceCount'],
+      drawElementsInstanced: ['mode', 'count', 'type', 'offset', 'instanceCount'],
+      drawRangeElements: ['mode', 'start', 'end', 'count', 'type', 'offset'],
+      // Texture
+      texImage2D: ['target', 'level', 'internalformat', 'width', 'height', 'format', 'type'],
+      texSubImage2D: ['target', 'level', 'xoffset', 'yoffset', 'width', 'height', 'format', 'type'],
+      texParameteri: ['target', 'pname', 'parami'], texParameterf: ['target', 'pname', 'paramf'],
+      generateMipmap: ['target'], activeTexture: ['texture'],
+      copyTexImage2D: ['target', 'level', 'internalformat', 'x', 'y', 'width', 'height', 'border'],
+      // State
+      enable: ['cap'], disable: ['cap'],
+      blendFunc: ['sfactor', 'dfactor'],
+      blendFuncSeparate: ['srcRGB', 'dstRGB', 'srcAlpha', 'dstAlpha'],
+      blendColor: ['red', 'green', 'blue', 'alpha'],
+      blendEquation: ['mode'], blendEquationSeparate: ['modeRGB', 'modeAlpha'],
+      depthFunc: ['func'], depthMask: ['flag'],
+      stencilFunc: ['func', 'ref', 'mask'], stencilOp: ['fail', 'zfail', 'zpass'],
+      stencilFuncSeparate: ['face', 'func', 'ref', 'mask'],
+      stencilOpSeparate: ['face', 'fail', 'zfail', 'zpass'],
+      stencilMask: ['mask'], stencilMaskSeparate: ['face', 'mask'],
+      colorMask: ['red', 'green', 'blue', 'alpha'],
+      viewport: ['x', 'y', 'width', 'height'], scissor: ['x', 'y', 'width', 'height'],
+      clearColor: ['r', 'g', 'b', 'a'], clearDepth: ['depth'], clearStencil: ['s'],
+      clear: ['mask'], pixelStorei: ['pname', 'param'], lineWidth: ['width'],
+      flush: [], finish: [],
+      // Framebuffer
+      framebufferTexture2D: ['target', 'attachment', 'textarget', 'texture', 'level'],
+      framebufferRenderbuffer: ['target', 'attachment', 'renderbuffertarget', 'renderbuffer'],
+      renderbufferStorage: ['target', 'internalformat', 'width', 'height'],
+      checkFramebufferStatus: ['target'],
+      // Read / Query
+      readPixels: ['x', 'y', 'width', 'height', 'format', 'type'],
+      getParameter: ['pname'], getShaderPrecisionFormat: ['shaderType', 'precisionType'],
+      getExtension: ['name'], getSupportedExtensions: [], getContextAttributes: [],
+      getAttribLocation: ['program', 'name'], getUniformLocation: ['program', 'name'],
+      getShaderParameter: ['shader', 'pname'], getProgramParameter: ['program', 'pname'],
+      getShaderInfoLog: ['shader'], getProgramInfoLog: ['program'],
+      getActiveAttrib: ['program', 'index'], getActiveUniform: ['program', 'index'],
+      isContextLost: [],
+      // Delete
+      deleteBuffer: ['buffer'], deleteTexture: ['texture'],
+      deleteFramebuffer: ['framebuffer'], deleteRenderbuffer: ['renderbuffer'],
+      deleteVertexArray: ['vao'],
+      // Uniform
+      uniform1i: ['location', 'x'], uniform1f: ['location', 'x'],
+      uniform2f: ['location', 'x', 'y'], uniform3f: ['location', 'x', 'y', 'z'],
+      uniform4f: ['location', 'x', 'y', 'z', 'w'],
+      uniform2i: ['location', 'x', 'y'], uniform3i: ['location', 'x', 'y', 'z'],
+      uniform4i: ['location', 'x', 'y', 'z', 'w'],
+      uniformMatrix2fv: ['location', 'transpose', 'count'],
+      uniformMatrix3fv: ['location', 'transpose', 'count'],
+      uniformMatrix4fv: ['location', 'transpose', 'count'],
+    };
+
+    // ---------- WebGL code-generation helpers ----------
+    function glFormatValue(key, val) {
+      if (val === null || val === undefined) return 'null';
+      // Bitmask for clear()
+      if (key === 'mask' && typeof val === 'number') {
+        const bits = [];
+        if (val & 16384) bits.push('gl.COLOR_BUFFER_BIT');
+        if (val & 256) bits.push('gl.DEPTH_BUFFER_BIT');
+        if (val & 1024) bits.push('gl.STENCIL_BUFFER_BIT');
+        if (bits.length > 0) return bits.join(' | ');
+      }
+      // Numeric GL enum lookup for known enum arg keys
+      if (typeof val === 'number' && GL_ENUM_ARGS.has(key)) {
+        const name = GL_ENUM_MAP[val];
+        if (name) return `gl.${name}`;
+      }
+      // String GL enum (uppercase)
+      if (typeof val === 'string' && /^[A-Z][A-Z0-9_]*$/.test(val)) return `gl.${val}`;
+      if (typeof val === 'string') return JSON.stringify(val);
+      if (typeof val === 'boolean') return String(val);
+      if (typeof val === 'number') return String(val);
+      if (Array.isArray(val)) {
+        if (val.length <= 16) return `[${val.join(', ')}]`;
+        return `[${val.slice(0, 8).join(', ')}, /* ...${val.length} items */]`;
+      }
+      if (typeof val === 'object') {
+        const s = JSON.stringify(val);
+        return s.length > 80 ? s.slice(0, 77) + '...' : s;
+      }
+      return String(val);
+    }
+
+    function glOrderedArgs(glMethod, args) {
+      const sig = GL_METHOD_PARAMS[glMethod];
+      if (!sig) {
+        // Fallback: JSON key order
+        return { params: Object.entries(args).map(([k, v]) => glFormatValue(k, v)), meta: [] };
+      }
+      const params = sig.filter(k => k in args).map(k => glFormatValue(k, args[k]));
+      const meta = Object.keys(args).filter(k => !sig.includes(k));
+      return { params, meta };
+    }
+
+    function glMetaComment(meta, args) {
+      if (meta.length === 0) return '';
+      const parts = meta.map(k => {
+        const v = args[k];
+        if (typeof v === 'string') return `${k}=${JSON.stringify(v)}`;
+        return `${k}=${v}`;
+      });
+      return ` // ${parts.join(', ')}`;
+    }
+
+    function glCodeLine(glMethod, args, category, callerComment) {
+      const { params, meta } = glOrderedArgs(glMethod, args);
+      const catComment = category ? ` /* ${category} */` : '';
+      const metaStr = glMetaComment(meta, args);
+      return `gl.${glMethod}(${params.join(', ')});${catComment}${metaStr}${callerComment}`;
+    }
+
+    function glReadCodeLine(glMethod, args, result, callerComment) {
+      const { params, meta } = glOrderedArgs(glMethod, args);
+      let resultStr = '';
+      if (result !== undefined && result !== null) {
+        const rs = typeof result === 'object' ? JSON.stringify(result) : String(result);
+        resultStr = rs.length > 80 ? ` // => ${rs.slice(0, 77)}...` : ` // => ${rs}`;
+      }
+      const metaStr = glMetaComment(meta, args);
+      return `gl.${glMethod}(${params.join(', ')});${resultStr}${metaStr}${callerComment}`;
+    }
+
+    function codeLineForEvent(e, isWebGL) {
       const m = e.method;
       const a = e.args || {};
       const callerComment = formatCaller(e);
@@ -156,10 +370,14 @@
           return `// canvas_init width=${e.width}, height=${e.height}${src}${callerComment}`;
         }
         case 'context_create': {
+          const ctxType = e.context_type || '2d';
+          const isGL = (ctxType === 'webgl' || ctxType === 'webgl2');
           const attrs = e.attributes || {};
           const attrsStr = Object.keys(attrs).length ? `, ${JSON.stringify(attrs)}` : '';
           const src = e.exec_url ? ` // exec_url=${e.exec_url}` : '';
-          return `const ctx = canvas.getContext('2d'${attrsStr});${src}${callerComment}`;
+          const ctxLabel = e.ctx ? ` // ctx=${e.ctx}` : '';
+          const varName = isGL ? 'gl' : 'ctx';
+          return `const ${varName} = canvas.getContext('${ctxType}'${attrsStr});${src}${ctxLabel}${callerComment}`;
         }
         case 'resize': return `canvas.width = ${e.width}; canvas.height = ${e.height};${callerComment}`;
         case 'state': {
@@ -182,6 +400,9 @@
           return `ctx.${e.property} = ${typeof e.value === 'string' ? JSON.stringify(e.value) : formatArgs(e.value)};${callerComment}`;
         }
         case 'draw': {
+          if (e.gl_method) {
+            return glCodeLine(e.gl_method, a, e.gl_category, callerComment);
+          }
           if (m === 'fillRect' || m === 'strokeRect' || m === 'clearRect') {
             return `ctx.${m}(${a.x}, ${a.y}, ${a.w}, ${a.h});${callerComment}`;
           }
@@ -345,10 +566,12 @@
           return `// draw ${m} ${formatArgs(a)}${callerComment}`;
         }
         case 'read': {
+          if (e.gl_method) {
+            return glReadCodeLine(e.gl_method, e.args || {}, e.result, callerComment);
+          }
           const m = e.method;
           const a = e.args || {};
-          if (m === 'font') return ``;
-          if (m === 'getImageData') return `ctx.getImageData(${a.sx}, ${a.sy}, ${a.sw}, ${a.sh});${callerComment}`;
+          // Canvas-level methods (work on both 2D and WebGL canvases)
           if (m === 'toDataURL') {
             const mime = a && a.mime ? JSON.stringify(a.mime) : '';
             const q = (a && a.quality != null) ? `, ${a.quality}` : '';
@@ -357,10 +580,15 @@
           if (m === 'toBlob' || m === 'convertToBlob') {
             const mime = a && a.mime ? JSON.stringify(a.mime) : 'undefined';
             const q = (a && a.quality != null) ? `, ${a.quality}` : '';
-            const target = (m === 'toBlob') ? 'canvas' : 'offscreen';
-            // We don't know the offscreen variable here; call on canvas for preview consistency
             return `canvas.toBlob(()=>{}, ${mime}${q});${callerComment}`;
           }
+          // WebGL reads use 'method' instead of 'gl_method' (e.g. getAttribLocation, getParameter)
+          if (isWebGL && m) {
+            return glReadCodeLine(m, a, e.result, callerComment);
+          }
+          if (m === 'font') return ``;
+          if (m === 'getImageData') return `ctx.getImageData(${a.sx}, ${a.sy}, ${a.sw}, ${a.sh});${callerComment}`;
+
           if (m === 'getLineDash') return `ctx.getLineDash();${callerComment}`;
           if (m === 'getTransform') return `ctx.getTransform();${callerComment}`;
           if (m === 'isPointInPath') return `ctx.isPointInPath(${a.x}, ${a.y}${a.fillRule?`, ${JSON.stringify(a.fillRule)}`:''});${callerComment}`;
@@ -426,13 +654,33 @@
             if (autoScroll) host.logEl.scrollTop = host.logEl.scrollHeight;
             let c = canvasesById.get(e.canvas_id) || host.canvasEl;
             canvasesById.set(e.canvas_id, c);
+            const ctxType = e.context_type || '2d';
+            const isGL = (ctxType === 'webgl' || ctxType === 'webgl2');
+            if (isGL) host._isWebGL = true;
             const attrs = e.attributes || {};
             if (!host._sawCtx) {
-              try { host.ctx = c.getContext('2d', attrs); }
-              catch { host.ctx = c.getContext('2d'); }
+              if (isGL) {
+                host.ctx = null;
+                const c2d = c.getContext('2d');
+                if (c2d) {
+                  c2d.fillStyle = '#1a1a2e';
+                  c2d.fillRect(0, 0, c.width, c.height);
+                  c2d.fillStyle = '#e0e0e0';
+                  c2d.font = '14px system-ui';
+                  c2d.textAlign = 'center';
+                  c2d.fillText(`${ctxType.toUpperCase()} Recording`, c.width / 2, c.height / 2 - 10);
+                  c2d.fillStyle = '#888';
+                  c2d.font = '12px system-ui';
+                  c2d.fillText('Code view only \u2014 visual replay N/A', c.width / 2, c.height / 2 + 14);
+                }
+              } else {
+                try { host.ctx = c.getContext('2d', attrs); }
+                catch { host.ctx = c.getContext('2d'); }
+              }
               host._sawCtx = true;
             } else {
-              code[code.length-1] = code[code.length-1].replace(/^const ctx/, '// duplicate context_create: const ctx');
+              const varName = isGL ? 'const gl' : 'const ctx';
+              code[code.length-1] = code[code.length-1].replace(new RegExp('^' + varName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), '// duplicate context_create: ' + varName);
               host.logEl.textContent = code.join('\n');
             }
             continue;
@@ -444,6 +692,47 @@
             if (autoScroll) host.logEl.scrollTop = host.logEl.scrollHeight;
             let c = canvasesById.get(e.canvas_id) || host.canvasEl;
             c.width = e.width; c.height = e.height; continue;
+          }
+
+          // --- WebGL: code + outputs only, no visual replay ---
+          if (host._isWebGL) {
+            code.push(codeLineForEvent(e, true));
+            host.logEl.textContent = code.join('\n');
+            if (autoScroll) host.logEl.scrollTop = host.logEl.scrollHeight;
+            if (opts.animate && opts.delayMs > 0) {
+              let ms = opts.delayMs;
+              while (ms > 0) {
+                if (token && token.cancelled) break;
+                await sleep(Math.min(30, ms));
+                ms -= Math.min(30, ms);
+              }
+              if (token && token.cancelled) break;
+            }
+            if (e.type === 'read') {
+              const out = document.createElement('div');
+              out.className = 'output-item';
+              const glm = e.gl_method || e.method || 'unknown';
+              const CANVAS_LEVEL = ['toDataURL', 'toBlob', 'convertToBlob'];
+              const labelPrefix = CANVAS_LEVEL.includes(glm) ? 'canvas' : 'gl';
+              out.appendChild(h('h4', {text: `${labelPrefix}.${glm}()`}));
+              if (e.result !== undefined && e.result !== null) {
+                if ((e.gl_method === 'readPixels' || e.method === 'readPixels') && e.result.pixels_b64) {
+                  out.appendChild(h('div', {class:'meta', text: `Pixels (base64): ${e.result.pixels_b64.slice(0, 60)}...`}));
+                } else if (e.method === 'toDataURL' && e.result && e.result.data_url) {
+                  const img = h('img', {class:'thumb'}); img.src = e.result.data_url; out.appendChild(img);
+                } else {
+                  const rs = JSON.stringify(e.result, null, 2);
+                  const pre = h('pre', {class:'meta'});
+                  pre.style.whiteSpace = 'pre-wrap';
+                  pre.style.maxHeight = '120px';
+                  pre.style.overflow = 'auto';
+                  pre.textContent = rs.length > 500 ? rs.slice(0, 500) + '...' : rs;
+                  out.appendChild(pre);
+                }
+              }
+              host.outputsEl.appendChild(out);
+            }
+            continue;
           }
 
           // For any other event types, ensure ctx exists BEFORE adding the code line
@@ -656,7 +945,9 @@
         const card = h('div', {class:'canvas-card'});
         card.setAttribute('data-canvas-id', String(canvasId));
         const header = h('div', {class:'card-header'});
-        header.appendChild(h('div', {class:'card-title', text: `Canvas #${canvasId}`}));
+        const ctxCreate = list.find(e => e.type === 'context_create');
+        const ctxTypeLabel = ctxCreate && ctxCreate.context_type ? ctxCreate.context_type.toUpperCase() : '2D';
+        header.appendChild(h('div', {class:'card-title', text: `Canvas #${canvasId} (${ctxTypeLabel})`}));
         const meta = h('div', {class:'pill', text: `${list.length} events`});
         header.appendChild(meta);
         card.appendChild(header);
@@ -737,7 +1028,7 @@
         card.appendChild(body);
         container.appendChild(card);
 
-        const host = { canvasEl: cv, ctx: null, logEl: codeEl, outputsEl: outputs, canvasesById: new Map(), gradients: new Map(), _sawInit: false, _sawCtx: false };
+        const host = { canvasEl: cv, ctx: null, logEl: codeEl, outputsEl: outputs, canvasesById: new Map(), gradients: new Map(), _sawInit: false, _sawCtx: false, _isWebGL: false };
         await replayCanvasEvents(list, host, { animate: !!animateChk.checked, delayMs: Math.max(0, parseInt(delayRange.value,10) || 0) });
 
         // Tabs behavior
@@ -794,10 +1085,13 @@
           cancelRun();
           codeEl.textContent = '';
           outputs.innerHTML = '';
-          const ctx2 = cv.getContext('2d');
-          ctx2.setTransform(1,0,0,1,0,0);
-          ctx2.clearRect(0,0,cv.width, cv.height);
-          const newHost = { canvasEl: cv, ctx: null, logEl: codeEl, outputsEl: outputs, canvasesById: new Map(), gradients: new Map(), _sawInit: false, _sawCtx: false };
+          const isWebGL = list.some(e => e.type === 'context_create' && (e.context_type === 'webgl' || e.context_type === 'webgl2'));
+          if (!isWebGL) {
+            const ctx2 = cv.getContext('2d');
+            ctx2.setTransform(1,0,0,1,0,0);
+            ctx2.clearRect(0,0,cv.width, cv.height);
+          }
+          const newHost = { canvasEl: cv, ctx: null, logEl: codeEl, outputsEl: outputs, canvasesById: new Map(), gradients: new Map(), _sawInit: false, _sawCtx: false, _isWebGL: false };
           const token = { cancelled: false };
           currentToken = token;
           await replayCanvasEvents(list, newHost, { animate: !!animateChk.checked, delayMs: Math.max(0, parseInt(delayRange.value,10) || 0), cancelToken: token });
@@ -838,7 +1132,8 @@
         const codeEl = card.querySelector('pre.code');
         if (!codeEl) continue;
         const code = [];
-        for (const e of list) code.push(codeLineForEvent(e));
+        const isWebGL = list.some(ev => ev.type === 'context_create' && (ev.context_type === 'webgl' || ev.context_type === 'webgl2'));
+        for (const e of list) code.push(codeLineForEvent(e, isWebGL));
         codeEl.textContent = code.join('\n');
       }
     }
@@ -977,7 +1272,7 @@
         <input id="fullRestore" type="checkbox" /> Include pixel data (Full Restore Export)
       </label>
       <button id="export" class="btn" type="button" disabled>Export JS</button>
-      <span class="note">Select a JSONL recording file generated with <code>--bot-canvas-record-file</code>. The viewer groups events by <code>canvas_id</code>, replays to a live canvas, prints JS-like steps, and previews read outputs (ImageData/DataURL/Blob).</span>
+      <span class="note">Select a JSONL recording file generated with <code>--bot-canvas-record-file</code>. The viewer groups events by <code>canvas_id</code>, replays Canvas 2D to a live canvas, shows WebGL/WebGL2 calls as readable code, and previews read outputs.</span>
     </div>
     <!-- Per-canvas animation controls are placed on each card's preview toolbar -->
   </header>

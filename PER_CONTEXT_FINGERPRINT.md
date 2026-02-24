@@ -128,16 +128,28 @@ await page.goto('https://example.com');
 
 ### Via Target.createBrowserContext
 
-Pass fingerprint flags when creating the context:
+Pass fingerprint and proxy flags when creating the context:
 
 ```javascript
 const client = await browser.target().createCDPSession();
 
+// Fingerprint-only context
 const { browserContextId } = await client.send('Target.createBrowserContext', {
   botbrowserFlags: [
     '--bot-profile=/path/to/windows-profile.enc',
     '--bot-config-timezone=America/New_York',
     '--bot-config-languages=en-US'
+  ]
+});
+
+// Context with proxy configured at creation time
+const { browserContextId: ctxWithProxy } = await client.send('Target.createBrowserContext', {
+  botbrowserFlags: [
+    '--bot-profile=/path/to/profile.enc',
+    '--proxy-server=socks5://user:pass@proxy.example.com:1080',
+    '--proxy-ip=203.0.113.1',
+    '--proxy-bypass-list=localhost;127.0.0.1',
+    '--proxy-bypass-rgx=\\.example\\.com$'
   ]
 });
 
@@ -242,11 +254,12 @@ await client1.send('BotBrowser.setBrowserContextFlags', {
     '--bot-profile=/path/to/profile.enc',
     '--proxy-server=socks5://user:pass@us-proxy.example.com:1080',
     '--proxy-ip=203.0.113.1',
+    '--proxy-bypass-list=localhost;127.0.0.1',
     '--bot-config-timezone=America/Chicago'
   ]
 });
 
-// Context 2: UK proxy via botbrowserFlags
+// Context 2: UK proxy via botbrowserFlags (with regex bypass)
 const ctx2 = await browser.createBrowserContext();
 const page2 = await ctx2.newPage();
 const client2 = await page2.createCDPSession();
@@ -256,6 +269,7 @@ await client2.send('BotBrowser.setBrowserContextFlags', {
     '--bot-profile=/path/to/profile.enc',
     '--proxy-server=socks5://user:pass@uk-proxy.example.com:1080',
     '--proxy-ip=198.51.100.1',
+    '--proxy-bypass-rgx=\\.static\\.example\\.com$',
     '--bot-config-timezone=Europe/London'
   ]
 });
@@ -267,7 +281,7 @@ await Promise.all([
 ]);
 ```
 
-You can now configure proxy directly in `botbrowserFlags` without using `createBrowserContext({ proxyServer })`. This provides unified configuration for proxy and other per-context settings in a single call.
+Configure proxy directly in `botbrowserFlags` for unified proxy and fingerprint settings in a single call. Supported proxy flags: `--proxy-server`, `--proxy-ip`, `--proxy-bypass-list`, `--proxy-bypass-rgx`.
 
 > **Tip:** Need to switch proxies at runtime without restarting a context? See [Dynamic Proxy Switching (ENT Tier2)](ADVANCED_FEATURES.md#dynamic-proxy-switching) in Advanced Features.
 

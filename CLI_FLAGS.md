@@ -222,17 +222,17 @@ Accepts a JSON string containing bookmark data for startup.
 ### `--bot-canvas-record-file`
 Canvas forensics and tracking analysis.
 
-Records all Canvas 2D API calls to a JSONL file for forensic analysis and future replay capabilities.
+Records all Canvas 2D, WebGL, and WebGL2 API calls to a JSONL file for forensic analysis and replay.
 
 ```bash
 --bot-canvas-record-file="/tmp/canvaslab.jsonl"
 ```
 
 **Key Features:**
-- Complete Canvas 2D API call recording with full parameter serialization
+- Complete Canvas 2D, WebGL, and WebGL2 API call recording with full parameter serialization
 - Deterministic capture (noise variance disabled during recording)
 - JSONL format for easy parsing and analysis
-- HTML viewer included for interactive event inspection
+- HTML replay viewer with WebGL enum reverse-lookup and source location mapping
 
 Learn more: [CanvasLab Documentation](tools/canvaslab/)
 
