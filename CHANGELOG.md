@@ -3,6 +3,21 @@
 > **Research scope:** Entries in this changelog describe features evaluated in authorized labs and defensive benchmarking programs. Follow the [Legal Disclaimer](DISCLAIMER.md) and [Responsible Use Guidelines](RESPONSIBLE_USE.md). We work with security vendors to investigate any misuse, so report concerns to [support@botbrowser.io](mailto:support@botbrowser.io).
 
 
+## [2026-02-26]
+### Major
+- **Chromium Core → 145.0.7632.118**: Updated to Chrome 145 stable (145.0.7632.118). Web Platform consistency, rendering accuracy, and security patches stay aligned with upstream Chrome.
+
+### Improvements
+- **Local GeoIP Lookup**: Geolocation data is now resolved locally instead of relying on external API services. Eliminates third-party dependencies, reduces startup latency, and removes rate-limit risks.
+
+### Fixes
+- **DRM Cross-Platform Consistency**: Widevine DRM behavior now correctly matches the target platform in all scenarios, including initial license negotiation patterns.
+
+- **URL Scheme Origin Consistency**: `new URL()` origin property now returns correct values for browser-specific URL schemes when using multi-brand profiles.
+
+- **Android Tablet Client Hints**: `sec-ch-ua-mobile` and `navigator.userAgentData.mobile` now correctly return `?0` / `false` on Android tablet profiles.
+
+
 ## [2026-02-23]
 ### Major
 - **Chromium Core → 145.0.7632.110**: Updated to Chrome 145 stable (145.0.7632.110). Web Platform consistency, rendering accuracy, and security patches stay aligned with upstream Chrome.

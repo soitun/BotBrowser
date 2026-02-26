@@ -1,6 +1,6 @@
 # BotBrowser Stable Profiles (v145)
 
-Please download BotBrowser **145.0.7632.110** from [this release](https://github.com/botswin/BotBrowser/releases/tag/145.0.7632.110).
+Please download BotBrowser **145.0.7632.118** from [this release](https://github.com/botswin/BotBrowser/releases/tag/145.0.7632.118).
 
 ---
 
