@@ -279,15 +279,6 @@ BotBrowser's engine is built in-house on top of Chromium, with no forks or exter
   <tr><td>Telegram</td><td>Community support, quick questions</td><td><a href="https://t.me/botbrowser_support">@botbrowser_support</a></td></tr>
 </table>
 
-### Debugging & FAQs
-
-| Issue | Platform | Solution |
-|-------|----------|----------|
-| **"Chromium" is damaged** | macOS | Run `xattr -rd com.apple.quarantine /Applications/Chromium.app` |
-| **Missing dependencies** | Ubuntu | Run `sudo apt-get install -f` |
-| **Profile file permission errors** | All | Ensure `.enc` file has read permissions (`chmod 644`) |
-| **BotBrowser won't start or crashes** | All | Check that your OS and Chromium version match the build; update BotBrowser to the latest release |
-
 ---
 
 ## Responsible Use
