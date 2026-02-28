@@ -17,6 +17,7 @@ export interface RunningInfo {
     status: BrowserProfileStatus;
     spawnProcessInfo?: Neutralino.SpawnedProcess;
     resolver?: any;
+    startTime?: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -28,6 +29,10 @@ export class BrowserLauncherService {
 
     constructor() {
         Neutralino.events.on('spawnedProcess', (evt) => {
+            const runningInfo = Array.from(this.#runningStatuses.values()).find(
+                (info) => info.spawnProcessInfo?.id === evt.detail.id
+            );
+
             switch (evt.detail.action) {
                 case 'stdOut':
                     console.log('stdOut', evt.detail.data);
@@ -38,33 +43,27 @@ export class BrowserLauncherService {
                         const rgx = /\bws:\/\/.*\/devtools\/browser\/.*\b/;
                         const match = evt.detail.data.match(rgx);
                         const wsURL = match?.[0];
-
-                        if (wsURL) {
-                            const runningInfo = Array.from(this.#runningStatuses.values()).find(
-                                (info) => info.spawnProcessInfo?.id === evt.detail.id
-                            );
-
-                            if (!runningInfo) {
-                                throw new Error(`No running info found for id: ${evt.detail.id}`);
-                            }
-
-                            runningInfo.resolver?.resolve(wsURL);
-                        }
+                        if (wsURL) runningInfo?.resolver?.resolve(wsURL);
                     }
                     break;
                 case 'exit':
-                    console.log(`process terminated with exit code: ${evt.detail.data} id: ${evt.detail.id}`);
+                    {
+                        const exitCode = Number(evt.detail.data);
+                        console.log(`process terminated with exit code: ${exitCode} id: ${evt.detail.id}`);
+                        if (!runningInfo) break; // System process (7z, curl, etc.) — not a browser
 
-                    const runningInfo = Array.from(this.#runningStatuses.values()).find(
-                        (info) => info.spawnProcessInfo?.id === evt.detail.id
-                    );
-                    if (!runningInfo) {
-                        throw new Error(`No running info found for id: ${evt.detail.id}`);
+                        const uptime = runningInfo.startTime ? Date.now() - runningInfo.startTime : Infinity;
+                        runningInfo.status = BrowserProfileStatus.Idle;
+                        runningInfo.spawnProcessInfo = undefined;
+
+                        if (exitCode !== 0 && uptime < 5000) {
+                            this.#dialog.open(AlertDialogComponent, {
+                                data: {
+                                    message: `Browser failed to start (exit code ${exitCode}). This can happen right after a kernel update while files are being indexed. Please wait a few seconds and try again.`,
+                                },
+                            });
+                        }
                     }
-
-                    runningInfo.status = BrowserProfileStatus.Idle;
-                    runningInfo.spawnProcessInfo = undefined;
-
                     break;
             }
         });
@@ -204,150 +203,9 @@ export class BrowserLauncherService {
         console.log('User data dir path: ', userDataDirPath);
         console.log('Disk cache dir path: ', diskCacheDirPath);
 
-        const args = [
-            '--allow-pre-commit-input',
-            '--enable-automation',
-            '--metrics-recording-only',
-            '--no-first-run',
-            '--password-store=basic',
-            '--use-mock-keychain',
-            '--restore-last-session',
-            '--disable-blink-features=AutomationControlled',
-            `--user-data-dir="${userDataDirPath}"`,
-            `--disk-cache-dir="${diskCacheDirPath}"`,
-            `--bot-profile="${botProfilePath}"`,
-        ];
+        const args = this.#buildCliArgs(browserProfile, { botProfilePath, userDataDirPath, diskCacheDirPath });
 
-        // Add launch options from profile
-        const opts = browserProfile.launchOptions;
-
-        // Behavior toggles
-        if (opts?.behavior?.botLocalDns) args.push('--bot-local-dns');
-        if (opts?.behavior?.botDisableDebugger) args.push('--bot-disable-debugger');
-        if (opts?.behavior?.botMobileForceTouch) args.push('--bot-mobile-force-touch');
-        if (opts?.behavior?.botAlwaysActive) args.push('--bot-always-active');
-        if (opts?.behavior?.botInjectRandomHistory) args.push('--bot-inject-random-history');
-        if (opts?.behavior?.botDisableConsoleMessage) args.push('--bot-disable-console-message');
-        if (opts?.behavior?.botPortProtection) args.push('--bot-port-protection');
-
-        // Identity & Locale
-        if (opts?.identityLocale?.botConfigBrowserBrand) {
-            args.push(`--bot-config-browser-brand=${opts.identityLocale.botConfigBrowserBrand}`);
-        }
-        if (opts?.identityLocale?.botConfigBrandFullVersion) {
-            args.push(`--bot-config-brand-full-version=${opts.identityLocale.botConfigBrandFullVersion}`);
-        }
-        if (opts?.identityLocale?.botConfigUaFullVersion) {
-            args.push(`--bot-config-ua-full-version=${opts.identityLocale.botConfigUaFullVersion}`);
-        }
-        if (opts?.identityLocale?.botConfigLanguages) {
-            args.push(`--bot-config-languages=${opts.identityLocale.botConfigLanguages}`);
-        }
-        if (opts?.identityLocale?.botConfigLocale) {
-            args.push(`--bot-config-locale=${opts.identityLocale.botConfigLocale}`);
-        }
-        if (opts?.identityLocale?.botConfigTimezone) {
-            args.push(`--bot-config-timezone=${opts.identityLocale.botConfigTimezone}`);
-        }
-        if (opts?.identityLocale?.botConfigLocation) {
-            args.push(`--bot-config-location=${opts.identityLocale.botConfigLocation}`);
-        }
-
-        // Custom User-Agent
-        if (opts?.customUserAgent?.userAgent) {
-            args.push(`--user-agent="${opts.customUserAgent.userAgent}"`);
-        }
-        if (opts?.customUserAgent?.botConfigPlatform) {
-            args.push(`--bot-config-platform=${opts.customUserAgent.botConfigPlatform}`);
-        }
-        if (opts?.customUserAgent?.botConfigPlatformVersion) {
-            args.push(`--bot-config-platform-version=${opts.customUserAgent.botConfigPlatformVersion}`);
-        }
-        if (opts?.customUserAgent?.botConfigModel) {
-            args.push(`--bot-config-model=${opts.customUserAgent.botConfigModel}`);
-        }
-        if (opts?.customUserAgent?.botConfigArchitecture) {
-            args.push(`--bot-config-architecture=${opts.customUserAgent.botConfigArchitecture}`);
-        }
-        if (opts?.customUserAgent?.botConfigBitness) {
-            args.push(`--bot-config-bitness=${opts.customUserAgent.botConfigBitness}`);
-        }
-        if (opts?.customUserAgent?.botConfigMobile) {
-            args.push('--bot-config-mobile');
-        }
-
-        // Display & Input
-        if (opts?.displayInput?.botConfigWindow) {
-            args.push(`--bot-config-window=${opts.displayInput.botConfigWindow}`);
-        }
-        if (opts?.displayInput?.botConfigScreen) {
-            args.push(`--bot-config-screen=${opts.displayInput.botConfigScreen}`);
-        }
-        if (opts?.displayInput?.botConfigKeyboard) {
-            args.push(`--bot-config-keyboard=${opts.displayInput.botConfigKeyboard}`);
-        }
-        if (opts?.displayInput?.botConfigFonts) {
-            args.push(`--bot-config-fonts=${opts.displayInput.botConfigFonts}`);
-        }
-        if (opts?.displayInput?.botConfigColorScheme) {
-            args.push(`--bot-config-color-scheme=${opts.displayInput.botConfigColorScheme}`);
-        }
-        if (opts?.displayInput?.botConfigDisableDeviceScaleFactor) {
-            args.push('--bot-config-disable-device-scale-factor');
-        }
-
-        // Noise
-        if (opts?.noise?.botConfigNoiseWebglImage) args.push('--bot-config-noise-webgl-image');
-        if (opts?.noise?.botConfigNoiseCanvas) args.push('--bot-config-noise-canvas');
-        if (opts?.noise?.botConfigNoiseAudioContext) args.push('--bot-config-noise-audio-context');
-        if (opts?.noise?.botConfigNoiseClientRects) args.push('--bot-config-noise-client-rects');
-        if (opts?.noise?.botConfigNoiseTextRects) args.push('--bot-config-noise-text-rects');
-        if (opts?.noise?.botNoiseSeed !== undefined && opts?.noise?.botNoiseSeed !== null) {
-            args.push(`--bot-noise-seed=${opts.noise.botNoiseSeed}`);
-        }
-        if (opts?.noise?.botTimeScale !== undefined && opts?.noise?.botTimeScale !== null) {
-            args.push(`--bot-time-scale=${opts.noise.botTimeScale}`);
-        }
-
-        // Rendering & Media
-        if (opts?.renderingMedia?.botConfigWebgl) {
-            args.push(`--bot-config-webgl=${opts.renderingMedia.botConfigWebgl}`);
-        }
-        if (opts?.renderingMedia?.botConfigWebgpu) {
-            args.push(`--bot-config-webgpu=${opts.renderingMedia.botConfigWebgpu}`);
-        }
-        if (opts?.renderingMedia?.botConfigSpeechVoices) {
-            args.push(`--bot-config-speech-voices=${opts.renderingMedia.botConfigSpeechVoices}`);
-        }
-        if (opts?.renderingMedia?.botConfigMediaDevices) {
-            args.push(`--bot-config-media-devices=${opts.renderingMedia.botConfigMediaDevices}`);
-        }
-        if (opts?.renderingMedia?.botConfigMediaTypes) {
-            args.push(`--bot-config-media-types=${opts.renderingMedia.botConfigMediaTypes}`);
-        }
-        if (opts?.renderingMedia?.botConfigWebrtc) {
-            args.push(`--bot-config-webrtc=${opts.renderingMedia.botConfigWebrtc}`);
-        }
-        if (opts?.renderingMedia?.botWebrtcIce) {
-            args.push(`--bot-webrtc-ice=${opts.renderingMedia.botWebrtcIce}`);
-        }
-
-        // Proxy
-        if (browserProfile.proxyServer) {
-            args.push(`--proxy-server=${browserProfile.proxyServer}`);
-        }
-        if (opts?.proxy?.proxyIp) {
-            args.push(`--proxy-ip=${opts.proxy.proxyIp}`);
-        }
-        if (opts?.proxy?.botIpService) {
-            args.push(`--bot-ip-service=${opts.proxy.botIpService}`);
-        }
-
-        if (browserProfile.basicInfo.profileName) {
-            args.push(`--bot-title="${browserProfile.basicInfo.profileName}"`);
-        }
-
-        const runningInfo: RunningInfo = { browserProfileId: browserProfile.id, status: BrowserProfileStatus.Running };
+        const runningInfo: RunningInfo = { browserProfileId: browserProfile.id, status: BrowserProfileStatus.Running, startTime: Date.now() };
 
         const warmupUrls = (browserProfile.warmupUrls ?? '').split('\n');
         if (!warmupUrls.length) warmup = false;
@@ -390,6 +248,115 @@ export class BrowserLauncherService {
                 simpleCDP.close();
             }
         }
+    }
+
+    #buildCliArgs(
+        profile: BrowserProfile,
+        paths: { botProfilePath: string; userDataDirPath: string; diskCacheDirPath: string }
+    ): string[] {
+        const args = [
+            '--allow-pre-commit-input',
+            '--enable-automation',
+            '--metrics-recording-only',
+            '--no-first-run',
+            '--password-store=basic',
+            '--use-mock-keychain',
+            '--restore-last-session',
+            '--disable-blink-features=AutomationControlled',
+            `--user-data-dir="${paths.userDataDirPath}"`,
+            `--disk-cache-dir="${paths.diskCacheDirPath}"`,
+            `--bot-profile="${paths.botProfilePath}"`,
+        ];
+
+        const opts = profile.launchOptions;
+
+        // Behavior
+        if (opts?.behavior?.botLocalDns) args.push('--bot-local-dns');
+        if (opts?.behavior?.botDisableDebugger) args.push('--bot-disable-debugger');
+        if (opts?.behavior?.botMobileForceTouch) args.push('--bot-mobile-force-touch');
+        if (opts?.behavior?.botAlwaysActive) args.push('--bot-always-active');
+        if (opts?.behavior?.botInjectRandomHistory) args.push('--bot-inject-random-history');
+        if (opts?.behavior?.botDisableConsoleMessage) args.push('--bot-disable-console-message');
+        if (opts?.behavior?.botPortProtection) args.push('--bot-port-protection');
+
+        // Identity & Locale
+        if (opts?.identityLocale?.botConfigBrowserBrand)
+            args.push(`--bot-config-browser-brand=${opts.identityLocale.botConfigBrowserBrand}`);
+        if (opts?.identityLocale?.botConfigBrandFullVersion)
+            args.push(`--bot-config-brand-full-version=${opts.identityLocale.botConfigBrandFullVersion}`);
+        if (opts?.identityLocale?.botConfigUaFullVersion)
+            args.push(`--bot-config-ua-full-version=${opts.identityLocale.botConfigUaFullVersion}`);
+        if (opts?.identityLocale?.botConfigLanguages)
+            args.push(`--bot-config-languages=${opts.identityLocale.botConfigLanguages}`);
+        if (opts?.identityLocale?.botConfigLocale)
+            args.push(`--bot-config-locale=${opts.identityLocale.botConfigLocale}`);
+        if (opts?.identityLocale?.botConfigTimezone)
+            args.push(`--bot-config-timezone=${opts.identityLocale.botConfigTimezone}`);
+        if (opts?.identityLocale?.botConfigLocation)
+            args.push(`--bot-config-location=${opts.identityLocale.botConfigLocation}`);
+
+        // Custom User-Agent
+        if (opts?.customUserAgent?.userAgent)
+            args.push(`--user-agent="${opts.customUserAgent.userAgent}"`);
+        if (opts?.customUserAgent?.botConfigPlatform)
+            args.push(`--bot-config-platform=${opts.customUserAgent.botConfigPlatform}`);
+        if (opts?.customUserAgent?.botConfigPlatformVersion)
+            args.push(`--bot-config-platform-version=${opts.customUserAgent.botConfigPlatformVersion}`);
+        if (opts?.customUserAgent?.botConfigModel)
+            args.push(`--bot-config-model=${opts.customUserAgent.botConfigModel}`);
+        if (opts?.customUserAgent?.botConfigArchitecture)
+            args.push(`--bot-config-architecture=${opts.customUserAgent.botConfigArchitecture}`);
+        if (opts?.customUserAgent?.botConfigBitness)
+            args.push(`--bot-config-bitness=${opts.customUserAgent.botConfigBitness}`);
+        if (opts?.customUserAgent?.botConfigMobile) args.push('--bot-config-mobile');
+
+        // Display & Input
+        if (opts?.displayInput?.botConfigWindow)
+            args.push(`--bot-config-window=${opts.displayInput.botConfigWindow}`);
+        if (opts?.displayInput?.botConfigScreen)
+            args.push(`--bot-config-screen=${opts.displayInput.botConfigScreen}`);
+        if (opts?.displayInput?.botConfigKeyboard)
+            args.push(`--bot-config-keyboard=${opts.displayInput.botConfigKeyboard}`);
+        if (opts?.displayInput?.botConfigFonts)
+            args.push(`--bot-config-fonts=${opts.displayInput.botConfigFonts}`);
+        if (opts?.displayInput?.botConfigColorScheme)
+            args.push(`--bot-config-color-scheme=${opts.displayInput.botConfigColorScheme}`);
+        if (opts?.displayInput?.botConfigDisableDeviceScaleFactor)
+            args.push('--bot-config-disable-device-scale-factor');
+
+        // Noise
+        if (opts?.noise?.botConfigNoiseWebglImage) args.push('--bot-config-noise-webgl-image');
+        if (opts?.noise?.botConfigNoiseCanvas) args.push('--bot-config-noise-canvas');
+        if (opts?.noise?.botConfigNoiseAudioContext) args.push('--bot-config-noise-audio-context');
+        if (opts?.noise?.botConfigNoiseClientRects) args.push('--bot-config-noise-client-rects');
+        if (opts?.noise?.botConfigNoiseTextRects) args.push('--bot-config-noise-text-rects');
+        if (opts?.noise?.botNoiseSeed != null) args.push(`--bot-noise-seed=${opts.noise.botNoiseSeed}`);
+        if (opts?.noise?.botTimeScale != null) args.push(`--bot-time-scale=${opts.noise.botTimeScale}`);
+
+        // Rendering & Media
+        if (opts?.renderingMedia?.botConfigWebgl)
+            args.push(`--bot-config-webgl=${opts.renderingMedia.botConfigWebgl}`);
+        if (opts?.renderingMedia?.botConfigWebgpu)
+            args.push(`--bot-config-webgpu=${opts.renderingMedia.botConfigWebgpu}`);
+        if (opts?.renderingMedia?.botConfigSpeechVoices)
+            args.push(`--bot-config-speech-voices=${opts.renderingMedia.botConfigSpeechVoices}`);
+        if (opts?.renderingMedia?.botConfigMediaDevices)
+            args.push(`--bot-config-media-devices=${opts.renderingMedia.botConfigMediaDevices}`);
+        if (opts?.renderingMedia?.botConfigMediaTypes)
+            args.push(`--bot-config-media-types=${opts.renderingMedia.botConfigMediaTypes}`);
+        if (opts?.renderingMedia?.botConfigWebrtc)
+            args.push(`--bot-config-webrtc=${opts.renderingMedia.botConfigWebrtc}`);
+        if (opts?.renderingMedia?.botWebrtcIce)
+            args.push(`--bot-webrtc-ice=${opts.renderingMedia.botWebrtcIce}`);
+
+        // Proxy
+        if (profile.proxyServer) args.push(`--proxy-server=${profile.proxyServer}`);
+        if (opts?.proxy?.proxyIp) args.push(`--proxy-ip=${opts.proxy.proxyIp}`);
+        if (opts?.proxy?.botIpService) args.push(`--bot-ip-service=${opts.proxy.botIpService}`);
+
+        if (profile.basicInfo.profileName) args.push(`--bot-title="${profile.basicInfo.profileName}"`);
+
+        return args;
     }
 
     async stop(browserProfile: BrowserProfile): Promise<void> {

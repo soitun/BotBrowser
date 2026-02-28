@@ -41,8 +41,8 @@ export class KernelManagementComponent implements OnInit {
 
     constructor() {
         effect(() => {
-            this.#kernelService.installedKernelsVersion();
-            this.refresh();
+            const version = this.#kernelService.installedKernelsVersion();
+            if (version > 0) this.refresh();
         });
     }
 

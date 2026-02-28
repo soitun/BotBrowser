@@ -951,8 +951,15 @@ export class KernelService {
             for (const exe of possiblePaths) {
                 try {
                     const result = await Neutralino.os.execCommand(`dir /s /b "${installDir}\\${exe}" 2>nul`);
-                    const found = result.stdOut.trim().split('\n')[0];
-                    if (found && found.length > 0) return found;
+                    const lines = result.stdOut.trim().split('\n').map((l) => l.replace(/\r/g, '').trim()).filter(Boolean);
+                    for (const candidate of lines) {
+                        try {
+                            await Neutralino.filesystem.getStats(candidate);
+                            return candidate;
+                        } catch {
+                            continue;
+                        }
+                    }
                 } catch {
                     continue;
                 }

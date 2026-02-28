@@ -1,5 +1,5 @@
 {
-    "applicationId": "js.neutralino.zero",
+    "applicationId": "io.botbrowser.launcher",
     "version": "1.0.0",
     "defaultMode": "window",
     "documentRoot": "/dist/botbrowser-launcher/browser",
